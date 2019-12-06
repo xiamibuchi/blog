@@ -1,0 +1,20 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "知识存储",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vuepress": "^1.2.0"
+  },
+  "dependencies": {
+    "@vuepress/plugin-nprogress": "^1.2.0",
+    "vuepress-plugin-cat": "^1.0.3"
+  }
+}
