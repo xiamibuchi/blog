@@ -57,7 +57,8 @@ module.exports = {
         title: "JavaScript",
         collapsable: true,
         children: [
-          "/JavaScript/1.基础知识"
+          "/js/1.基础知识",
+          "/js/2.数据类型"
         ]
       }
     ]
