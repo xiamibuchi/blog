@@ -17,6 +17,11 @@
 - 3 模块的复用
 - 4 统一规范和开发方式
 
+## 历史
+
+1. namespace (对象命名空间)
+2. IIFE (立即调用的函数表达式)
+
 ## 规范
 
 - AMD 浏览器端
@@ -38,24 +43,30 @@
 
 ### 基本语法
 
-定义暴露模块:
-
 ```javascript
-//定义没有依赖的模块
-define(function(){
-   return 模块
-})
+define("module", ["dep1", "dep2"], function(d1, d2) {
+  return someExportedValue
+});
 
+require(["module", "../file"], function(module, file) { /* ... */ })
 ```
 
-引入使用模块:
+优点：
 
-```javascript
-require(['module1', 'module2'], function(m1, m2){
-   使用m1/m2
-})
+- 适合在浏览器环境中异步加载模块
+- 可以并行加载多个模块
 
-```
+缺点：
+
+- 提高了开发成本，代码的阅读和书写比较困难，模块定义方式的语义不顺畅
+- 不符合通用的模块化思维方式，是一种妥协的实现
+
+## CMD
+
+CMD 与 AMD 的区别
+
+- 对于依赖的模块AMD是提前执行，CMD是延迟执行。不过RequireJS从2.0开始，也改成可以延迟执行(根据写法不同，处理方式不通过)
+- CMD推崇依赖就近，AMD推崇依赖前置
 
 ### CommonJS
 
@@ -80,4 +91,4 @@ CommonJS规范规定，每个模块内部，module变量代表当前模块。这
 
 import/ export，export default
 
-输出的是值的引用，运行时加载
+输出的是值的引用，运行时加载。编译时就能确定模块的依赖关系，以及输入和输出的变量
