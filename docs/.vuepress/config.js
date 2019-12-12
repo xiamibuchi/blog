@@ -60,6 +60,13 @@ module.exports = {
           "/js/1.基础知识",
           "/js/2.数据类型"
         ]
+      },
+      {
+        title: "CSS",
+        collapsable: true,
+        children: [
+          "/css/常用工具"
+        ]
       }
     ]
   }

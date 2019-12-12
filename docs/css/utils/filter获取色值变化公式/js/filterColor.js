@@ -616,28 +616,4 @@ form.addEventListener("submit", function(o) {
     f.filter +
     '"></body></foreignObject></svg>';
   return;
-  var v = rgbToHsl.apply(null, u);
-  var q = rgbToHsl.apply(null, c);
-  var m = rgbToHsv.apply(null, u);
-  var d = rgbToHsv.apply(null, c);
-  var p = Math.round(d[0] - m[0]);
-  var g = 1 + (d[1] - m[1]) / m[1];
-  if (m[1] == 0) {
-    g = d[1];
-  }
-  var r = 1 + (d[2] - m[2]) / m[2];
-  if (m[2] == 0) {
-    r = d[2];
-  }
-  g = Math.round(g * 1000) / 1000;
-  r = Math.round(r * 1000) / 1000;
-  show.style.color = "rgb(" + u.join() + ")";
-  var e = "hue-rotate(" + p + "deg) saturate(" + g + ") brightness(" + r + ")";
-  show.innerHTML = "filter: " + e;
-  show.style.filter = e;
-  if (r > 2) {
-    show.style.backgoundColor = "#333";
-  } else {
-    show.style.backgoundColor = "";
-  }
 });
