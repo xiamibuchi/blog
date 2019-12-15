@@ -41,15 +41,11 @@ module.exports = {
     nav: [
       {
         text: "blog",
-        link: "/blog/"
+        link: "/"
       },
       {
         text: "about me",
         link: "https://qishaoxuan.github.io/animate_resume/"
-      },
-      {
-        text: "GitHub",
-        link: "https://github.com/QiShaoXuan/blog"
       }
     ],
     sidebar: [
@@ -65,7 +61,7 @@ module.exports = {
         title: "CSS",
         collapsable: true,
         children: [
-          "/css/常用工具"
+          "/css/utils/获取色值变化公式"
         ]
       }
     ]
