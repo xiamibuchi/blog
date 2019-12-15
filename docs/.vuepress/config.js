@@ -4,16 +4,22 @@ module.exports = {
   dest: "./dist",
   repo: "https://xiamibuchi.github.io/blog/",
   head: [
-    ["meta", {name: "theme-color", content: "#00adb5"}],
-    ["link", {rel: "icon", href: `/images/favicon.png`}],
-    ["meta", {
-      itemprop: "image",
-      content: "/js_tricks/images/favicon.png"
-    }],
-    ["meta", {
-      name: "apple-mobile-web-app-capable",
-      content: "yes"
-    }],
+    ["meta", { name: "theme-color", content: "#00adb5" }],
+    ["link", { rel: "icon", href: `/images/favicon.png` }],
+    [
+      "meta",
+      {
+        itemprop: "image",
+        content: "/js_tricks/images/favicon.png"
+      }
+    ],
+    [
+      "meta",
+      {
+        name: "apple-mobile-web-app-capable",
+        content: "yes"
+      }
+    ],
     [
       "meta",
       {
@@ -21,22 +27,22 @@ module.exports = {
         content: "black"
       }
     ],
-    ["meta", {
-      name: "msapplication-TileColor",
-      content: "#00adb5"
-    }]
+    [
+      "meta",
+      {
+        name: "msapplication-TileColor",
+        content: "#00adb5"
+      }
+    ]
   ],
   markdown: {
-    anchor: {permalink: false},
-    toc: {includeLevel: [1, 2]},
+    anchor: { permalink: false },
+    toc: { includeLevel: [1, 2] },
     config: md => {
       md.use(require("markdown-it-include"), "./");
     }
   },
-  plugins: [
-    "vuepress-plugin-cat",
-    "@vuepress/nprogress"
-  ],
+  plugins: ["vuepress-plugin-cat", "@vuepress/nprogress"],
   themeConfig: {
     nav: [
       {
@@ -52,10 +58,7 @@ module.exports = {
       {
         title: "JavaScript",
         collapsable: true,
-        children: [
-          "/js/1.基础知识",
-          "/js/2.数据类型"
-        ]
+        children: ["/js/1.基础知识", "/js/2.数据类型"]
       },
       {
         title: "CSS",
@@ -63,7 +66,9 @@ module.exports = {
         children: [
           "/css/utils/获取色值变化公式",
           "/css/utils/三角形生成器",
-          "/css/utils/扇形生成器"
+          "/css/utils/扇形生成器",
+          "/css/常用样式/loading",
+          "/css/utils/多边形布局"
         ]
       }
     ]
