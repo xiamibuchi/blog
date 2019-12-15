@@ -510,7 +510,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .filter-form {
   max-width: 500px;
   margin: 0 auto;

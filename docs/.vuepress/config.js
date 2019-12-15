@@ -61,7 +61,8 @@ module.exports = {
         title: "CSS",
         collapsable: true,
         children: [
-          "/css/utils/获取色值变化公式"
+          "/css/utils/获取色值变化公式",
+          "/css/utils/三角形生成器"
         ]
       }
     ]
