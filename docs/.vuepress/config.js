@@ -1,6 +1,7 @@
 module.exports = {
   title: "羊圈",
   description: "神羊的羊圈",
+  base: "/blog/",
   dest: "./dist",
   repo: "https://xiamibuchi.github.io/blog/",
   head: [
