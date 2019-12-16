@@ -57,7 +57,7 @@ module.exports = {
     sidebar: [
       {
         title: "JavaScript",
-        collapsable: true,
+        colclearsdsafpsable: true,
         children: ["/js/1.基础知识", "/js/2.数据类型"]
       },
       {
