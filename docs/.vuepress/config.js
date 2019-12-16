@@ -52,7 +52,7 @@ module.exports = {
       },
       {
         text: "about me",
-        link: "https://qishaoxuan.github.io/animate_resume/"
+        link: "https://xiamibuchi.github.io/blog/"
       }
     ],
     sidebar: [
