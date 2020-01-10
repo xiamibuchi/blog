@@ -16,6 +16,7 @@ flask run --host=0.0.0.0
 This tells your operating system to listen on all public IPs.
 也可以这样：
 app.run(host="0.0.0.0", port=80)
+
 FLASK 的 Jinjia 模板
 变量表示
 {{argv}}
@@ -54,21 +55,20 @@ return link == request.path
 
 ```html
 <body>
-{% set links = [
-    ('home',url_for('.home')),
-    ('service',url_for('.service')),
-    ('about',url_for('.about')),
-] %}
+  {% set links = [ ('home',url_for('.home')), ('service',url_for('.service')),
+  ('about',url_for('.about')), ] %}
 
-<nav>
-    {% for label,link in links %}
-        {% if not loop.first %}|{% endif %}
-        <a href="{% if link is current_link %}#
+  <nav>
+    {% for label,link in links %} {% if not loop.first %}|{% endif %}
+    <a
+      href="{% if link is current_link %}#
         {% else %}
         {{ link }}
         {% endif %}
-        ">{{ label }}</a>
+        "
+      >{{ label }}</a
+    >
     {% endfor %}
-</nav>
+  </nav>
 </body>
 ```
