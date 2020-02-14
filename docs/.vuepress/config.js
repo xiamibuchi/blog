@@ -1,3 +1,7 @@
+
+const css = require("./config/css");
+const js = require("./config/js");
+
 module.exports = {
   title: "羊圈",
   description: "神羊的羊圈",
@@ -46,32 +50,16 @@ module.exports = {
   plugins: ["vuepress-plugin-cat", "@vuepress/nprogress"],
   themeConfig: {
     nav: [
-      {
-        text: "blog",
-        link: "/"
-      },
+      { text: 'js', link: js[0] },
+      { text: 'css', link: css[0] },
       {
         text: "about me",
         link: "https://xiamibuchi.github.io/blog/"
       }
     ],
-    sidebar: [
-      {
-        title: "JavaScript",
-        colclearsdsafpsable: true,
-        children: ["/js/1.基础知识", "/js/2.数据类型"]
-      },
-      {
-        title: "CSS",
-        collapsable: true,
-        children: [
-          "/css/utils/获取色值变化公式",
-          "/css/utils/三角形生成器",
-          "/css/utils/扇形生成器",
-          "/css/常用样式/loading",
-          "/css/utils/多边形布局"
-        ]
-      }
-    ]
+    sidebar: {
+      '/css/': css,
+      '/js/': js,
+    }
   }
 };
