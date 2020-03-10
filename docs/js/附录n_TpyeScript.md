@@ -233,8 +233,6 @@ let fibonacci: NumberArray = [1, 1, 2, 3, 5];
 
 类数组（Array-like Object）不是数组类型，比如 `arguments`：
 
-
-
 ```
 function sum() {    let args: number[] = arguments;}
 // Type 'IArguments' is missing the following properties from type 'number[]': pop, push, concat, join, and 24 more.
@@ -298,3 +296,249 @@ export function genErrMsg(
   return (message || `网络繁忙，请稍候再试`) + (code ? `(${code})` : ``);
 }
 ````
+
+#### 函数表达式
+
+如果要我们现在写一个对函数表达式（Function Expression）的定义，可能会写成这样：
+
+```
+let mySum = function (x: number, y: number): number {
+    return x + y;
+};
+```
+
+这是可以通过编译的，不过事实上，上面的代码只对等号右侧的匿名函数进行了类型定义，而等号左边的 `mySum`，是通过赋值操作进行类型推论而推断出来的。如果需要我们手动给 `mySum` 添加类型，则应该是这样：
+
+```
+let mySum: (x: number, y: number) => number = function (x: number, y: number): number {
+    return x + y;
+};
+```
+
+注意不要混淆了 TypeScript 中的 `=>` 和 ES6 中的 `=>`。
+
+在 TypeScript 的类型定义中，`=>` 用来表示函数的定义，左边是输入类型，需要用括号括起来，右边是输出类型。
+
+在 ES6 中，`=>` 叫做箭头函数，应用十分广泛，可以参考 [ES6 中的箭头函数](http://es6.ruanyifeng.com/#docs/function#箭头函数)。
+
+#### 用接口定义函数的形状
+
+我们也可以使用接口的方式来定义一个函数需要符合的形状：
+
+```
+interface SearchFunc {    (source: string, subString: string): boolean;}
+let mySearch: SearchFunc;mySearch = function(source: string, subString: string) {    return source.search(subString) !== -1;}
+```
+
+#### 可选参数
+
+前面提到，输入多余的（或者少于要求的）参数，是不允许的。那么如何定义可选的参数呢？
+
+与接口中的可选属性类似，我们用 `?` 表示可选的参数：
+
+```
+function buildName(firstName: string, lastName?: string) {
+    if (lastName) {
+        return firstName + ' ' + lastName;
+    } else {
+        return firstName;
+    }
+}
+let tomcat = buildName('Tom', 'Cat');
+let tom = buildName('Tom');
+```
+
+需要注意的是，可选参数必须接在必需参数后面。换句话说，**可选参数后面不允许再出现必需参数了**
+
+#### 参数默认值
+
+在 ES6 中，我们允许给函数的参数添加默认值，**TypeScript 会将添加了默认值的参数识别为可选参数**：
+
+```
+function buildName(firstName: string, lastName: string = 'Cat') {
+    return firstName + ' ' + lastName;
+}
+let tomcat = buildName('Tom', 'Cat');
+let tom = buildName('Tom');
+```
+
+此时就不受「可选参数必须接在必需参数后面」的限制了：
+
+```
+function buildName(firstName: string = 'Tom', lastName: string) {
+    return firstName + ' ' + lastName;
+}
+let tomcat = buildName('Tom', 'Cat');
+let cat = buildName(undefined, 'Cat');
+```
+
+#### 剩余参数
+
+ES6 中，可以使用 `...rest` 的方式获取函数中的剩余参数（rest 参数）：
+
+```
+function push(array, ...items) {    items.forEach(function(item) {        array.push(item);    });}
+let a = [];push(a, 1, 2, 3);
+```
+
+事实上，`items` 是一个数组。所以我们可以用数组的类型来定义它：
+
+```
+function push(array: any[], ...items: any[]) {    items.forEach(function(item) {        array.push(item);    });}
+let a = [];push(a, 1, 2, 3);
+```
+
+注意，rest 参数只能是最后一个参数，关于 rest 参数，可以参考 [ES6 中的 rest 参数](http://es6.ruanyifeng.com/#docs/function#rest参数)。
+
+#### 重载
+
+重载允许一个函数接受不同数量或类型的参数时，作出不同的处理。
+
+比如，我们需要实现一个函数 `reverse`，输入数字 `123` 的时候，输出反转的数字 `321`，输入字符串 `'hello'` 的时候，输出反转的字符串 `'olleh'`。
+
+利用联合类型，我们可以这么实现：
+
+```
+function reverse(x: number | string): number | string {
+    if (typeof x === 'number') {
+        return Number(x.toString().split('').reverse().join(''));
+    } else if (typeof x === 'string') {
+        return x.split('').reverse().join('');
+    }
+}
+```
+
+然而这样有一个缺点，就是不能够精确的表达，输入为数字的时候，输出也应该为数字，输入为字符串的时候，输出也应该为字符串。
+
+这时，我们可以使用重载定义多个 `reverse` 的函数类型：
+
+```
+function reverse(x: number): number;
+function reverse(x: string): string;
+function reverse(x: number | string): number | string {
+    if (typeof x === 'number') {
+        return Number(x.toString().split('').reverse().join(''));
+    } else if (typeof x === 'string') {
+        return x.split('').reverse().join('');
+    }
+}
+```
+
+上例中，我们重复定义了多次函数 `reverse`，前几次都是函数定义，最后一次是函数实现。在编辑器的代码提示中，可以正确的看到前两个提示。
+
+注意，TypeScript 会优先从最前面的函数定义开始匹配，所以多个函数定义如果有包含关系，需要优先把精确的定义写在前面。
+
+### 类型断言
+
+```
+<类型>值
+```
+
+或
+
+```
+值 as 类型
+```
+
+### 声明文件
+
+https://ts.xcatliu.com/basics/declaration-files
+
+当使用第三方库时，我们需要引用它的声明文件，才能获得对应的代码补全、接口提示等功能
+
+### 内置对象
+
+JavaScript 中有很多[内置对象](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)，它们可以直接在 TypeScript 中当做定义好了的类型。
+
+内置对象是指根据标准在全局作用域（Global）上存在的对象。这里的标准是指 ECMAScript 和其他环境（比如 DOM）的标准。
+
+#### ECMAScript 的内置对象
+
+ECMAScript 标准提供的内置对象有：
+
+`Boolean`、`Error`、`Date`、`RegExp` 等。
+
+我们可以在 TypeScript 中将变量定义为这些类型：
+
+```
+let b: Boolean = new Boolean(1);
+let e: Error = new Error('Error occurred');
+let d: Date = new Date();
+let r: RegExp = /[a-z]/;
+```
+
+更多的内置对象，可以查看 [MDN 的文档](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)。
+
+而他们的定义文件，则在 [TypeScript 核心库的定义文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)中。
+
+#### DOM 和 BOM 的内置对象
+
+DOM 和 BOM 提供的内置对象有：
+
+`Document`、`HTMLElement`、`Event`、`NodeList` 等。
+
+TypeScript 中会经常用到这些类型：
+
+```
+let body: HTMLElement = document.body;
+let allDiv: NodeList = document.querySelectorAll('div');
+document.addEventListener('click', function(e: MouseEvent) {
+  // Do something
+});
+```
+
+它们的定义文件同样在 [TypeScript 核心库的定义文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)中。
+
+#### TypeScript 核心库的定义文件
+
+[TypeScript 核心库的定义文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)中定义了所有浏览器环境需要用到的类型，并且是预置在 TypeScript 中的。
+
+当你在使用一些常用的方法的时候，TypeScript 实际上已经帮你做了很多类型判断的工作了，比如：
+
+```
+Math.pow(10, '2');
+// index.ts(1,14): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+```
+
+上面的例子中，`Math.pow` 必须接受两个 `number` 类型的参数。事实上 `Math.pow` 的类型定义如下：
+
+```
+interface Math {
+    /**
+     * Returns the value of a base expression taken to a specified power.
+     * @param x The base value of the expression.
+     * @param y The exponent value of the expression.
+     */
+    pow(x: number, y: number): number;
+}
+```
+
+再举一个 DOM 中的例子：
+
+```
+document.addEventListener('click', function(e) {    console.log(e.targetCurrent);});
+// index.ts(2,17): error TS2339: Property 'targetCurrent' does not exist on type 'MouseEvent'.
+```
+
+上面的例子中，`addEventListener` 方法是在 TypeScript 核心库中定义的：
+
+```
+interface Document extends Node, GlobalEventHandlers, NodeSelector, DocumentEvent {
+    addEventListener(type: string, listener: (ev: MouseEvent) => any, useCapture?: boolean): void;
+}
+```
+
+所以 `e` 被推断成了 `MouseEvent`，而 `MouseEvent` 是没有 `targetCurrent` 属性的，所以报错了。
+
+注意，TypeScript 核心库的定义中不包含 Node.js 部分。
+
+#### 用 TypeScript 写 Node.js
+
+Node.js 不是内置对象的一部分，如果想用 TypeScript 写 Node.js，则需要引入第三方声明文件：
+
+```
+npm install @types/node --save-dev
+```
+
+### 类型别名
+
