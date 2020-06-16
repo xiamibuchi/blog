@@ -3,7 +3,7 @@
 Node 自带 npm 模块，所以可以直接使用 npx 命令。万一不能用，就要手动安装一下。
 
 ```shell
-$npm install -g npx
+npm install -g npx
 ```
 
 ## 调用项目安装的模块
@@ -11,7 +11,7 @@ $npm install -g npx
 npx 想要解决的主要问题，就是调用项目内部安装的模块。比如，项目内部安装了测试工具 [Mocha](http://www.ruanyifeng.com/blog/2015/12/a-mocha-tutorial-of-examples.html)。
 
 > ```bash
-> $ npm install -D mocha
+>  npm install -D mocha
 > ```
 
 一般来说，调用 Mocha ，只能在项目脚本和 package.json 的[`scripts`](http://www.ruanyifeng.com/blog/2016/10/npm_scripts.html)字段里面， 如果想在命令行下调用，必须像下面这样。
@@ -24,7 +24,7 @@ npx 想要解决的主要问题，就是调用项目内部安装的模块。比�
 npx 就是想解决这个问题，让项目内部安装的模块用起来更方便，只要像下面这样调用就行了。
 
 > ```bash
-> $ npx mocha --version
+>  npx mocha --version
 > ```
 
 npx 的原理很简单，就是运行的时候，会到`node_modules/.bin`路径和环境变量`$PATH`里面，检查命令是否存在。
@@ -33,7 +33,7 @@ npx 的原理很简单，就是运行的时候，会到`node_modules/.bin`路径
 
 > ```bash
 > # 等同于 ls
-> $ npx ls
+>  npx ls
 > ```
 
 注意，Bash 内置的命令不在`$PATH`里面，所以不能用。比如，`cd`是 Bash 命令，因此就不能用`npx cd`。
