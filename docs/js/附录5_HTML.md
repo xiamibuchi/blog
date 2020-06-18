@@ -291,11 +291,10 @@ height 设置播放窗口的高度
 
 - mark 标签
   ​ 主要用来在视觉上向用户呈现哪些需要突出显示或高亮显示的文字。典型应用搜索结果中高亮显示搜素关键字。
-  ​ HTML5<mark></mark>;HTML4 <span></span>。
 - progress 标签
-  ​ 表示运行中的进程，可以使用 progress 标签显示 JavaScript 中耗时时间函数的进程。等待中……、请稍后等。<progress></progress>。
+  ​ 进度条
 - time 标签
-  ​ 表示日期或时间，也可以两者同时。
+  ​ 表示日期时间
 - ruby 标签
   ​ 定义 ruby 注释（中文注音或字符）。
   ​ 与 <ruby> 以及 <rt> 标签一同使用。ruby 标签由一个或多个字符（需要一个解释/发音）和一个提供该信息的 rt 标签组成，还包括可选的 rp 标签，定义当浏览器不支持
@@ -310,23 +309,8 @@ height 设置播放窗口的高度
 - wbr 标签
   ​ 表示软换行。与 br 标签的区别：br 标签表示此处必须换行；wbr 表示浏览器窗口或父级标签足弓宽时（没必要换行时），不换行，而宽度不够时主动在此处换行。
 - canvas 标签
-  ​ 定义图形，比如图表和其他图像。<canvas> 标签只是图形容器（画布），必须使用脚本来绘制图形。
-  ​ `<canvas ​ id="myCanvas"></canvas>`<script
-  ​ type="text/javascript">
-  ​ var canvas=document.getElementById('myCanvas');
-  ​ var ctx=canvas.getContext('2d');
-  ​ ctx.fillStyle='#FF0000';
-  ​ ctx.fillRect(0,0,80,100);
-  ​ </script>
-- command 标签——貌似没什么效果。是不是支持有问题
-  ​ 表示命令按钮，比如单选按钮、复选框或按钮。
-
-只有当 command 标签位于 menu 标签内时，该标签才是可见的。否则不会显示这个标签，但是可以用它规定键盘快捷键。。
-
-<menu> 
-<command onclick="alert('Hello World')"> 
-Click Me!</command> 
-</menu>
+  ​ 定义图形，比如图表和其他图像。
+    图形容器（画布），用 js 来绘制图形。。
 
 - details 标签 目前只有 Chrome 支持 details 标签
 
