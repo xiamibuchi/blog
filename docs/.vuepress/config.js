@@ -61,5 +61,6 @@ module.exports = {
       '/css/': css,
       '/js/': js,
     }
-  }
+  },
+  theme: 'reco'
 };

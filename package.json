@@ -28,6 +28,8 @@
     "@vuepress/plugin-nprogress": "^1.5.2",
     "core-js": "2",
     "element-ui": "^2.13.0",
-    "vuepress-plugin-cat": "^1.0.3"
+    "vue-class-component": "^7.2.3",
+    "vuepress-plugin-cat": "^1.0.3",
+    "vuepress-theme-reco": "^1.4.6"
   }
 }
