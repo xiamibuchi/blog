@@ -1,13 +1,20 @@
-import {
-  Form,
-  FormItem,
-  Input,
-  InputNumber,
-  Button,
-  Radio,
-  Slider,
-  ColorPicker,
-} from "element-ui";
+import Form from "element-ui/lib/form";
+import FormItem from "element-ui/lib/form-item";
+import Input from "element-ui/lib/input";
+import InputNumber from "element-ui/lib/input-number";
+import Button from "element-ui/lib/button";
+import Radio from "element-ui/lib/radio";
+import Slider from "element-ui/lib/slider";
+import ColorPicker from "element-ui/lib/color-picker";
+
+import "element-ui/lib/theme-chalk/form.css";
+import "element-ui/lib/theme-chalk/form-item.css";
+import "element-ui/lib/theme-chalk/input.css";
+import "element-ui/lib/theme-chalk/input-number.css";
+import "element-ui/lib/theme-chalk/button.css";
+import "element-ui/lib/theme-chalk/radio.css";
+import "element-ui/lib/theme-chalk/slider.css";
+import "element-ui/lib/theme-chalk/color-picker.css";
 
 export default ({
   Vue, // VuePress 正在使用的 Vue 构造函数
