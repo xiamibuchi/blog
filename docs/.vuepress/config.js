@@ -47,7 +47,7 @@ module.exports = {
       md.use(require("markdown-it-include"), "./");
     }
   },
-  plugins: ["vuepress-plugin-cat", "@vuepress/nprogress"],
+  plugins: ["vuepress-plugin-cat"],
   themeConfig: {
     nav: [
       { text: 'js', link: js[0] },
