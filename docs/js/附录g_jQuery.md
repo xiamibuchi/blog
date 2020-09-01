@@ -14,7 +14,7 @@ jQuery是JavaScript世界中使用最广泛的一个库。它的作用：
 
 jQuery 的入口函数不会发生覆盖：
 
-```javascript
+```js
 //第一种写法
 $(document).ready(function() {
 
@@ -50,7 +50,7 @@ $(function() {
 
 `$` 是著名的jQuery符号。实际上,jQuery把所有功能全部封装在一个全局变量jQuery中,而`$`也是一个合法的变量名,它是变量jQuery的别名：
 
-```javascript
+```js
 window.jQuery; // jQuery(selector, context)
 window.$; // jQuery(selector, context)
 $ === jQuery; // true
@@ -72,7 +72,7 @@ DOM 对象转 jquery 对象：直接使用 $() 封装即可
 
 绝大多数时候,我们都直接用 `$` 。但是,如果 `$` 这个变量不幸地被占用了,而且还不能改,那我们就只能让jQuery把 `$` 变量交出来,然后就只能使用jQuery这个变量：
 
-```javascript
+```js
 $; // jQuery(selector, context)
 jQuery.noConflict();
 $; // undefined
@@ -133,7 +133,7 @@ jQuery选择器有很多,基本兼容了CSS1到CSS3所有的选择器,并且jQue
 * `:disabled`：和:enabled正好相反,选择那些不能输入的。
 * 此外,jQuery还有很多有用的选择器,例如,选出可见的或隐藏的元素
 
-```javascript
+```js
 $('div:visible'); // 所有可见的div
 $('div:hidden'); // 所有隐藏的div
 ```
@@ -189,7 +189,7 @@ val()获取的是动态更新的值，而attr("value")获取的设定的初始�
 
 在jQuery1.6之后,对于checked、selected、disabled这类boolean类型的属性来说,不能用attr方法,只能用prop方法
 
-```javascript
+```js
 //设置属性
 $(":checked").prop("checked",true);
 
@@ -199,7 +199,7 @@ $(":checked").prop("checked");//返回true或者false
 
 prop() 返回值更合理一些。不过,用is()方法判断更好：
 
-```javascript
+```js
 var radio = $('#test-radio');
 radio.is(':checked'); // true
 ```
@@ -290,7 +290,7 @@ slideUp(speed, callback);
 
 animate：自定义动画
 
-```javascript
+```js
 $(selector).animate({params},speed,easing,callback);
 ```
 
@@ -344,7 +344,7 @@ $(selector).animate({params},speed,easing,callback);
   `remove()` 方法也可接受一个参数,允许您对被删元素进行过滤。
   下面的例子删除 class="italic" 的所有 `<p>` 元素：
 
-  ```javascript
+  ```js
   $("p").remove(".italic");
   ```
 
@@ -366,7 +366,7 @@ $(selector).animate({params},speed,easing,callback);
 
 利用jQuery对象的若干方法,我们直接可以获取DOM的高宽等信息,而无需针对不同浏览器编写特定代码：
 
-```javascript
+```js
 // 浏览器可视窗口大小:
 $(window).width(); // 800
 $(window).height(); // 600
@@ -456,7 +456,7 @@ $(selector).on(events,childSelector,data,function);
 
 多个事件绑定不同事件时，可以写成对象形式：
 
-```javascript
+```js
 $("p").on({
     mouseover： function(){$("body").css("background-color"， "lightgray")； }，
     mouseout： function(){$("body").css("background-color"， "lightblue")； }，
@@ -474,7 +474,7 @@ $("p").on({
 
 delegate 在底层就是用 on 封装的，只是参数改变了一下位置
 
-```JavaScript
+```js
 jQuery.fn.extend( {
   bind: function( types, data, fn ) {
     return this.on( types, null, data, fn );
@@ -496,7 +496,7 @@ jQuery.fn.extend( {
 
 而 . on 则是：
 
-```JavaScript
+```js
 return elem.each( function() {
     jQuery.event.add( this, types, fn, data, selector );
   } );
@@ -524,7 +524,7 @@ mouseover 和 mouseenter 的区别：mouseover 移到盒子范围内的其他元
 
 #### e.which获取键盘码
 
-```javascript
+```js
 $(element).on('keyup',function(event){
   if(event.which = 13){
     ... // 如果弹起的是回车键，则...
@@ -553,7 +553,7 @@ $(selector).off('click');
 这个选择器是父级元素
 $(selector).off('click','**');
 
-```javascript
+```js
 function hello() {
     alert('hello!');
 }
@@ -572,7 +572,7 @@ one() 方法为被选元素附加一个或多个事件处理程序，并规定�
 
 当使用 one() 方法时，每个元素只能运行一次事件处理器函数。
 
-```javascript
+```js
 $("p").one("click",function(){
   $(this).animate({fontSize:"+=6px"});
 });
@@ -588,7 +588,7 @@ $(selector).trigger("click");
 
 ## 阻止浏览器默认事件
 
-```javascript
+```js
 $("a").click(function(event){
     event.preventDefault();
 });

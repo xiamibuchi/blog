@@ -6,7 +6,7 @@
 
 1. 参数是字符串，这时第二个参数表示正则表达式的修饰符（flag）。
 
-   1. ```JavaScript
+   1. ```js
       var regex = new regExp('xyz','i');
       //等价于
       var regex = /xyz/i;
@@ -14,7 +14,7 @@
 
 2. 参数是一个正则表达式，这时会返回一个原有正则表达式的拷贝。
 
-   ```JavaScript
+   ```js
    var regex = new RegExp(/xyz/i);
    // 等价于
    var regex = /xyz/i;
@@ -22,7 +22,7 @@
 
    但是，ES5 不允许此时使用第二个参数添加修饰符，否则会报错。
 
-   ```JavaScript
+   ```js
    var regex = new RegExp(/xyz/, 'i');
    // Uncaught TypeError: Cannot supply flags when constructing one RegExp from another
    ```
@@ -117,7 +117,7 @@ JavaScript有两种方式创建一个正则表达式：
 
 RegExp对象的test()方法用于测试给定的字符串是否符合条件：
 
-```javascript
+```js
 var re = /^\d{3}\-\d{3,8}$/;
 re.test('010-12345'); // true
 re.test('010-1234x'); // false
@@ -148,7 +148,7 @@ RegExpObject.exec(string)
 
 如果 `exec()` 找到了匹配的文本，会返回一个Array，第一个元素始终是原始字符串本身，后面的字符串表示匹配成功的子串。。否则，返回 null。如：
 
-```javascript
+```js
 var re = /^(\d{3})-(\d{3,8})$/;
 re.exec('010-12345'); // ['010-12345', '010', '12345']
 re.exec('010 12345'); // null
@@ -158,7 +158,7 @@ re.exec('010 12345'); // null
 
 正则匹配默认是贪婪匹配，也就是匹配尽可能多的字符。如：
 
-```javascript
+```js
 var re = /^(\d+)(0+)$/;
 re.exec('102300'); // ['102300', '102300', '']
 ```
@@ -167,7 +167,7 @@ re.exec('102300'); // ['102300', '102300', '']
 
 必须让`\d+`采用非贪婪匹配（也就是尽可能少匹配），才能把后面的0匹配出来，加个?就可以让\d+采用非贪婪匹配：
 
-```javascript
+```js
 var re = /^(\d+?)(0+)$/;
 re.exec('102300'); // ['102300', '1023', '00']
 ```
@@ -176,7 +176,7 @@ re.exec('102300'); // ['102300', '1023', '00']
 
 JavaScript的正则表达式还有几个特殊的标志，最常用的是g，表示全局匹配：
 
-```javascript
+```js
 var r1 = /test/g;
 // 等价于:
 var r2 = new RegExp('test', 'g');
@@ -184,7 +184,7 @@ var r2 = new RegExp('test', 'g');
 
 全局匹配可以多次执行exec()方法来搜索一个匹配的字符串。当我们指定g标志后，每次运行exec()，正则表达式本身会更新lastIndex属性，表示上次匹配到的最后索引：
 
-```javascript
+```js
 var s = 'JavaScript, VBScript, JScript and ECMAScript';
 var re=/[a-zA-Z]+Script/g;
 

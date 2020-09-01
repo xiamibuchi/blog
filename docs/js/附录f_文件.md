@@ -11,7 +11,7 @@
 
 ### form 表单上传
 
-```javascript
+```js
 <form action="upload" method="post" enctype="multipart/form-data">
   <input type="file" name="pic" />
   <input type="submit" value="上传" />
@@ -29,7 +29,7 @@ form 表单提交会导致页面刷新，不希望页面被刷新，可以用 aj
 
 参见：<https://developer.mozilla.org/zh-CN/docs/Web/API/FormData>
 
-```javascript
+```js
 <form>
   <input type="file" name="pic" id="pic"/>
   <input type="button" onClick="upload()" value="上传" />
@@ -92,7 +92,7 @@ multiple 属性和 capture 属性不能同时生效。
 
 通过 File API,我们可以在用户选取一个或者多个文件之后,访问到代表了所选文件的一个或多个 File 对象，这些对象被包含在一个 FileList 对象中。所有 type 属性(attribute)为 file 的`<input>`元素都有一个 files 属性，用来存储用户所选择的文件。files 有一个 length 属性和 item 方法，我们可以通过 files[index]或者 files.item(index)获取我们选择的 file 对象。可以通过 change 事件监听 input file 输入完成事件：
 
-```javascript
+```js
 var fileInput = document.getElementById("fileInput");
 fileInput.addEventListener(
   "change",
@@ -116,7 +116,7 @@ File API 提供 File 对象，它是 FileList 对象的成员，包含了文件�
 
 例如：我们可以根据 size 换算出我们习惯的文件大小表达方式：
 
-```javascript
+```js
 /**
  * 读文件大小
  * @param {Object} file
@@ -247,7 +247,7 @@ document.body.appendChild(img);
 
 **上传实例**：以二进制流上传文件
 
-```javascript
+```js
 var fileInput = document.getElementById("fileInput");
 fileInput.addEventListener("change", function(event) {
   var file = fileInput.files[0];
@@ -286,7 +286,7 @@ Blob 对象有两个只读属性：
 - type：二进制数据的 MIME 类型，全部为小写，如果类型未知，则该值为空字符串。
   在 Ajax 操作中，如果 xhr.responseType 设为 blob，接收的就是二进制数据。
 
-```javascript
+```js
 /**
  * 计算文件大小
  * @param {Object} file
@@ -307,7 +307,7 @@ Blob 构造函数，接受两个参数。第一个参数是一个包含实际数
 (typed array)， Blob，或者 DOMString 对象。
 例如：
 
-```javascript
+```js
 var arr = ["<h1>hello world</h1>"];
 var blob = new Blob(arr, { type: "text/xml" }); // the blob
 console.log(blob);
@@ -346,13 +346,13 @@ console.log(blob);
 
 Blob 对象的 slice 方法，将二进制数据按照字节分块，返回一个新的 Blob 对象。
 
-```javascript
+```js
 var newBlob = oldBlob.slice(startingByte, endindByte);
 ```
 
 下面是一个使用 XMLHttpRequest 对象，将大文件分割上传的例子。
 
-```javascript
+```js
 function upload(blobOrFile) {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/server', true);
@@ -386,7 +386,7 @@ document.querySelector('input[type="file"]').addEventListener('change', function
 
 ### DataUrl和BlobUrl
 
-```javascript
+```js
 DataUrl
  // ./util.js
  // 图片转base64

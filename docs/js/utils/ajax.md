@@ -8,7 +8,7 @@
 - "&"：JavaScript 解析为变量连接符，所以服务器端接收数据时&符号以后的数据都会丢失。
   解决办法：在传到服务端之前先将参数中的"+"和"&"符号都编码一下
 
-```JavaScript
+```js
 function filter(str) {
   let val = obj[k] + ''
   val = val.replace(/[+&]/g, (a) => {

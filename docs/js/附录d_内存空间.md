@@ -68,7 +68,7 @@ Node中，当一个模块被引入，这个模块就会被缓存在内存中，�
 
 ### 全局变量引起的内存泄漏
 
-```javascript
+```js
 function leaks(){
     leak = 'xxxxxx';//leak 成为一个全局变量，不会被回收
 }
@@ -76,7 +76,7 @@ function leaks(){
 
 ### 闭包引起的内存泄漏
 
-```javascript
+```js
 var leaks = (function(){
     var leak = 'xxxxxx';// 被闭包所引用，不会被回收
     return function(){
@@ -87,7 +87,7 @@ var leaks = (function(){
 
 ### dom清空或删除时，事件未清除导致的内存泄漏
 
-```javascript
+```js
 <div id="container">
 </div>
 
