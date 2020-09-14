@@ -43,7 +43,7 @@
 
 ### 基本语法
 
-```javascript
+```js
 define("module", ["dep1", "dep2"], function(d1, d2) {
   return someExportedValue;
 });

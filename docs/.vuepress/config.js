@@ -41,11 +41,13 @@ module.exports = {
   markdown: {
     anchor: { permalink: false },
     toc: { includeLevel: [1, 2] },
-    config: (md) => {
-      md.use(require("markdown-it-include"), "./");
+    extendMarkdown: (md) => {
+      // 使用更多的 markdown-it 插件!
+      // md.use(require("markdown-it-include"));
     },
   },
   plugins: [],
+  theme: "reco",
   themeConfig: {
     nav: [
       { text: "js", link: js[0] },
@@ -59,7 +61,11 @@ module.exports = {
       "/css/": css,
       "/js/": js,
     },
+    footer: true,
+    valineConfig: {
+      showComment: false,
+      appId: ""
+    },
   },
-  theme: "reco",
-  evergreen: true
+  evergreen: true,
 };

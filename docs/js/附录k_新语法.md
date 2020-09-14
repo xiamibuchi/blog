@@ -16,7 +16,7 @@ let 所声明的变量，只在 let 命令所在的代码块内有效。
 
 只要块级作用域内存在 let 命令，它所声明的变量就“绑定”（binding）这个区域，不再受外部的影响。
 
-```javascript
+```js
 var tmp = 123;
 
 if (true) {
@@ -33,7 +33,7 @@ ES6 明确规定，如果区块中存在 let 和 const 命令，这个区块对�
 
 “暂时性死区”也意味着 typeof 不再是一个百分之百安全的操作。
 
-```javascript
+```js
 typeof x; // ReferenceError
 let x;
 ```
@@ -48,7 +48,7 @@ type of undeclared_variable // "undefined"
 
 有些“死区”比较隐蔽，不太容易发现。
 
-```javascript
+```js
 function bar(x = y, y = 2) {
   return [x, y];
 }
@@ -62,7 +62,7 @@ let 不允许在相同作用域内，重复声明同一个变量。
 
 因此，不能在函数内部重新声明参数。
 
-```javascript
+```js
 function func(arg) {
   let arg; // 报错
 }
@@ -80,7 +80,7 @@ let 实际上为 JavaScript 新增了块级作用域。
 
 ES6 引入了块级作用域，明确允许在块级作用域之中声明函数。ES6 规定，块级作用域之中，函数声明语句的行为类似于 let，在块级作用域之外不可引用。
 
-```javascript
+```js
 function f() {
   console.log("I am outside!");
 }
@@ -99,7 +99,7 @@ function f() {
 
 上面代码在 ES5 中运行，会得到“I am inside!”，因为在 if 内声明的函数 f 会被提升到函数头部，实际运行的代码如下。
 
-```javascript
+```js
 // ES5 环境
 function f() {
   console.log("I am outside!");
@@ -127,7 +127,7 @@ ES6 就完全不一样了，理论上会得到“I am outside!”。因为块级
 
 考虑到环境导致的行为差异太大，应该避免在块级作用域内声明函数。如果确实需要，也应该写成函数表达式，而不是函数声明语句。
 
-```javascript
+```js
 // 函数声明语句
 {
   let a = "secret";
@@ -147,7 +147,7 @@ ES6 就完全不一样了，理论上会得到“I am outside!”。因为块级
 
 另外，还有一个需要注意的地方。ES6 的块级作用域允许声明函数的规则，只在使用大括号的情况下成立，如果没有使用大括号，就会报错。
 
-```javascript
+```js
 // 不报错
 "use strict";
 if (true) {
@@ -163,7 +163,7 @@ if (true) function f() {}
 
 const 声明一个只读的常量。一旦声明，常量的值就不能改变。改变常量的值会报错。
 
-```javascript
+```js
 const PI = 3.1415;
 PI; // 3.1415
 
@@ -173,7 +173,7 @@ PI = 3;
 
 const 声明的变量不得改变值，这意味着，const 一旦声明变量，就必须立即初始化，不能留到以后赋值。
 
-```javascript
+```js
 const foo;
 // SyntaxError: Missing initializer in const declaration
 ```
@@ -182,7 +182,7 @@ const foo;
 
 const 实际上保证的，并不是变量的值不得改动，而是变量指向的那个内存地址不得改动。对于简单类型的数据（数值、字符串、布尔值），值就保存在变量指向的那个内存地址，因此等同于常量。但对于复合类型的数据（主要是对象和数组），变量指向的内存地址，保存的只是一个指针，const 只能保证这个指针是固定的，至于它指向的数据结构是不是可变的，就完全不能控制了。因此，将一个对象声明为常量必须非常小心。
 
-```javascript
+```js
 const foo = {};
 
 // 为 foo 添加一个属性，可以成功
@@ -197,7 +197,7 @@ foo = {}; // TypeError: "foo" is read-only
 
 如果真的想将对象冻结，应该使用 `Object.freeze` 方法。
 
-```javascript
+```js
 const foo = Object.freeze({});
 
 // 常规模式时，下面一行不起作用；
@@ -207,8 +207,13 @@ foo.prop = 123;
 
 除了将对象本身冻结，对象的属性也应该冻结。下面是一个将对象彻底冻结的函数。
 
+<<<<<<< HEAD
 ```javascript
 const constantize = (obj) => {
+=======
+```js
+var constantize = obj => {
+>>>>>>> 218b474286dcff87a506a4152e111de9b1387dd2
   Object.freeze(obj);
   Object.keys(obj).forEach((key, i) => {
     if (typeof obj[key] === "object") {
@@ -226,7 +231,7 @@ const constantize = (obj) => {
 
 ES6 为了改变这一点，一方面规定，为了保持兼容性，var 命令和 function 命令声明的全局变量，依旧是顶层对象的属性；另一方面规定，let 命令、const 命令、class 命令声明的全局变量，不属于顶层对象的属性。也就是说，从 ES6 开始，全局变量将逐步与顶层对象的属性脱钩。
 
-```javascript
+```js
 var a = 1;
 // 如果在 Node 的 REPL 环境，可以写成 global.a
 // 或者采用通用方法，写成 this.a
@@ -254,7 +259,7 @@ ES5 的顶层对象，本身也是一个问题，因为它在各种实现里面�
 
 综上所述，很难找到一种方法，可以在所有情况下，都取到顶层对象。下面是两种勉强可以使用的方法。
 
-```javascript
+```js
 // 方法一
 typeof window !== "undefined"
   ? window
@@ -295,7 +300,7 @@ Iterator的遍历过程是创建一个指针对象，然后每次调用对象的
 - 拓展运算符
 - yield*
 
-```javascript
+```js
 var myObject = {
   a: 2,
   b: 3,
