@@ -149,15 +149,14 @@ ES6 就完全不一样了，理论上会得到“I am outside!”。因为块级
 
 ```javascript
 // 不报错
-'use strict';
+"use strict";
 if (true) {
   function f() {}
 }
 
 // 报错
-'use strict';
-if (true)
-  function f() {}
+("use strict");
+if (true) function f() {}
 ```
 
 ## const
@@ -209,7 +208,7 @@ foo.prop = 123;
 除了将对象本身冻结，对象的属性也应该冻结。下面是一个将对象彻底冻结的函数。
 
 ```javascript
-var constantize = obj => {
+const constantize = (obj) => {
   Object.freeze(obj);
   Object.keys(obj).forEach((key, i) => {
     if (typeof obj[key] === "object") {
@@ -282,13 +281,24 @@ var getGlobal = function() {
 
 ## Symbol
 
+### Symbol.iterator
+
 Symbol.iterator 属性指向默认遍历器方法，for…of 循环会调用这个方法
-Symbol.species 属性指向一个方法，对象作为构造函数创造实例时会调用
+
+- js原有的表示"集合"的数据结构，主要是数组和对象。ES6添加了Map和Set。这样就有了四种数据结构可以用于描述集合，但是需要一种接口体制来处理所有不同的数据结构
+- 遍历器Iterator就是一种机制，是一种接口，可以为不同的数据结构提供统一的访问机制任何数据结构只要部署了Iterator接口，就可以完成遍历操作(依次处理该数据结构的所有成员)
+
+Iterator的遍历过程是创建一个指针对象，然后每次调用对象的next方法，返回当前成员的值
+
+应用场合：
+- 解构赋值
+- 拓展运算符
+- yield*
 
 ```javascript
 var myObject = {
   a: 2,
-  b: 3
+  b: 3,
 };
 
 Object.defineProperty(myObject, Symbol.iterator, {
@@ -303,11 +313,11 @@ Object.defineProperty(myObject, Symbol.iterator, {
       next: function() {
         return {
           value: o[ks[idx++]],
-          done: idx > ks.length
+          done: idx > ks.length,
         };
-      }
+      },
     };
-  }
+  },
 });
 
 // 手动迭代 `myObject`
@@ -323,3 +333,7 @@ for (var v of myObject) {
 // 2
 // 3
 ```
+
+### Symbol.species
+
+Symbol.species 属性指向一个方法，对象作为构造函数创造实例时会调用
