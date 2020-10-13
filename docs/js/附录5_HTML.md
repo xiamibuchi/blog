@@ -1005,3 +1005,11 @@ filereader
 classList
 
 websocket
+
+## link
+
+### preload
+
+preload 是一项新的 web 标准，旨在提高性能，让 FE 对加载的控制更加粒度化。它让开发者有自定义加载逻辑的能力，免受基于脚本的加载器所带来的性能损耗。
+
+、prefetch、subresource

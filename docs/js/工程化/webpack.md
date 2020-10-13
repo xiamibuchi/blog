@@ -105,8 +105,8 @@ module.exports = {
   // 输出文件
   output: {
     path: path.join(__dirname, "dist"), // 输出文件的路径
-    filename: "bundle.js" // 输出文件的名称
-  }
+    filename: "bundle.js", // 输出文件的名称
+  },
 };
 ```
 
@@ -190,8 +190,8 @@ plugins: [
     // 模板页面路径
     template: path.join(__dirname, "./index.html"),
     // 在内存中生成页面路径，默认值为：index.html
-    filename: "index.html"
-  })
+    filename: "index.html",
+  }),
 ];
 ```
 
@@ -231,7 +231,7 @@ module: {
   rules: [
     // test 用来配置匹配文件规则（正则）
     // use  是一个数组，按照从后往前的顺序执行加载
-    { test: /\.css$/, use: ["style-loader", "css-loader"] }
+    { test: /\.css$/, use: ["style-loader", "css-loader"] },
   ];
 }
 ```
@@ -253,8 +253,8 @@ module: {
   rules: [
     {
       test: /\.(scss|sass)$/,
-      use: ["style-loader", "css-loader", "sass-loader"]
-    }
+      use: ["style-loader", "css-loader", "sass-loader"],
+    },
   ];
 }
 ```
@@ -274,7 +274,7 @@ module: {
     { test: /\.(jpg|png|gif|jpeg)$/, use: "url-loader" },
 
     // 打包 字体文件
-    { test: /\.(woff|woff2|eot|ttf|otf)$/, use: "file-loader" }
+    { test: /\.(woff|woff2|eot|ttf|otf)$/, use: "file-loader" },
   ];
 }
 ```
@@ -299,11 +299,11 @@ module: {
         {
           loader: "url-loader",
           options: {
-            limit: 8192
-          }
-        }
-      ]
-    }
+            limit: 8192,
+          },
+        },
+      ],
+    },
   ];
 }
 ```
@@ -335,7 +335,7 @@ Babel 是一个编译 JavaScript 的平台，它可以编译代码帮你达到�
 module: {
   rules: [
     // exclude 排除，不需要编译的目录，提高编译速度
-    { test: /\.js$/, use: "babel-loader", exclude: /node_modules/ }
+    { test: /\.js$/, use: "babel-loader", exclude: /node_modules/ },
   ];
 }
 ```
@@ -414,7 +414,7 @@ console.log(s);
 
 // 2 webpack.config.js 配置
 module.exports = {
-  entry: ["babel-polyfill", "./js/main.js"]
+  entry: ["babel-polyfill", "./js/main.js"],
 };
 ```
 
@@ -464,8 +464,8 @@ module: {
   rules: [
     {
       test: /\.vue$/,
-      loader: "vue-loader"
-    }
+      loader: "vue-loader",
+    },
   ];
 }
 ```
@@ -482,7 +482,7 @@ import App from "./App.vue";
 const vm = new Vue({
   el: "#app",
   // 通过 render 方法，渲染App组件
-  render: c => c(App)
+  render: (c) => c(App),
 });
 ```
 
@@ -515,17 +515,17 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   routes: [
     { path: "/home", component: Home },
-    { path: "/login", component: Login }
-  ]
+    { path: "/login", component: Login },
+  ],
 });
 
 // ------------- vue路由配置 结束 --------------
 
 const vm = new Vue({
   el: "#app",
-  render: c => c(App),
+  render: (c) => c(App),
   // 4 挂载到 vue 实例中
-  router
+  router,
 });
 ```
 
@@ -539,4 +539,34 @@ rm -rf node_modules/
 npm cache clean --force
 npm cache verify
 npm install
+```
+
+## splitChunk
+
+```js
+optimization: {
+  splitChunks: {
+     chunks: "async", // 必须三选一： "initial" | "all"(推荐) | "async" (默认就是async)
+     minSize: 30000, // 最小尺寸，30000
+     minChunks: 1, // 最小 chunk ，默认1
+     maxAsyncRequests: 5, // 最大异步请求数， 默认5
+     maxInitialRequests : 3, // 最大初始化请求书，默认3
+     automaticNameDelimiter: '~',// 打包分隔符
+     name: function(){}, // 打包后的名称，此选项可接收 function
+     cacheGroups:{ // 这里开始设置缓存的 chunks
+         priority: 0, // 缓存组优先级
+         vendor: { // key 为entry中定义的 入口名称
+             chunks: "initial", // 必须三选一： "initial" | "all" | "async"(默认就是async)
+             test: /react|lodash/, // 正则规则验证，如果符合就提取 chunk
+             name: "vendor", // 要缓存的 分隔出来的 chunk 名称
+             minSize: 30000,
+             minChunks: 1,
+             enforce: true,
+             maxAsyncRequests: 5, // 最大异步请求数， 默认1
+             maxInitialRequests : 3, // 最大初始化请求书，默认1
+             reuseExistingChunk: true // 可设置是否重用该chunk
+         }
+     }
+  }
+}
 ```
