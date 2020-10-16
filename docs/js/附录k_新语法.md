@@ -207,13 +207,8 @@ foo.prop = 123;
 
 除了将对象本身冻结，对象的属性也应该冻结。下面是一个将对象彻底冻结的函数。
 
-<<<<<<< HEAD
 ```javascript
 const constantize = (obj) => {
-=======
-```js
-var constantize = obj => {
->>>>>>> 218b474286dcff87a506a4152e111de9b1387dd2
   Object.freeze(obj);
   Object.keys(obj).forEach((key, i) => {
     if (typeof obj[key] === "object") {
