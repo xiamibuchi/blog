@@ -1,0 +1,5 @@
+# NODE 基础镜像
+FROM node:12.19.0-stretch AS base
+WORKDIR /app
+COPY package.json .
+RUN yarn
