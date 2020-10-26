@@ -40,11 +40,9 @@ let x;
 
 作为比较，如果一个变量根本没有被声明，使用 typeof 反而不会报错。
 
-```javascipt
+```js
 type of undeclared_variable // "undefined"
 ```
-
-作为比较，如果一个变量根本没有被声明，使用 typeof 反而不会报错。
 
 有些“死区”比较隐蔽，不太容易发现。
 
