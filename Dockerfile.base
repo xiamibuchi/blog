@@ -2,4 +2,6 @@
 FROM node:12.19.0-stretch AS base
 WORKDIR /app
 COPY package.json .
+COPY yarn.lock .
+COPY .npmrc .
 RUN yarn
