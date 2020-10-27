@@ -52,6 +52,7 @@ module.exports = {
     nav: [
       { text: "js", link: js[0] },
       { text: "css", link: css[0] },
+      { text: "部署", link: "/linux/附录4_自动化部署" },
       {
         text: "about me",
         link: "https://xiamibuchi.github.io/blog/",
@@ -64,7 +65,7 @@ module.exports = {
     footer: true,
     valineConfig: {
       showComment: false,
-      appId: ""
+      appId: "",
     },
   },
   evergreen: true,
