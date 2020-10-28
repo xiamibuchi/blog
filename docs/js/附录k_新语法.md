@@ -283,18 +283,19 @@ var getGlobal = function() {
 
 Symbol.iterator 属性指向默认遍历器方法，for…of 循环会调用这个方法
 
-- js原有的表示"集合"的数据结构，主要是数组和对象。ES6添加了Map和Set。这样就有了四种数据结构可以用于描述集合，但是需要一种接口体制来处理所有不同的数据结构
-- 遍历器Iterator就是一种机制，是一种接口，可以为不同的数据结构提供统一的访问机制任何数据结构只要部署了Iterator接口，就可以完成遍历操作(依次处理该数据结构的所有成员)
+- js 原有的表示"集合"的数据结构，主要是数组和对象。ES6 添加了 Map 和 Set。这样就有了四种数据结构可以用于描述集合，但是需要一种接口体制来处理所有不同的数据结构
+- 遍历器 Iterator 就是一种机制，是一种接口，可以为不同的数据结构提供统一的访问机制任何数据结构只要部署了 Iterator 接口，就可以完成遍历操作(依次处理该数据结构的所有成员)
 
-Iterator的遍历过程是创建一个指针对象，然后每次调用对象的next方法，返回当前成员的值
+Iterator 的遍历过程是创建一个指针对象，然后每次调用对象的 next 方法，返回当前成员的值
 
 应用场合：
+
 - 解构赋值
 - 拓展运算符
-- yield*
+- yield\*
 
 ```js
-var myObject = {
+const myObject = {
   a: 2,
   b: 3,
 };
@@ -304,14 +305,15 @@ Object.defineProperty(myObject, Symbol.iterator, {
   writable: false,
   configurable: true,
   value: function() {
-    var o = this;
-    var idx = 0;
-    var ks = Object.keys(o);
+    const that = this;
+    let index = -1;
+    let keys = Object.keys(that);
     return {
-      next: function() {
+      next() {
+        index++;
         return {
-          value: o[ks[idx++]],
-          done: idx > ks.length,
+          value: that[keys[index]],
+          done: index >= keys.length,
         };
       },
     };
@@ -319,14 +321,14 @@ Object.defineProperty(myObject, Symbol.iterator, {
 });
 
 // 手动迭代 `myObject`
-var it = myObject[Symbol.iterator]();
+const it = myObject[Symbol.iterator]();
 it.next(); // { value:2, done:false }
 it.next(); // { value:3, done:false }
 it.next(); // { value:undefined, done:true }
 
 // 用 `for..of` 迭代 `myObject`
-for (var v of myObject) {
-  console.log(v);
+for (const ele of myObject) {
+  console.log(ele);
 }
 // 2
 // 3
@@ -335,3 +337,24 @@ for (var v of myObject) {
 ### Symbol.species
 
 Symbol.species 属性指向一个方法，对象作为构造函数创造实例时会调用
+
+### Symbol.toStringTag
+
+对象的 Symbol.toStringTag 属性，指向一个方法。在该对象上面调用 Object.prototype.toString 方法时，如果这个属性存在，它的返回值会出现在 toString 方法返回的字符串之中，表示对象的类型
+
+```js
+({ [Symbol.toStringTag]: "Foo" }.toString());
+class Collection {
+  get [Symbol.toStringTag]() {
+    return "test";
+  }
+}
+let x = new Collection();
+Object.prototype.toString.call(x); // "[object test]"
+
+const myObject = {};
+Object.defineProperty(myObject, Symbol.toStringTag, {
+  value: "test",
+});
+Object.prototype.toString.call(myObject); // "[object test]"
+```
