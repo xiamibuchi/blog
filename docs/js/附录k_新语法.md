@@ -336,7 +336,7 @@ for (const ele of myObject) {
 
 ### Symbol.species
 
-Symbol.species 属性指向一个方法，对象作为构造函数创造实例时会调用
+Symbol.species 属性指向一个方法，对象作为构造函数创造实例时会调用。
 
 ### Symbol.toStringTag
 
