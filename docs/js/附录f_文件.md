@@ -29,37 +29,32 @@ form 表单提交会导致页面刷新，不希望页面被刷新，可以用 aj
 
 参见：<https://developer.mozilla.org/zh-CN/docs/Web/API/FormData>
 
-```js
+```html
 <form>
-  <input type="file" name="pic" id="pic"/>
+  <input type="file" name="pic" id="pic" />
   <input type="button" onClick="upload()" value="上传" />
 </form>
 
 <script>
-function upload(){
-  let url="upload";
-  // 获取文件
-  let pic = document.getElementById('pic').files[0];
-// 初始化一个 XMLHttpRequest 对象
-  var xhr = new XMLHttpRequest();
-  // 初始化一个 FormData 对象
-  var form = new FormData();
-
-  // 携带文件
-  form.append("pic", pic);
-  //开始上传
-  xhr.open("POST", url, true);
-  //在readystatechange事件上绑定一个事件处理函数
-  xhr.onreadystatechange=callback;
-  xhr.send(form);
-
-  function callback() {
-    // do something
-  }
+  function upload(){
+    let url="upload";
+    // 获取文件
+    let pic = document.getElementById('pic').files[0];
+  // 初始化一个 XMLHttpRequest 对象
+    const xhr = new XMLHttpRequest();
+    // 初始化一个 FormData 对象
+    const form = new FormData();
+    // 携带文件
+    form.append("pic", pic);
+    //开始上传
+    xhr.open("POST", url, true);
+    //在readystatechange事件上绑定一个事件处理函数
+    xhr.onreadystatechange=() => {
+      // do something
+    };
+    xhr.send(form);
 </script>
 ```
-
-参见:<https://developer.mozilla.org/zh-CN/docs/Web/Guide/Using_FormData_Objects>
 
 ### File API
 
@@ -71,9 +66,9 @@ File 对象可以用来获取某个文件，还可以读取这个文件的内容
 
 - 以 STOP 字符 (U+002E) 开始的文件扩展名。（例如：".jpg,.png,.doc"）
 - 一个有效的 MIME 类型，但没有扩展名
-- audio/\* 表示音频文件 HTML5
-- video/\* 表示视频文件 HTML5
-- image/\* 表示图片文件
+- `audio/*` 表示音频文件 HTML5
+- `video/*` 表示视频文件 HTML5
+- `image/*` 表示图片文件
 
 设置 multiple 属性可以进行设置为多选。
 
@@ -93,12 +88,11 @@ multiple 属性和 capture 属性不能同时生效。
 通过 File API,我们可以在用户选取一个或者多个文件之后,访问到代表了所选文件的一个或多个 File 对象，这些对象被包含在一个 FileList 对象中。所有 type 属性(attribute)为 file 的`<input>`元素都有一个 files 属性，用来存储用户所选择的文件。files 有一个 length 属性和 item 方法，我们可以通过 files[index]或者 files.item(index)获取我们选择的 file 对象。可以通过 change 事件监听 input file 输入完成事件：
 
 ```js
-var fileInput = document.getElementById("fileInput");
+const fileInput = document.getElementById("fileInput");
 fileInput.addEventListener(
   "change",
   function(event) {
-    var file = fileInput.files[0];
-    // 或file = fileInput.files.item(0);
+    const file = fileInput.files[0];
     console.log(file);
   },
   false
@@ -106,8 +100,6 @@ fileInput.addEventListener(
 ```
 
 File API 提供 File 对象，它是 FileList 对象的成员，包含了文件的一些元信息，比如文件名、上次改动时间、文件大小和文件类型。下图可以 File 对象的属性：
-
-![clipboard.png](https://segmentfault.com/img/bVBRlF?w=765&h=146)
 
 - lastModifiedDate：文件对象最后修改的日期
 - name：文件名,只读字符串,不包含任何路径信息.
@@ -139,7 +131,7 @@ function readFileSize(file) {
 
 ## FileReader API
 
-> 使用 FileReader 对象,web 应用程序可以异步的读取存储在用户计算机上的文件(或者原始数据缓冲)内容,可以使用 File 对象或者 Blob 对象来指定所要处理的文件或数据.其中 File 对象可以是来自用户在一个<input>元素上选择文件后返回的 FileList 对象,也可以来自拖放操作生成的 DataTransfer 对象,还可以是来自在一个 HTMLCanvasElement 上执行 mozGetAsFile()方法后的返回结果。
+> FileReader 可以异步的读取存储在用户计算机上的文件(或者原始数据缓冲)内容，可以使用 File 对象或者 Blob 对象来指定所要处理的文件或数据。其中 File 对象可以是来自用户在一个<input>元素上选择文件后返回的 FileList 对象,也可以来自拖放操作生成的 DataTransfer 对象,还可以是来自在一个 HTMLCanvasElement 上执行 mozGetAsFile()方法后的返回结果。
 
 ### DataURI 对象
 
@@ -155,28 +147,31 @@ URL 是 uniform resource locator 的缩写，在 web 中的每一个可访问资
 
 我们可以通过 FileReader 的 readAsDataURL 方法获得：
 
-```
-var reader = new FileReader();
+```js
+const reader = new FileReader();
 reader.onload = function() {
-    console.log(this.result);
-}
+  console.log(this.result);
+};
 reader.readAsDataURL(file);
 ```
 
 有时候我们需要将 DataURI 对象转 blob 对象：
 
-```
+```js
 /**
  * dataURI 转 blob
  * @param {Object} dataURI
  */
 function dataURItoBlob(dataURI) {
-    var arr = dataURI.split(','), mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new Blob([u8arr], {type:mime});
+  const arr = dataURI.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
 }
 ```
 
@@ -188,24 +183,24 @@ function dataURItoBlob(dataURI) {
 
 静态方法会创建一个 DOMString，它的 URL 表示参数中的对象。这个 URL 的生命周期和创建它的窗口中的 document 绑定。这个新的 URL 对象表示着指定的 File 对象或者 Blob 对象。
 
-```
-var objecturl =  window.URL.createObjectURL(file);
+```js
+const objecturl =  window.URL.createObjectURL(file);
 ```
 
 > window.URL.revokeObjectURL
 
 静态方法用来释放一个之前通过调用 window.URL.createObjectURL() 创建的已经存在的 URL 对象。当你结束使用某个 URL 对象时，应该通过调用这个方法来让浏览器知道不再需要保持这个文件的引用了。
 
-```
+```js
 window.URL.revokeObjectURL(objecturl)
 ```
 
 例如：使用对象 URL 来显示图片：
 
-```
+```js
 window.URL = window.URL || window.webkitURL;
 
-var img = document.createElement("img");
+const img = document.createElement("img");
 img.src = window.URL.createObjectURL(blob);
 img.height = 60;
 img.onload = function(e) {
@@ -270,35 +265,39 @@ fileInput.addEventListener("change", function(event) {
 });
 ```
 
-## blob 二进制大对象
+## Blob
 
-BLOB (binary large object)，二进制大对象，是一个可以存储二进制文件的容器。
+Blob (binary large object)，对象表示一个不可变、原始数据的类文件对象。
 
-> 创建 Blob 对象的方法有几种，可以调用 Blob 构造函数，还可以使用一个已有 Blob 对象上的 slice()方法切出另一个 Blob 对象，还可以调用 canvas 对象上的 toBlob 方法。
+### 创建 Blob 对象
 
-第一次见到这个词是半年之前，那个时候居然没有听过 blob，然后上网查了一下，巴拉巴拉一大堆，当时是不理解的。
-
-看了前面的一系列 API 和对象，或许很多同学开始晕了，但是在一开始说到的 blob 对象，我们一直没有提到，如果本文不提及，显然是不合理的。毕竟作为 File 对象的爸爸，blob 劳苦功高。上述的 FileReader 对象也可以操作 blob 对象。
+- Blob支持结构化克隆算法（structured clone algorithm），所以可以通过消息事件从另外一个窗口或线程中获取blob对象
+- 调用 Blob 构造函数。`new Blob(blobParts[, options]);`
+- 使用一个已有 Blob 对象上的 slice()方法切出另一个 Blob 对象
+- 调用 canvas 对象上的 toBlob 方法
+- 通过http从网络上下载blob
 
 Blob 对象有两个只读属性：
 
 - size：二进制数据的大小，单位为字节。
 - type：二进制数据的 MIME 类型，全部为小写，如果类型未知，则该值为空字符串。
-  在 Ajax 操作中，如果 xhr.responseType 设为 blob，接收的就是二进制数据。
+
+在 Ajax 操作中，如果 xhr.responseType 设为 blob，接收的就是二进制数据。
 
 ```js
 /**
  * 计算文件大小
  * @param {Object} file
  */
-function readFileSize(file){
+function readFileSize(file) {
   var size = file.size / 1024;
   var aMultiples = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-  var fileSizeString = '';
-  for(var i = 0; size > 1; size /= 1024, i++) {
+  var fileSizeString = "";
+  for (var i = 0; size > 1; size /= 1024, i++) {
     fileSizeString = size.toFixed(2) + " " + aMultiples[i];
   }
-  return fileSizeString;}
+  return fileSizeString;
+}
 ```
 
 ### Blob 构造函数生成 blob 对象
@@ -384,35 +383,35 @@ document.querySelector('input[type="file"]').addEventListener('change', function
 
 对于图片文件和文本文件这种可以被浏览器打开的文件不会被下载
 
-### DataUrl和BlobUrl
+### DataUrl 和 BlobUrl
 
 ```js
-DataUrl
- // ./util.js
- // 图片转base64
- function image2base64(img) {  
-  const canvas = document.createElement("canvas");  
-  canvas.width = img.width;  
-  canvas.height = img.height;  
-  const ctx = canvas.getContext("2d");  
-  ctx.drawImage(img, 0, 0, img.width, img.height);  
-  const mime = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();  
-  const dataUrl = canvas.toDataURL("image/" + mime);  
+DataUrl;
+// ./util.js
+// 图片转base64
+function image2base64(img) {
+  const canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, img.width, img.height);
+  const mime = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
+  const dataUrl = canvas.toDataURL("image/" + mime);
   return dataUrl;
 }
 
 const image = new Image();
-image.setAttribute("crossOrigin",'Anonymous');
-image.src = '../files/test-download.png' + '?' + new Date().getTime();
-image.onload = function() {  
-  const imageDataUrl = image2base64(image);  
-  const downloadDataUrlDom = document.getElementById('downloadDataUrl');
-  downloadDataUrlDom.setAttribute('href', imageDataUrl);
-  downloadDataUrlDom.setAttribute('download', 'download-data-url.png');
-  downloadDataUrlDom.addEventListener('click', () => {
-    console.log('下载文件');
+image.setAttribute("crossOrigin", "Anonymous");
+image.src = "../files/test-download.png" + "?" + new Date().getTime();
+image.onload = function() {
+  const imageDataUrl = image2base64(image);
+  const downloadDataUrlDom = document.getElementById("downloadDataUrl");
+  downloadDataUrlDom.setAttribute("href", imageDataUrl);
+  downloadDataUrlDom.setAttribute("download", "download-data-url.png");
+  downloadDataUrlDom.addEventListener("click", () => {
+    console.log("下载文件");
   });
-}
+};
 ```
 
 ## excel
