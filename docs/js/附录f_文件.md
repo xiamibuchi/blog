@@ -1,5 +1,277 @@
 # 文件
 
+## Blob
+
+Blob (binary large object)，对象表示一个不可变、原始数据的类文件对象。
+
+### 创建 Blob 对象
+
+- Blob 支持结构化克隆算法（structured clone algorithm），所以可以通过消息事件从另外一个窗口或线程中获取 blob 对象
+- 调用 Blob 构造函数。`new Blob(blobParts[, options]);`
+- 使用一个已有 Blob 对象上的 slice()方法切出另一个 Blob 对象
+- 调用 canvas 对象上的 toBlob 方法
+- 通过 http 从网络上下载 blob
+
+Blob 对象有两个只读属性：
+
+- size：二进制数据的大小，单位为字节。
+- type：二进制数据的 MIME 类型，全部为小写，如果类型未知，则该值为空字符串。
+
+在 Ajax 操作中，如果 xhr.responseType 设为 blob，接收的就是二进制数据。
+
+```js
+/**
+ * 计算文件大小
+ * @param {Object} file
+ */
+function readFileSize(file) {
+  var size = file.size / 1024;
+  var aMultiples = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  var fileSizeString = "";
+  for (var i = 0; size > 1; size /= 1024, i++) {
+    fileSizeString = size.toFixed(2) + " " + aMultiples[i];
+  }
+  return fileSizeString;
+}
+```
+
+### Blob 构造函数生成 blob 对象
+
+Blob 构造函数，接受两个参数。第一个参数是一个包含实际数据的数组，第二个参数是数据的类型，这两个参数都不是必需的。数组元素可以是任意多个的 ArrayBuffer，ArrayBufferView
+(typed array)， Blob，或者 DOMString 对象。
+例如：
+
+```js
+var arr = ["<h1>hello world</h1>"];
+var blob = new Blob(arr, { type: "text/xml" }); // the blob
+console.log(blob);
+```
+
+效果如下：
+
+### 用 JS 在浏览器中下载文件
+
+```html
+<a id="h">点此进行下载</a>
+<!-- js部分 -->
+<script>
+  var blob = new Blob(["Hello World"]);
+  var url = window.URL.createObjectURL(blob);
+  var a = document.getElementById("h");
+  a.download = "helloworld.txt";
+  a.href = url;
+</script>
+```
+
+### Blob 对象的 slice 方法生成 blob 对象
+
+Blob 对象的 slice 方法，将二进制数据按照字节分块，返回一个新的 Blob 对象。
+
+```js
+var newBlob = oldBlob.slice(startingByte, endindByte);
+```
+
+下面是一个使用 XMLHttpRequest 对象，将大文件分割上传的例子。
+
+```js
+function upload(blobOrFile) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/server', true);
+  xhr.onload = function(e) { ... };
+  xhr.send(blobOrFile);
+}
+
+document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+  var blob = this.files[0];
+
+  const BYTES_PER_CHUNK = 1024 * 1024; // 1MB chunk sizes.
+  const SIZE = blob.size;
+
+  var start = 0;
+  var end = BYTES_PER_CHUNK;
+
+  while(start < SIZE) {
+    upload(blob.slice(start, end));
+
+    start = end;
+    end = start + BYTES_PER_CHUNK;
+  }
+}, false);
+```
+
+## FileReader API
+
+对象允许Web应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，使用 File 或 Blob 对象指定要读取的文件或数据。
+
+> FileReader仅用于以安全的方式从用户（远程）系统读取文件内容 它不能用于从文件系统中按路径名简单地读取文件。 要在JavaScript中按路径名读取文件，应使用标准Ajax解决方案进行服务器端文件读取，如果读取跨域，则使用CORS权限。
+
+### DataURI 对象
+
+"data:image/png;base64,xxxxxxxxxxxxx"这种形式的字符串叫做 DataURI 对象，允许将一个小文件进行编码后嵌入到另外一个文档里，格式为：
+
+`data:[<MIME type>][;charset=<charset>][;base64],<encoded data>`
+
+整体可以视为三部分，即声明：参数+数据，逗号左边的是各种参数，右边的是数据。
+
+URL 是 uniform resource locator 的缩写，在 web 中的每一个可访问资源都有一个 URL 地址，例如图片，HTML 文件，js 文件以及 style sheet 文件，我们可以通过这个地址去 download 这个资源。其实 URL 是 URI 的子集，URI 是 uniform resource identifier 的缩写。URI 是用于获取资源，包括其附加的信息的一种协议。附加信息可能是地址，也可能不是地址，如果是地址，那么这时 URI 就变成 URL 了。注意的是 data URI 不是 URL，因为它并不包含资源的公共地址。
+
+我们可以通过 FileReader 的 readAsDataURL 方法获得：
+
+```js
+const reader = new FileReader();
+reader.onload = function() {
+  console.log(this.result);
+};
+reader.readAsDataURL(file);
+```
+
+有时候我们需要将 DataURI 对象转 blob 对象：
+
+```js
+/**
+ * dataURI 转 blob
+ * @param {Object} dataURI
+ */
+function dataURItoBlob(dataURI) {
+  const arr = dataURI.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+}
+```
+
+### URL 对象
+
+我们除了可以使用 base64 字符串作为内容的 DataURI 将一个文件嵌入到另外一个文档里，还可以使用 URL 对象。URL 对象用于生成指向 File 对象或 Blob 对象的 URL。
+
+> window.URL.createObjectURL
+
+静态方法会创建一个 DOMString，它的 URL 表示参数中的对象。这个 URL 的生命周期和创建它的窗口中的 document 绑定。这个新的 URL 对象表示着指定的 File 对象或者 Blob 对象。
+
+```js
+const objecturl = window.URL.createObjectURL(file);
+```
+
+> window.URL.revokeObjectURL
+
+静态方法用来释放一个之前通过调用 window.URL.createObjectURL() 创建的已经存在的 URL 对象。当你结束使用某个 URL 对象时，应该通过调用这个方法来让浏览器知道不再需要保持这个文件的引用了。
+
+```js
+window.URL.revokeObjectURL(objecturl);
+```
+
+例如：使用对象 URL 来显示图片：
+
+```js
+window.URL = window.URL || window.webkitURL;
+
+const img = document.createElement("img");
+img.src = window.URL.createObjectURL(blob);
+img.height = 60;
+img.onload = function(e) {
+  window.URL.revokeObjectURL(this.src);
+};
+document.body.appendChild(img);
+```
+
+### FileReader API 详解
+
+#### 状态常量
+
+- **EMPTY**：值为 0，还没有加载任何数据;
+- **LOADING**：值为 1，数据正在被加载;
+- **DONE**：值为 2，已完成全部的读取请求。
+
+#### 属性
+
+- **error**：在读取文件时发生的错误， 只读;
+- **readyState**：表明 FileReader 对象的当前状态，值为 State constants 中的一个，只读；
+- **result**：取到的文件内容，这个属性只在读取操作完成之后才有效,并且数据的格式取决于读取操作是由哪个方法发起的，只读。
+
+#### 方法
+
+- **abort()**：中止该读取操作.在返回时,readyState 属性的值为 DONE.
+- **readAsArrayBuffer()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个 ArrayBuffer 对象以表示所读取文件的内容.
+- **readAsBinaryString()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含所读取文件的原始二进制数据.
+- **readAsDataURL()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个 data: URL 格式的字符串以表示所读取文件的内容.
+- **readAsText()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个字符串以表示所读取的文件内容.
+
+#### 事件处理
+
+- **onabort**：当读取操作被中止时调用.
+- **onerror**：当读取操作发生错误时调用.
+- **onload**：当读取操作成功完成时调用.
+- **onloadend**：当读取操作完成时调用,不管是成功还是失败.该处理程序在 onload 或者 onerror 之后调用.
+- **onloadstart**：当读取操作将要开始之前调用.
+- **onprogress**：在读取数据过程中周期性调用.
+
+**上传实例**：以二进制流上传文件
+
+```js
+var fileInput = document.getElementById("fileInput");
+fileInput.addEventListener("change", function(event) {
+  var file = fileInput.files[0];
+  if (file) {
+    var reader = new FileReader();
+    var xhr = new XMLHttpRequest();
+    xhr.onprogress = function(e) {
+      var percentage = Math.round((e.loaded * 100) / e.total);
+      console.log("percentage:" + percentage);
+    };
+    xhr.onload = function(e) {
+      console.log("percentage:100");
+    };
+    xhr.open("POST", "这里填写服务器地址");
+    reader.onload = function(evt) {
+      xhr.send(evt.target.result);
+    };
+    reader.readAsBinaryString(file);
+  }
+});
+```
+
+## 下载
+
+### a 标签下载
+
+对于图片文件和文本文件这种可以被浏览器打开的文件不会被下载
+
+### DataUrl 和 BlobUrl
+
+```js
+DataUrl;
+// ./util.js
+// 图片转base64
+function image2base64(img) {
+  const canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, img.width, img.height);
+  const mime = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
+  const dataUrl = canvas.toDataURL("image/" + mime);
+  return dataUrl;
+}
+
+const image = new Image();
+image.setAttribute("crossOrigin", "Anonymous");
+image.src = "../files/test-download.png" + "?" + new Date().getTime();
+image.onload = function() {
+  const imageDataUrl = image2base64(image);
+  const downloadDataUrlDom = document.getElementById("downloadDataUrl");
+  downloadDataUrlDom.setAttribute("href", imageDataUrl);
+  downloadDataUrlDom.setAttribute("download", "download-data-url.png");
+  downloadDataUrlDom.addEventListener("click", () => {
+    console.log("下载文件");
+  });
+};
+```
+
 ## 上传
 
 文件上传的几种方式：
@@ -128,291 +400,6 @@ function readFileSize(file) {
 有时候我们希望限制用户上传的文件大小，可以通过这个方法先做判断。同时我们可以通过 type 属性判断用户的文件类型，但是这种方法不可靠，因为用户可以通过改变后缀名实现。
 
 通过 input file 标签获得文件完整路径，由于浏览器安全机制，这个是不被允许的，但是有时候我们希望选择完图片预览一下图片，这个时候我们就可以用 FileReader API 实现。
-
-## FileReader API
-
-> FileReader 可以异步的读取存储在用户计算机上的文件(或者原始数据缓冲)内容，可以使用 File 对象或者 Blob 对象来指定所要处理的文件或数据。其中 File 对象可以是来自用户在一个<input>元素上选择文件后返回的 FileList 对象,也可以来自拖放操作生成的 DataTransfer 对象,还可以是来自在一个 HTMLCanvasElement 上执行 mozGetAsFile()方法后的返回结果。
-
-### DataURI 对象
-
-在上面通过拖放操作选择文件的例子中，我们使用了"data:image/png;base64,xxxxxxxxxxxxx"这种形式的字符串作为背景，而不是图片，选择的图片展示也是使用这种形式。这种字符串叫做 DataURI 对象，允许将一个小文件进行编码后嵌入到另外一个文档里，格式为：
-
-```
-data:[<MIME type>][;charset=<charset>][;base64],<encoded data>
-```
-
-整体可以视为三部分，即声明：参数+数据，逗号左边的是各种参数，右边的是数据。
-
-URL 是 uniform resource locator 的缩写，在 web 中的每一个可访问资源都有一个 URL 地址，例如图片，HTML 文件，js 文件以及 style sheet 文件，我们可以通过这个地址去 download 这个资源。其实 URL 是 URI 的子集，URI 是 uniform resource identifier 的缩写。URI 是用于获取资源，包括其附加的信息的一种协议。附加信息可能是地址，也可能不是地址，如果是地址，那么这时 URI 就变成 URL 了。注意的是 data URI 不是 URL，因为它并不包含资源的公共地址。
-
-我们可以通过 FileReader 的 readAsDataURL 方法获得：
-
-```js
-const reader = new FileReader();
-reader.onload = function() {
-  console.log(this.result);
-};
-reader.readAsDataURL(file);
-```
-
-有时候我们需要将 DataURI 对象转 blob 对象：
-
-```js
-/**
- * dataURI 转 blob
- * @param {Object} dataURI
- */
-function dataURItoBlob(dataURI) {
-  const arr = dataURI.split(","),
-    mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return new Blob([u8arr], { type: mime });
-}
-```
-
-### URL 对象
-
-我们除了可以使用 base64 字符串作为内容的 DataURI 将一个文件嵌入到另外一个文档里，还可以使用 URL 对象。URL 对象用于生成指向 File 对象或 Blob 对象的 URL。
-
-> window.URL.createObjectURL
-
-静态方法会创建一个 DOMString，它的 URL 表示参数中的对象。这个 URL 的生命周期和创建它的窗口中的 document 绑定。这个新的 URL 对象表示着指定的 File 对象或者 Blob 对象。
-
-```js
-const objecturl =  window.URL.createObjectURL(file);
-```
-
-> window.URL.revokeObjectURL
-
-静态方法用来释放一个之前通过调用 window.URL.createObjectURL() 创建的已经存在的 URL 对象。当你结束使用某个 URL 对象时，应该通过调用这个方法来让浏览器知道不再需要保持这个文件的引用了。
-
-```js
-window.URL.revokeObjectURL(objecturl)
-```
-
-例如：使用对象 URL 来显示图片：
-
-```js
-window.URL = window.URL || window.webkitURL;
-
-const img = document.createElement("img");
-img.src = window.URL.createObjectURL(blob);
-img.height = 60;
-img.onload = function(e) {
-  window.URL.revokeObjectURL(this.src);
-}
-document.body.appendChild(img);
-```
-
-### FileReader API 详解
-
-#### 状态常量
-
-- **EMPTY**：值为 0，还没有加载任何数据;
-- **LOADING**：值为 1，数据正在被加载;
-- **DONE**：值为 2，已完成全部的读取请求。
-
-#### 属性
-
-- **error**：在读取文件时发生的错误， 只读;
-- **readyState**：表明 FileReader 对象的当前状态，值为 State constants 中的一个，只读；
-- **result**：取到的文件内容，这个属性只在读取操作完成之后才有效,并且数据的格式取决于读取操作是由哪个方法发起的，只读。
-
-#### 方法
-
-- **abort()**：中止该读取操作.在返回时,readyState 属性的值为 DONE.
-- **readAsArrayBuffer()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个 ArrayBuffer 对象以表示所读取文件的内容.
-- **readAsBinaryString()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含所读取文件的原始二进制数据.
-- **readAsDataURL()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个 data: URL 格式的字符串以表示所读取文件的内容.
-- **readAsText()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个字符串以表示所读取的文件内容.
-
-#### 事件处理
-
-- **onabort**：当读取操作被中止时调用.
-- **onerror**：当读取操作发生错误时调用.
-- **onload**：当读取操作成功完成时调用.
-- **onloadend**：当读取操作完成时调用,不管是成功还是失败.该处理程序在 onload 或者 onerror 之后调用.
-- **onloadstart**：当读取操作将要开始之前调用.
-- **onprogress**：在读取数据过程中周期性调用.
-
-**上传实例**：以二进制流上传文件
-
-```js
-var fileInput = document.getElementById("fileInput");
-fileInput.addEventListener("change", function(event) {
-  var file = fileInput.files[0];
-  if (file) {
-    var reader = new FileReader();
-    var xhr = new XMLHttpRequest();
-    xhr.onprogress = function(e) {
-      var percentage = Math.round((e.loaded * 100) / e.total);
-      console.log("percentage:" + percentage);
-    };
-    xhr.onload = function(e) {
-      console.log("percentage:100");
-    };
-    xhr.open("POST", "这里填写服务器地址");
-    reader.onload = function(evt) {
-      xhr.send(evt.target.result);
-    };
-    reader.readAsBinaryString(file);
-  }
-});
-```
-
-## Blob
-
-Blob (binary large object)，对象表示一个不可变、原始数据的类文件对象。
-
-### 创建 Blob 对象
-
-- Blob支持结构化克隆算法（structured clone algorithm），所以可以通过消息事件从另外一个窗口或线程中获取blob对象
-- 调用 Blob 构造函数。`new Blob(blobParts[, options]);`
-- 使用一个已有 Blob 对象上的 slice()方法切出另一个 Blob 对象
-- 调用 canvas 对象上的 toBlob 方法
-- 通过http从网络上下载blob
-
-Blob 对象有两个只读属性：
-
-- size：二进制数据的大小，单位为字节。
-- type：二进制数据的 MIME 类型，全部为小写，如果类型未知，则该值为空字符串。
-
-在 Ajax 操作中，如果 xhr.responseType 设为 blob，接收的就是二进制数据。
-
-```js
-/**
- * 计算文件大小
- * @param {Object} file
- */
-function readFileSize(file) {
-  var size = file.size / 1024;
-  var aMultiples = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-  var fileSizeString = "";
-  for (var i = 0; size > 1; size /= 1024, i++) {
-    fileSizeString = size.toFixed(2) + " " + aMultiples[i];
-  }
-  return fileSizeString;
-}
-```
-
-### Blob 构造函数生成 blob 对象
-
-Blob 构造函数，接受两个参数。第一个参数是一个包含实际数据的数组，第二个参数是数据的类型，这两个参数都不是必需的。数组元素可以是任意多个的 ArrayBuffer，ArrayBufferView
-(typed array)， Blob，或者 DOMString 对象。
-例如：
-
-```js
-var arr = ["<h1>hello world</h1>"];
-var blob = new Blob(arr, { type: "text/xml" }); // the blob
-console.log(blob);
-```
-
-效果如下：
-
-![clipboard.png](https://segmentfault.com/img/bVBRmh?w=401&h=63)
-
-#### 用 JS 在浏览器中创建下载文件
-
-前端很多项目中，都有文件下载的需求，特别是 JS 生成文件内容，然后让浏览器执行下载操作（例如在线图片编辑、在线代码编辑、iPresst 等）但受限于浏览器，很多情况下我们都只能给出个链接，让用户点击打开-》另存为。如下面这个链接：
-
-```html
-<a href="file.js">file.js</a>
-```
-
-用户点击这个链接的时候，浏览器会打开并显示链接指向的文件内容，显然，这并没有实现我们的需求。HTML5 中给 a 标签增加了一个 download 属性，只要有这个属性，点击这个链接时浏览器就不在打开链接指向的文件，而是改为下载（目前只有 chrome、firefox 和 opera 支持）。下载时会直接使用链接的名字来作为文件名，但是是可以改的，只要给 download 加上想要的文件名即可，如：`download="not-a-file.js"`。但是这样还不够，以上的方法只适合用在文件是在服务器上的情况。如果在浏览器端 js 生成的内容，想让浏览器进行下载要如何办到呢？DataURI 可以实现这个效果，但是 DataURI 的文件类型被限制了，我们这里可以变通一下实现 blob 对象。
-
-```html
-<a id="aLink">下载</a>
-<script type="text/javascript">
-  function downloadFile(el, fileName, content) {
-    var aLink = document.querySelector(el);
-    var blob = new Blob([content]);
-    aLink.download = fileName;
-    aLink.href = URL.createObjectURL(blob);
-  }
-  document.querySelector("#aLink").addEventListener("click", function() {
-    downloadFile("#aLink", "hello.txt", "<h1>hello world</h1>");
-  });
-</script>
-```
-
-### Blob 对象的 slice 方法生成 blob 对象
-
-Blob 对象的 slice 方法，将二进制数据按照字节分块，返回一个新的 Blob 对象。
-
-```js
-var newBlob = oldBlob.slice(startingByte, endindByte);
-```
-
-下面是一个使用 XMLHttpRequest 对象，将大文件分割上传的例子。
-
-```js
-function upload(blobOrFile) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/server', true);
-  xhr.onload = function(e) { ... };
-  xhr.send(blobOrFile);
-}
-
-document.querySelector('input[type="file"]').addEventListener('change', function(e) {
-  var blob = this.files[0];
-
-  const BYTES_PER_CHUNK = 1024 * 1024; // 1MB chunk sizes.
-  const SIZE = blob.size;
-
-  var start = 0;
-  var end = BYTES_PER_CHUNK;
-
-  while(start < SIZE) {
-    upload(blob.slice(start, end));
-
-    start = end;
-    end = start + BYTES_PER_CHUNK;
-  }
-}, false);
-```
-
-## 下载
-
-### a 标签下载
-
-对于图片文件和文本文件这种可以被浏览器打开的文件不会被下载
-
-### DataUrl 和 BlobUrl
-
-```js
-DataUrl;
-// ./util.js
-// 图片转base64
-function image2base64(img) {
-  const canvas = document.createElement("canvas");
-  canvas.width = img.width;
-  canvas.height = img.height;
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0, img.width, img.height);
-  const mime = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
-  const dataUrl = canvas.toDataURL("image/" + mime);
-  return dataUrl;
-}
-
-const image = new Image();
-image.setAttribute("crossOrigin", "Anonymous");
-image.src = "../files/test-download.png" + "?" + new Date().getTime();
-image.onload = function() {
-  const imageDataUrl = image2base64(image);
-  const downloadDataUrlDom = document.getElementById("downloadDataUrl");
-  downloadDataUrlDom.setAttribute("href", imageDataUrl);
-  downloadDataUrlDom.setAttribute("download", "download-data-url.png");
-  downloadDataUrlDom.addEventListener("click", () => {
-    console.log("下载文件");
-  });
-};
-```
 
 ## excel
 
