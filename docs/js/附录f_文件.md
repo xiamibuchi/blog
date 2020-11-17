@@ -8,9 +8,9 @@ Blob (binary large object)，对象表示一个不可变、原始数据的类文
 
 - Blob 支持结构化克隆算法（structured clone algorithm），所以可以通过消息事件从另外一个窗口或线程中获取 blob 对象
 - 调用 Blob 构造函数。`new Blob(blobParts[, options]);`
-- 使用一个已有 Blob 对象上的 slice()方法切出另一个 Blob 对象
+- 使用 Blob 对象上的 slice()方法切出另一个 Blob 对象
 - 调用 canvas 对象上的 toBlob 方法
-- 通过 http 从网络上下载 blob
+- 网络下载 blob
 
 Blob 对象有两个只读属性：
 
@@ -19,91 +19,16 @@ Blob 对象有两个只读属性：
 
 在 Ajax 操作中，如果 xhr.responseType 设为 blob，接收的就是二进制数据。
 
-```js
-/**
- * 计算文件大小
- * @param {Object} file
- */
-function readFileSize(file) {
-  var size = file.size / 1024;
-  var aMultiples = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-  var fileSizeString = "";
-  for (var i = 0; size > 1; size /= 1024, i++) {
-    fileSizeString = size.toFixed(2) + " " + aMultiples[i];
-  }
-  return fileSizeString;
-}
-```
+### 作用
 
-### Blob 构造函数生成 blob 对象
+- 通过 window.URL.createObjectURL(blob) 生成 Blob URL实现下载
+- 文件分片上传。通过Blob.slice(start,end)可以分割大Blob为多个小Blob
 
-Blob 构造函数，接受两个参数。第一个参数是一个包含实际数据的数组，第二个参数是数据的类型，这两个参数都不是必需的。数组元素可以是任意多个的 ArrayBuffer，ArrayBufferView
-(typed array)， Blob，或者 DOMString 对象。
-例如：
+## FileReader
 
-```js
-var arr = ["<h1>hello world</h1>"];
-var blob = new Blob(arr, { type: "text/xml" }); // the blob
-console.log(blob);
-```
+对象允许 Web 应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，使用 File 或 Blob 对象指定要读取的文件或数据。
 
-效果如下：
-
-### 用 JS 在浏览器中下载文件
-
-```html
-<a id="h">点此进行下载</a>
-<!-- js部分 -->
-<script>
-  var blob = new Blob(["Hello World"]);
-  var url = window.URL.createObjectURL(blob);
-  var a = document.getElementById("h");
-  a.download = "helloworld.txt";
-  a.href = url;
-</script>
-```
-
-### Blob 对象的 slice 方法生成 blob 对象
-
-Blob 对象的 slice 方法，将二进制数据按照字节分块，返回一个新的 Blob 对象。
-
-```js
-var newBlob = oldBlob.slice(startingByte, endindByte);
-```
-
-下面是一个使用 XMLHttpRequest 对象，将大文件分割上传的例子。
-
-```js
-function upload(blobOrFile) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/server', true);
-  xhr.onload = function(e) { ... };
-  xhr.send(blobOrFile);
-}
-
-document.querySelector('input[type="file"]').addEventListener('change', function(e) {
-  var blob = this.files[0];
-
-  const BYTES_PER_CHUNK = 1024 * 1024; // 1MB chunk sizes.
-  const SIZE = blob.size;
-
-  var start = 0;
-  var end = BYTES_PER_CHUNK;
-
-  while(start < SIZE) {
-    upload(blob.slice(start, end));
-
-    start = end;
-    end = start + BYTES_PER_CHUNK;
-  }
-}, false);
-```
-
-## FileReader API
-
-对象允许Web应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，使用 File 或 Blob 对象指定要读取的文件或数据。
-
-> FileReader仅用于以安全的方式从用户（远程）系统读取文件内容 它不能用于从文件系统中按路径名简单地读取文件。 要在JavaScript中按路径名读取文件，应使用标准Ajax解决方案进行服务器端文件读取，如果读取跨域，则使用CORS权限。
+> FileReader 仅用于以安全的方式从用户（远程）系统读取文件内容 它不能用于从文件系统中按路径名简单地读取文件。 要在 JavaScript 中按路径名读取文件，应使用标准 Ajax 解决方案进行服务器端文件读取，如果读取跨域，则使用 CORS 权限。
 
 ### DataURI 对象
 
