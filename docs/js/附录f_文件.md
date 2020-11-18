@@ -21,8 +21,8 @@ Blob 对象有两个只读属性：
 
 ### 作用
 
-- 通过 window.URL.createObjectURL(blob) 生成 Blob URL实现下载
-- 文件分片上传。通过Blob.slice(start,end)可以分割大Blob为多个小Blob
+- 通过 window.URL.createObjectURL(blob) 生成 Blob URL 实现下载
+- 文件分片上传。通过 Blob.slice(start,end)可以分割大 Blob 为多个小 Blob
 
 ## FileReader
 
@@ -114,51 +114,26 @@ document.body.appendChild(img);
 
 #### 属性
 
-- **error**：在读取文件时发生的错误， 只读;
-- **readyState**：表明 FileReader 对象的当前状态，值为 State constants 中的一个，只读；
-- **result**：取到的文件内容，这个属性只在读取操作完成之后才有效,并且数据的格式取决于读取操作是由哪个方法发起的，只读。
+- `error`：在读取文件时发生的错误， 只读;
+- `readyState`：表明 FileReader 对象的当前状态，值为 State constants 中的一个，只读；
+- `result`：取到的文件内容，这个属性只在读取操作完成之后才有效,并且数据的格式取决于读取操作是由哪个方法发起的，只读。
 
 #### 方法
 
-- **abort()**：中止该读取操作.在返回时,readyState 属性的值为 DONE.
-- **readAsArrayBuffer()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个 ArrayBuffer 对象以表示所读取文件的内容.
-- **readAsBinaryString()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含所读取文件的原始二进制数据.
-- **readAsDataURL()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个 data: URL 格式的字符串以表示所读取文件的内容.
-- **readAsText()**：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个字符串以表示所读取的文件内容.
+- `abort()`：中止该读取操作.在返回时,readyState 属性的值为 DONE.
+- `readAsArrayBuffer()`：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个 ArrayBuffer 对象以表示所读取文件的内容.
+- `readAsBinaryString()`：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含所读取文件的原始二进制数据.
+- `readAsDataURL()`：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个 data: URL 格式的字符串以表示所读取文件的内容.
+- `readAsText()`：开始读取指定的 Blob 对象或 File 对象中的内容. 当读取操作完成时,readyState 属性的值会成为 DONE,如果设置了 onloadend 事件处理程序,则调用之.同时,result 属性中将包含一个字符串以表示所读取的文件内容.
 
 #### 事件处理
 
-- **onabort**：当读取操作被中止时调用.
-- **onerror**：当读取操作发生错误时调用.
-- **onload**：当读取操作成功完成时调用.
-- **onloadend**：当读取操作完成时调用,不管是成功还是失败.该处理程序在 onload 或者 onerror 之后调用.
-- **onloadstart**：当读取操作将要开始之前调用.
-- **onprogress**：在读取数据过程中周期性调用.
-
-**上传实例**：以二进制流上传文件
-
-```js
-var fileInput = document.getElementById("fileInput");
-fileInput.addEventListener("change", function(event) {
-  var file = fileInput.files[0];
-  if (file) {
-    var reader = new FileReader();
-    var xhr = new XMLHttpRequest();
-    xhr.onprogress = function(e) {
-      var percentage = Math.round((e.loaded * 100) / e.total);
-      console.log("percentage:" + percentage);
-    };
-    xhr.onload = function(e) {
-      console.log("percentage:100");
-    };
-    xhr.open("POST", "这里填写服务器地址");
-    reader.onload = function(evt) {
-      xhr.send(evt.target.result);
-    };
-    reader.readAsBinaryString(file);
-  }
-});
-```
+- `onabort`：当读取操作被中止时调用.
+- `onerror`：当读取操作发生错误时调用.
+- `onload`：当读取操作成功完成时调用.
+- `onloadend`：当读取操作完成时调用,不管是成功还是失败.该处理程序在 onload 或者 onerror 之后调用.
+- `onloadstart`：当读取操作将要开始之前调用.
+- `onprogress`：在读取数据过程中周期性调用.
 
 ## 下载
 
@@ -170,7 +145,6 @@ fileInput.addEventListener("change", function(event) {
 
 ```js
 DataUrl;
-// ./util.js
 // 图片转base64
 function image2base64(img) {
   const canvas = document.createElement("canvas");
@@ -222,9 +196,7 @@ image.onload = function() {
 
 form 表单提交会导致页面刷新，不希望页面被刷新，可以用 ajax 上传 FormData 数据。
 
-> XMLHttpRequest Level 2 添加了一个新的接口 FormData，利用 FormData 对象，我们可以通过 JavaScript 用一些键值对来模拟一系列表单控件，我们还可以使用 XMLHttpRequest 的 send()方法来异步的提交。比起普通的 ajax，使用 FormData 的最大优点就是我们可以异步上传一个二进制文件。
-
-参见：<https://developer.mozilla.org/zh-CN/docs/Web/API/FormData>
+> XMLHttpRequest Level 2 添加了一个新的接口 FormData，用来模拟一系列表单控件，使用 XMLHttpRequest 的 send()方法来异步的提交。
 
 ```html
 <form>
