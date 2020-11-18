@@ -24,6 +24,26 @@ Blob 对象有两个只读属性：
 - 通过 window.URL.createObjectURL(blob) 生成 Blob URL 实现下载
 - 文件分片上传。通过 Blob.slice(start,end)可以分割大 Blob 为多个小 Blob
 
+## URL 对象
+
+URL 对象用于生成指向 File 对象或 Blob 对象的 URL。
+
+`window.URL.createObjectURL`
+
+创建一个 DOMString，它的 URL 表示参数中的对象。这个 URL 的生命周期和创建它的窗口中的 document 绑定。这个新的 URL 对象表示着指定的 File 对象或者 Blob 对象。
+
+```js
+const OBJECT_URL = window.URL.createObjectURL(file);
+```
+
+`window.URL.revokeObjectURL`
+
+用来释放一个之前通过调用 `window.URL.createObjectURL` 创建的已经存在的 URL 对象。当你结束使用某个 URL 对象时，应该通过调用这个方法释放对这个文件的引用
+
+```js
+window.URL.revokeObjectURL(OBJECT_URL);
+```
+
 ## FileReader
 
 对象允许 Web 应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，使用 File 或 Blob 对象指定要读取的文件或数据。
@@ -70,40 +90,6 @@ function dataURItoBlob(dataURI) {
 }
 ```
 
-### URL 对象
-
-我们除了可以使用 base64 字符串作为内容的 DataURI 将一个文件嵌入到另外一个文档里，还可以使用 URL 对象。URL 对象用于生成指向 File 对象或 Blob 对象的 URL。
-
-> window.URL.createObjectURL
-
-静态方法会创建一个 DOMString，它的 URL 表示参数中的对象。这个 URL 的生命周期和创建它的窗口中的 document 绑定。这个新的 URL 对象表示着指定的 File 对象或者 Blob 对象。
-
-```js
-const objecturl = window.URL.createObjectURL(file);
-```
-
-> window.URL.revokeObjectURL
-
-静态方法用来释放一个之前通过调用 window.URL.createObjectURL() 创建的已经存在的 URL 对象。当你结束使用某个 URL 对象时，应该通过调用这个方法来让浏览器知道不再需要保持这个文件的引用了。
-
-```js
-window.URL.revokeObjectURL(objecturl);
-```
-
-例如：使用对象 URL 来显示图片：
-
-```js
-window.URL = window.URL || window.webkitURL;
-
-const img = document.createElement("img");
-img.src = window.URL.createObjectURL(blob);
-img.height = 60;
-img.onload = function(e) {
-  window.URL.revokeObjectURL(this.src);
-};
-document.body.appendChild(img);
-```
-
 ### FileReader API 详解
 
 #### 状态常量
@@ -134,42 +120,6 @@ document.body.appendChild(img);
 - `onloadend`：当读取操作完成时调用,不管是成功还是失败.该处理程序在 onload 或者 onerror 之后调用.
 - `onloadstart`：当读取操作将要开始之前调用.
 - `onprogress`：在读取数据过程中周期性调用.
-
-## 下载
-
-### a 标签下载
-
-对于图片文件和文本文件这种可以被浏览器打开的文件不会被下载
-
-### DataUrl 和 BlobUrl
-
-```js
-DataUrl;
-// 图片转base64
-function image2base64(img) {
-  const canvas = document.createElement("canvas");
-  canvas.width = img.width;
-  canvas.height = img.height;
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0, img.width, img.height);
-  const mime = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
-  const dataUrl = canvas.toDataURL("image/" + mime);
-  return dataUrl;
-}
-
-const image = new Image();
-image.setAttribute("crossOrigin", "Anonymous");
-image.src = "../files/test-download.png" + "?" + new Date().getTime();
-image.onload = function() {
-  const imageDataUrl = image2base64(image);
-  const downloadDataUrlDom = document.getElementById("downloadDataUrl");
-  downloadDataUrlDom.setAttribute("href", imageDataUrl);
-  downloadDataUrlDom.setAttribute("download", "download-data-url.png");
-  downloadDataUrlDom.addEventListener("click", () => {
-    console.log("下载文件");
-  });
-};
-```
 
 ## 上传
 
@@ -294,15 +244,76 @@ function readFileSize(file) {
 }
 ```
 
-有时候我们希望限制用户上传的文件大小，可以通过这个方法先做判断。同时我们可以通过 type 属性判断用户的文件类型，但是这种方法不可靠，因为用户可以通过改变后缀名实现。
+## 下载
 
-通过 input file 标签获得文件完整路径，由于浏览器安全机制，这个是不被允许的，但是有时候我们希望选择完图片预览一下图片，这个时候我们就可以用 FileReader API 实现。
+### a 标签下载
 
-## excel
+对于图片文件和文本文件这种可以被浏览器打开的文件不会被下载
+
+### DataUrl 和 BlobUrl
+
+```js
+function image2base64(img) {
+  let canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, img.width, img.height);
+  const mime = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
+  const dataUrl = canvas.toDataURL("image/" + mime);
+  return dataUrl;
+}
+
+const image = new Image();
+image.setAttribute("crossOrigin", "Anonymous");
+image.src = self url;
+image.onload = function() {
+  const imageDataUrl = image2base64(image);
+  let anchor = document.createEle
+  anchor.href = imageDataUrl;
+  anchor.download = file name;
+  anchor.click();
+  anchor = null;
+};
+```
 
 ### csv
 
-csv 结构简单
+csv 结构简单，实际是导入有格式的文本
+
+```js
+let values = [
+  {
+    id: 1,
+    name: "1",
+  },
+  {
+    id: 2,
+    name: "2",
+  },
+];
+const HEADERS = ["header1", "header2"];
+const CSV_STR =
+  HEADERS.join(",") +
+  "\n" +
+  values.reduce((result, ele) => {
+    result += Object.values(ele).join(",\t") + "\n"; // 如需保证csv顺序，按照字段顺序排列
+    return result;
+  }, "");
+
+const blob = new Blob([CSV_STR], {
+  type:
+    ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+});
+
+const URI = window.URL.createObjectURL(blob);
+const FILE_NAME = "文件流下载" + ".csv";
+let anchor = document.createElement("a");
+anchor.href = URI;
+anchor.setAttribute("download", FILE_NAME);
+anchor.click();
+anchor = null;
+```
 
 ## xlsx
 
