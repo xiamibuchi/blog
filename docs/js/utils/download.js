@@ -50,29 +50,33 @@ function download(value, name, type) {
 function handleDownload() {
   let values = [
     {
-      a: "数据1",
-      b: "数据2"
+      id: 1,
+      name: "1",
     },
     {
-      a: "数据3",
-      b: "数据4"
-    }
+      id: 2,
+      name: "2",
+    },
   ];
-  // 列标题，逗号隔开，每一个逗号就是隔开一个单元格
-  let str = `1,2`;
-  // 一个回车（'\n'）表示一行数据
-  str += "\n";
-  let valuesStr = values.reduce((result, ele) => {
-    result += Object.values(ele).join(",\t") + "\n";
-    return result;
-  }, "");
-  str += valuesStr;
-  // 解决中文乱码
-  let uri = "data:text/csv;charset=utf-8,\ufeff" + encodeURIComponent(str);
-  let link = document.createElement("a");
-  link.href = uri;
-  link.download = "aaa.csv";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const HEADERS = ["header1", "header2"];
+  const CSV_STR =
+    HEADERS.join(",") +
+    "\n" +
+    values.reduce((result, ele) => {
+      result += Object.values(ele).join(",\t") + "\n"; // 如需保证csv顺序，按照字段顺序排列
+      return result;
+    }, "");
+
+  const blob = new Blob([CSV_STR], {
+    type:
+      ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+  });
+
+  const URI = window.URL.createObjectURL(blob);
+  const FILE_NAME = "文件流下载" + ".csv";
+  let anchor = document.createElement("a");
+  anchor.href = URI;
+  anchor.setAttribute("download", FILE_NAME);
+  anchor.click();
+  anchor = null;
 }
