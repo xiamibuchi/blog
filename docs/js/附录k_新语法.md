@@ -346,15 +346,15 @@ Symbol.species 属性指向一个方法，对象作为构造函数创造实例�
 ({ [Symbol.toStringTag]: "Foo" }.toString());
 class Collection {
   get [Symbol.toStringTag]() {
-    return "test";
+    return "shenyang";
   }
 }
 let x = new Collection();
-Object.prototype.toString.call(x); // "[object test]"
+Object.prototype.toString.call(x); // "[object shenyang]"
 
-const myObject = {};
-Object.defineProperty(myObject, Symbol.toStringTag, {
-  value: "test",
+const obj = {};
+Object.defineProperty(obj, Symbol.toStringTag, {
+  value: "shenyang",
 });
-Object.prototype.toString.call(myObject); // "[object test]"
+Object.prototype.toString.call(obj); // [object shenyang]
 ```

@@ -1,43 +1,6 @@
 # TypeScript
 
-TypeScript 是 JavaScript 的一个超集，主要提供了类型系统和对 ES6 的支持，它由 Microsoft 开发，代码开源于 GitHub 上。
-
-它的第一个版本发布于 2012 年 10 月，经历了多次更新后不仅在 Microsoft 内部得到广泛运用，而且 Google 的 Angular2 也使用了 TypeScript 作为开发语言。
-
-```typescript
-// 'xxx: number' 表示声明一个number类型
-const num: number = 123;
-
-// 声明一个函数的参数类型(number以及any)和返回值(void)
-function fn(arg1: number, arg2: any): void {
-  // todo
-}
-fn(num, [1, 2, 3, 4]);
-
-// 声明一个接口
-interface IPerson {
-  name: string; // IPerson需要包含一个name属性，类型是string
-  age: number; // IPerson需要包含一个age属性，类型是number
-  family: string[]; // IPerson需要包含一个family属性，类型是数组，数组里面都是string类型的数据
-  sex?: "男" | "女"; // IPerson可选一个sex属性，值为'男'或者'女'或者undefined
-}
-// 使用IPerson接口定义一个对象，如果对象不符合IPerson的定义，编译器会飘红报错
-const person: IPerson = {
-  name: "小王",
-  age: 12,
-  family: ["爹", "娘"]
-};
-
-// type类似interface，以下写法等同用interface声明IPerson
-type IPerson2 = {
-  name: string;
-  age: number;
-  family: string[];
-  sex?: "男" | "女";
-};
-// 因此可以直接定义过来
-const person2: IPerson2 = person;
-```
+TypeScript 是 JavaScript 的一个超集，主要提供了类型系统和对 ES6 的支持。
 
 ## 优势
 
@@ -114,20 +77,25 @@ console.log(myFavoriteNumber.length); // 编译时报错
 TypeScript 中的接口是一个非常灵活的概念，除了可用于对类的一部分行为进行抽象以外，也常用于对「对象的形状（Shape）」进行描述。
 
 ```typescript
+class Student {
+  fullName: string;
+  constructor(public firstName, public middleInitial, public lastName) {
+    this.fullName = firstName + " " + middleInitial + " " + lastName;
+  }
+}
+
 interface Person {
   firstName: string;
   lastName: string;
 }
 
-class UserAccount
-  name: string;
-  id: number;
-
-  constructor(name: string, id: number) {
-    this.name = name;
-    this.id = id;
-  }
+function greeter(person: Person) {
+  return "Hello, " + person.firstName + " " + person.lastName;
 }
+
+let user = new Student("Jane", "M.", "User");
+
+document.body.innerHTML = greeter(user);
 ```
 
 - 定义的变量比接口少了一些属性是不允许的
@@ -144,7 +112,7 @@ interface Person {
 }
 
 let tom: Person = {
-  name: "Tom"
+  name: "Tom",
 };
 interface Person {
   name: string;
@@ -153,7 +121,7 @@ interface Person {
 
 let tom: Person = {
   name: "Tom",
-  age: 25
+  age: 25,
 };
 ```
 
@@ -168,7 +136,7 @@ interface Person {
 
 let tom: Person = {
   name: "Tom",
-  gender: "male"
+  gender: "male",
 };
 ```
 
@@ -185,7 +153,7 @@ interface Person {
 let tom: Person = {
   id: 89757,
   name: "Tom",
-  gender: "male"
+  gender: "male",
 };
 
 tom.id = 9527;
@@ -595,16 +563,12 @@ let tom: [string, number] = ['Tom', 25];
 
 当赋值或访问一个已知索引的元素时，会得到正确的类型：
 
-
-
 ```
 let tom: [string, number];tom[0] = 'Tom';tom[1] = 25;
 tom[0].slice(1);tom[1].toFixed(2);
 ```
 
 也可以只赋值其中一项：
-
-
 
 ```
 let tom: [string, number];
@@ -613,14 +577,10 @@ tom[0] = 'Tom';
 
 但是当直接对元组类型的变量进行初始化或者赋值的时候，需要提供所有元组类型中指定的项。
 
-
-
 ```
 let tom: [string, number];
 tom = ['Tom', 25];
 ```
-
-
 
 ```
 let tom: [string, number];tom = ['Tom'];
@@ -630,8 +590,6 @@ let tom: [string, number];tom = ['Tom'];
 #### 越界的元素
 
 当添加越界的元素时，它的类型会被限制为元组中每个类型的联合类型：
-
-
 
 ```
 let tom: [string, number];tom = ['Tom', 25];tom.push('male');tom.push(true);
@@ -644,35 +602,53 @@ let tom: [string, number];tom = ['Tom', 25];tom.push('male');tom.push(true);
 
 枚举使用 `enum` 关键字来定义：
 
-
-
 ```
 enum Days {Sun, Mon, Tue, Wed, Thu, Fri, Sat};
 ```
 
 枚举成员会被赋值为从 `0` 开始递增的数字，同时也会对枚举值到枚举名进行反向映射：
 
-
-
 ```typescript
-enum Days {Sun, Mon, Tue, Wed, Thu, Fri, Sat};
+enum Days {
+  Sun,
+  Mon,
+  Tue,
+  Wed,
+  Thu,
+  Fri,
+  Sat,
+}
 console.log(Days["Sun"] === 0); // trueconsole.log(Days["Mon"] === 1); // trueconsole.log(Days["Tue"] === 2); // trueconsole.log(Days["Sat"] === 6); // true
 console.log(Days[0] === "Sun"); // trueconsole.log(Days[1] === "Mon"); // trueconsole.log(Days[2] === "Tue"); // trueconsole.log(Days[6] === "Sat"); // true
 ```
 
 事实上，上面的例子会被编译为：
 
-
-
 ```typescript
 var Days;
-(function (Days) {
-    Days[Days["Sun"] = 0] = "Sun";
-    Days[Days["Mon"] = 1] = "Mon";
-    Days[Days["Tue"] = 2] = "Tue";
-    Days[Days["Wed"] = 3] = "Wed";
-    Days[Days["Thu"] = 4] = "Thu";
-    Days[Days["Fri"] = 5] = "Fri";
-    Days[Days["Sat"] = 6] = "Sat";
+(function(Days) {
+  Days[(Days["Sun"] = 0)] = "Sun";
+  Days[(Days["Mon"] = 1)] = "Mon";
+  Days[(Days["Tue"] = 2)] = "Tue";
+  Days[(Days["Wed"] = 3)] = "Wed";
+  Days[(Days["Thu"] = 4)] = "Thu";
+  Days[(Days["Fri"] = 5)] = "Fri";
+  Days[(Days["Sat"] = 6)] = "Sat";
 })(Days || (Days = {}));
+```
+
+## 泛型
+
+泛型（Generics）是指在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定类型的一种特性。
+
+```ts
+function createArray<T>(length: number, value: T): Array<T> {
+  let result: T[] = [];
+  for (let i = 0; i < length; i++) {
+    result[i] = value;
+  }
+  return result;
+}
+
+createArray<string>(3, "x"); // ['x', 'x', 'x']
 ```
