@@ -47,7 +47,6 @@ module.exports = {
     },
   },
   plugins: [],
-  theme: "reco",
   themeConfig: {
     nav: [
       { text: "js", link: js[0] },
