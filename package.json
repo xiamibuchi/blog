@@ -16,8 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "async-validator": "1.11.5",
-    "element-ui": "^2.14.1",
-    "vuepress-theme-reco": "^1.6.1"
+    "element-ui": "^2.14.1"
   },
   "devDependencies": {
     "node-sass": "^5.0.0",
