@@ -63,7 +63,7 @@
 
 <script>
 export default {
-  name: "color-change-filter",
+  name: "ColorChangeFilter",
   data() {
     return {
       startColor: "#000000",

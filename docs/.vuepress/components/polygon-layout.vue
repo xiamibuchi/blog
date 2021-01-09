@@ -1,3 +1,78 @@
+<template>
+  <div class="container">
+    <div class="polygonLayout-container">
+      <div class="circle"></div>
+      <div class="polygonLayout">
+        <div
+          class="polygonLayout-item"
+          v-for="(item, index) in position"
+          :key="index"
+          :style="{ left: `${item.left}px`, top: `${item.top}px` }"
+        >
+          item-{{ index + 1 }}
+        </div>
+      </div>
+    </div>
+
+    <div class="key-value">
+      <span class="key">选择边数:</span>
+      <!--不知道为啥不能写 for 循环数字-->
+      <el-radio v-model="num" :label="3"></el-radio>
+      <el-radio v-model="num" :label="4"></el-radio>
+      <el-radio v-model="num" :label="5"></el-radio>
+      <el-radio v-model="num" :label="6"></el-radio>
+      <el-radio v-model="num" :label="7"></el-radio>
+      <el-radio v-model="num" :label="8"></el-radio>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "PolygonLayout",
+  data() {
+    return {
+      num: 3,
+      maxNum: 10
+    };
+  },
+  computed: {
+    position() {
+      return this.setPolyGonLayout(this.num, 160, {
+        width: 60,
+        height: 60
+      });
+    }
+  },
+  methods: {
+    setPolyGonLayout(
+      num,
+      radius,
+      itemSize = {
+        width: 0,
+        height: 0
+      }
+    ) {
+      if (num < 3) return;
+
+      const startAngle = num % 2 === 1 ? 0 : (2 * Math.PI) / num / 2;
+      let position = [];
+
+      for (let i = 0; i < num; i++) {
+        const angle = (i * 2 * Math.PI) / num + startAngle;
+
+        position.push({
+          top: -radius * Math.cos(angle) - itemSize.height / 2,
+          left: -radius * Math.sin(angle) - itemSize.width / 2
+        });
+      }
+
+      return position;
+    }
+  }
+};
+</script>
+
 <style scoped lang="scss">
 .circle {
   width: 320px;
@@ -50,77 +125,3 @@
 }
 </style>
 
-<template>
-  <div class="container">
-    <div class="polygonLayout-container">
-      <div class="circle"></div>
-      <div class="polygonLayout">
-        <div
-          class="polygonLayout-item"
-          v-for="(item, index) in position"
-          :key="index"
-          :style="{ left: `${item.left}px`, top: `${item.top}px` }"
-        >
-          item-{{ index + 1 }}
-        </div>
-      </div>
-    </div>
-
-    <div class="key-value">
-      <span class="key">选择边数:</span>
-      <!--不知道为啥不能写 for 循环数字-->
-      <el-radio v-model="num" :label="3"></el-radio>
-      <el-radio v-model="num" :label="4"></el-radio>
-      <el-radio v-model="num" :label="5"></el-radio>
-      <el-radio v-model="num" :label="6"></el-radio>
-      <el-radio v-model="num" :label="7"></el-radio>
-      <el-radio v-model="num" :label="8"></el-radio>
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  name: "polygonLayout",
-  data() {
-    return {
-      num: 3,
-      maxNum: 10
-    };
-  },
-  computed: {
-    position() {
-      return this.setPolyGonLayout(this.num, 160, {
-        width: 60,
-        height: 60
-      });
-    }
-  },
-  methods: {
-    setPolyGonLayout(
-      num,
-      radius,
-      itemSize = {
-        width: 0,
-        height: 0
-      }
-    ) {
-      if (num < 3) return;
-
-      const startAngle = num % 2 === 1 ? 0 : (2 * Math.PI) / num / 2;
-      let position = [];
-
-      for (let i = 0; i < num; i++) {
-        const angle = (i * 2 * Math.PI) / num + startAngle;
-
-        position.push({
-          top: -radius * Math.cos(angle) - itemSize.height / 2,
-          left: -radius * Math.sin(angle) - itemSize.width / 2
-        });
-      }
-
-      return position;
-    }
-  }
-};
-</script>
