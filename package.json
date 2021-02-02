@@ -19,8 +19,8 @@
     "element-ui": "^2.14.1"
   },
   "devDependencies": {
-    "node-sass": "^5.0.0",
+    "sass": "^1.32.6",
     "sass-loader": "^10.1.0",
-    "vuepress": "^1.7.1"
+    "vuepress": "^1.8.0"
   }
 }
