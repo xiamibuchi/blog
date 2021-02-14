@@ -5,7 +5,7 @@
 1. ios 手机连接到 pc
 
 设置手机 safari 设置-》safari-》高级-》打开 web 检查器 （授权调试功能）
-2. [安装 ios_webkit_debug_proxy](https://github.com/google/ios-webkit-debug-proxy)。根据文档，在 windows 下，首先需要安装 scoop，而安装 scoop 需要电脑里有 powershell。win10 一般自带。
+2. [安装 ios_webkit_debug_proxy](https://github.com/google/ios-webkit-debug-proxy)。
      1. 安装 scoop
      2. 通过 scoop 安装 ios_webkit_debug_proxy
 3. 连接测试
