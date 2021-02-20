@@ -60,3 +60,11 @@ gt ：就是Greater than的简写，也就是大于的意思。
    </script>
 <![endif]-->
 ```
+
+## 从 IE 将用户移动到 Microsoft Edge
+
+https://docs.microsoft.com/zh-cn/microsoft-edge/web-platform/ie-to-microsoft-edge-redirection
+
+已有的名单：
+https://edge.microsoft.com/neededge/v1
+好像没多少国内的网站 (edited) 
