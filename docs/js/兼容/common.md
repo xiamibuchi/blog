@@ -1,4 +1,4 @@
-# 兼容
+# common
 
 ## HTML5 Shiv
 
@@ -60,31 +60,3 @@ gt ：就是Greater than的简写，也就是大于的意思。
    </script>
 <![endif]-->
 ```
-
-## 移动端
-
-## ios 竖屏拍照上传，图片被旋转问题
-
-```
-// 几个步骤
-// 1.通过第三方插件exif-js获取到图片的方向
-// 2.new一个FileReader对象，加载读取上传的图片
-// 3.在fileReader的onload函数中，得到的图片文件用一个Image对象接收
-// 4.在image的onload函数中，利用步骤1中获取到的方向orientation，通过canvas旋转校正，重新绘制一张新图
-// 注意iPhone有3个拍照方向需要处理，横屏拍摄，home键在左侧，竖屏拍摄，home建上下
-// 5.将绘制的新图转成Blob对象，添加到FormData对象中，然后进行校正后的上传操作
-```
-
-## ios 页面回退到长列表出现灰色遮挡问题
-
-方案 1：对列表数据进行缓存，比如 redux 之类的用法。
-方案 2：回退时，跳到页面顶部。
-const timer = setTimeout(() => {
-window.scrollTo(0, 1);
-window.scrollTo(0, 0);
-}, 0);
-
-## ios 日期转换 NAN 的问题
-
-将日期字符串的格式符号替换成'/'。
-栗子：'yyyy-MM-dd'.replace(/-/g, '/')
