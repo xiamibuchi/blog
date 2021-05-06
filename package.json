@@ -16,11 +16,11 @@
   "license": "ISC",
   "dependencies": {
     "async-validator": "1.11.5",
-    "element-ui": "^2.15.0"
+    "element-ui": "^2.15.1"
   },
   "devDependencies": {
     "sass": "^1.32.6",
     "sass-loader": "^11.0.0",
-    "vuepress": "^1.8.0"
+    "vuepress": "^1.8.2"
   }
 }
