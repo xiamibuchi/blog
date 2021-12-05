@@ -1,9 +1,14 @@
 # web 唤起客户端
 
+- URL Scheme
+- iOS universal link
+- Android 专用的 App Links
+- App 提供的 sdk，如微信 sdk
+
 ## 使用 WebSocket 实现页端和 App 的通信
 
 1. Android App 需要实现 WebSocket 的连接功能，开放一个特定的端口
-2. web JS 建立 WebSocket连接
+2. web JS 建立 WebSocket 连接
 
 > 当 App 不在进程中存活时，我们是无法成功 call 起
 
