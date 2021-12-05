@@ -31,6 +31,7 @@ git push origin localbranch              将代码推送到远程仓库的指定
 git push -d origin branchName            删除远程分支
 git stash                                暂存代码
 git stash pop                            弹出暂存代码
+git branch | grep ‘dev*’ | xargs git branch -d   删除分支名包含指定字符的分支
 ```
 
 ## 配置别名
