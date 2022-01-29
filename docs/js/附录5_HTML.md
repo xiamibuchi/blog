@@ -32,60 +32,6 @@ https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/
 - 渲染引擎(Rendering Engine)：渲染页面 （解析 HTML + CSS）负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入 CSS 等），以及计算网页的显示方式，然后会输出至显示器或打印机
 - JS 引擎：解析执行 Javascript
 
-### 浏览器组成
-
-- #### 用户界面 ( User Interface )
-
-  - 包括地址栏、前进/后退、书签菜单等
-  - 除了浏览器主窗口显示的你请求的页面外,其他显示的各个部分都属于用户界面
-
-- #### 渲染引擎（ Rendering engine )
-
-  - 负责显示请求的内容。
-
-  - 如果请求的内容是 HTML, 它就负责解析 HTML (如果有样式,也顺便解析 CSS 内容), 并 **将解析后的内容显示在屏幕上。**
-
-- #### 浏览器引擎（ Browser engine ）
-
-  - 在用户界面和渲染引擎之间传达指令。(如: 点击刷新...)
-
-- #### 网络模块（Networking）
-
-  - 用户网络调用。
-
-  - > 解析我们 js 语法编写的 ajax 和 xhr 代码,然后发送网络请求!
-
-  - 例如 http 请求，它具有平台无关的接口，可以在不同平台上工作 :
-
-  - > 如 ajax ,各种浏览器中都可以发送请求
-
-- #### UI 后端 ( UI Backend)
-
-  - 用户绘制基本的窗口小部件, (比如:对话框、弹窗等)。
-
-  - 具有不特定于某个平台的通用接口，底层使用操作系统的用户接口
-
-- #### JS 解释器 ( JavaScript Interpreter )
-
-  - 用来 解析 和 执行 JS 代码 。(比如 chrome 的 javascript 解释器是: js V8 引擎)
-
-  - ```js
-    v8引擎: 它是谷歌研发的一种解析引擎,效率很高
-    因为自身的高级语言和内存策略决定了其效率很高
-    - 高级语言: 使用了偏底层的  C/C++, 它自身执行效率很高
-    - 内存策略: 一切在运行堆栈里无用的数据都会被强行回收,从而可以大大提高 js 代码的运行效率
-    - 还有使用缓存等等其他技术
-    ```
-
-- #### 数据存储 ( Data Persistence )
-
-  - 属于持久层
-  - Cookie、HTML5 中的本地存储 LocalStorage、SessionStorage）(setItem/getItem)
-  - Cookie: 字段, 每次 http 请求都会携带 Cookie 这个 字, 根据这个字段可以在两个页面之间进行存值、传值,大小不超过 4k;
-  - LocalStorage 和 SessionStorage 主要是因为生命周期长短不同 (最好不要超过 5M )
-    - SessionStorage : 关闭浏览器就清除数据
-    - LocalStorage: 需要手动清除缓存啊
-
 ### 渲染引擎工作原理
 
 > HTML 代码
@@ -422,14 +368,9 @@ applet、bgsound、blink、marquee 等标签。
 
 #### 其他属性
 
-- 为 ol 增加 reversed 属性，它指定列表倒序显示。
-
 - 为 meta 增加 charset 属性
-
 - 为 menu 增加 type 和 label 属性。label 为菜单定义一个标注，type 属性定义可以 menu 以上下文菜单、工具条与列表三种形式出现。
-
 - 为 style 增加 scoped 属性。它允许我们为文档的指定部分定义样式，而不是整个文档。如果使用 "scoped" 属性，那么所规定的样式只能应用到 style 标签的父标签及其子标签。
-
 - 为 script 增减属性，它定义脚本是否异步执行。async 属性仅适用于外部脚本（只有在使用 src 属性时）有多种执行外部脚本的方法：
 
 - 如果 async="async"：脚本相对于页面的其余部分异步地执行（当页面继续进行解析时，脚本将被执行）
@@ -439,61 +380,7 @@ applet、bgsound、blink、marquee 等标签。
 
 - 为 html 标签增加 manifest，开发离线 web 应用程序时他与 API 结合使用，定义一个 URL，在这个 URL 上描述文档的缓存信息。
 
-- 为 iframe 增加撒个属性，sandbox、seamless、srcdoc。用来提高页面安全性，防止不信任的 web 页面执行某些操作。
-
-新增的属性在下面的 html 中可看出作用
-
-```html
-<!DOCTYPE html>
-<html lang="en" manifest="cache.manifest">
-  <!-- 离线文件应用 -->
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="pragma" content="no-cache" />
-    <!-- 禁止页面缓存 -->
-    <title>html5新增属性</title>
-    <link rel="icon" href="icon.gif" type="image/gif" sizes="16x16" />
-    <!-- icon可自定义大小-->
-    <base href="http://localhost/" target="_blank" />
-    <!--相对localhost地址里的a链接都在新页面打开-->
-    <script defer src="base.js"></script>
-    <!-- 延迟加载 加载完在执行该js-->
-    <script async src="base2.js"></script>
-    <!-- 异步加载 加载页面时即可执行-->
-  </head>
-  <body>
-    <a media="handheld" href="">手持设备</a>
-    <!-- 将会对手持设备进行优化 -->
-    <a media="tv" href="">电视</a>
-    <!-- 将会对电视设备进行优化 -->
-    <a href="http://www.baidu.com" hreflang="zh" ref="external ">百度</a
-    ><!-- 中文的链接 external:外部链接 -->
-
-    <ol start="5" reversed>
-      <!-- 序列号从5开始的倒序排列 -->
-      <li>222</li>
-      <li>333</li>
-      <li>444</li>
-    </ol>
-
-    <div>
-      <style type="text/css" scoped>
-        h1 {
-          color: red;
-        }
-      </style>
-      <h1>上面的scoped只对本h1有效果</h1>
-    </div>
-
-    <iframe seamless srcdoc="HTML_code" src="http://www.baidu.com"></iframe>
-    <!--   
-    seamless:无边距无边框  
-    srcdoc：显示在框架中的 HTML 内容  
-    sandbox：（可有三种赋值）严格安全模式 ，会禁止提交表单，会禁止js脚本，会决定iframe和本页面是不同的源是跨域的   
-    -->
-  </body>
-</html>
-```
+- 为 iframe 增加属性，sandbox、seamless、srcdoc。用来提高页面安全性，防止不信任的 web 页面执行某些操作。
 
 #### 废除的属性
 

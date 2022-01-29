@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "async-validator": "1.11.5",
-    "element-ui": "^2.15.1"
+    "element-ui": "^2.15.6"
   },
   "devDependencies": {
     "sass": "^1.32.6",
