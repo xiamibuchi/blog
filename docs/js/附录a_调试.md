@@ -50,3 +50,18 @@ ios_webkit_debug_proxy -f chrome-devtools://devtools/bundled/inspector.html
 - $_：返回上一个表达式的值
 - $(selector)：等同于document.querySelector
 - $$(selector)：等同于document.querySelectorAll
+
+## vConsole
+
+[Github](https://github.com/Tencent/vConsole)
+
+引入方法
+
+```html
+<script type="text/javascript" src="https://cdn.bootcss.com/vConsole/3.3.0/vconsole.min.js"></script>
+<script>
+    // 初始化
+    var vConsole = new VConsole();
+    console.log('Hello world');
+</script>
+```
