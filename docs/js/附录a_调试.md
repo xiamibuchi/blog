@@ -58,7 +58,7 @@ ios_webkit_debug_proxy -f chrome-devtools://devtools/bundled/inspector.html
 引入方法
 
 ```html
-<script type="text/javascript" src="https://cdn.bootcss.com/vConsole/3.3.0/vconsole.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/vConsole/3.13.0/vconsole.min.js"></script>
 <script>
     // 初始化
     var vConsole = new VConsole();
