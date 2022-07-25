@@ -16,6 +16,7 @@
 - og:title - The title of your object as it should appear within the graph, e.g., "The Rock".
 - og:type - The type of your object, e.g., "video.movie". Depending on the type you specify, other properties may also be required.
 - og:image - An image URL which should represent your object within the graph.
+  - og:image should be at least 200px in both dimensions, with 1500x1500 preferred. (Maximum image size is 5MB.)
 - og:url - The canonical URL of your object that will be used as its permanent ID in the graph, e.g., "https://www.imdb.com/title/tt0117500/".
 - ...
 
@@ -32,6 +33,10 @@
 ...
 </html>
 ```
+
+### debug
+
+- facebook：https://developers.facebook.com/tools/debug
 
 
 https://developers.google.com/search/docs/beginner/get-started
