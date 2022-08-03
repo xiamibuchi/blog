@@ -738,7 +738,7 @@ Robots 代表告诉搜索引擎机器人抓取哪些页面
 ### 添加到主屏后的标题
 
 ```html
-<meta name="apple-mobile-web-app-title" content="blog from Qi" />
+<meta name="apple-mobile-web-app-title" content="主屏幕启动标题" />
 ```
 
 ### 是否启用 WebApp 全屏模式，删除苹果默认的工具栏和菜单栏
@@ -747,12 +747,14 @@ Robots 代表告诉搜索引擎机器人抓取哪些页面
 <meta name="apple-mobile-web-app-capable" content="yes" />
 ```
 
+> iPad 2018 主屏幕启动的网页，从后台重新打开会导致重新渲染。
+
 ### 添加智能 App 广告条 Smart App Banner
 
 ```html
 <meta
   name="apple-itunes-app"
-  content="app-id=myAppStoreID, affiliate-data=myAffiliateData, app-argument=https://github.com/QiShaoXuan"
+  content="app-id=myAppStoreID, affiliate-data=myAffiliateData, app-argument=https://www.baidu.com"
 />
 ```
 
