@@ -4,7 +4,7 @@
 
 ## 版本控制系统
 
-版本控制系统（Version Control System）:是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。版本控制系统不仅可以应用于软件源代码的文本文件，而且可以对任何类型的文件进行版本控制。
+版本控制系统（Version Control System）：是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。版本控制系统不仅可以应用于软件源代码的文本文件，而且可以对任何类型的文件进行版本控制。
 
 常见的版本控制系统有：svn、cvs、git
 
@@ -34,109 +34,37 @@ git 是分布式的版本控制系统。
 3. 不需要网络就可以进行工作。
 4. 当连接网络时，用户可以选择将自己的服务器与代码仓库进行同步。
 
-## git
+## 命令
 
-> Git 是一款免费、开源的**分布式** **版本控制系统** ，用于敏捷高效地处理任何或小或大的项目。
-
-Git 是 Linus Torvalds 为了帮助管理 Linux 内核开发而开发的一个开放源
-
-### 开始
-
-配置用户邮箱和用户名称
+### 配置
 
 ```bash
-# git config  user.name 你的目标用户名
-# git config  user.email 你的目标邮箱名
+# git config  user.name [username]
+# git config  user.email [email]
 
-# 使用--global参数，配置全局的用户名和邮箱，只需要配置一次即可。
+# --global，配置全局参数
 git config  --global user.name $yourname
 git config  --global user.email $youremail
 
-# 查看配置信息
+# show config
 git config --list
 ```
 
-1. 初始化 git 仓库`git init`
-2. 查看当前 git 仓库的状态`git status`
-3. 将文件添加到 git 的暂存区`git add 文件名`
-4. 将文件由暂存区提交到仓库区`git commit -m '提交说明'`
-5. 查看提交日子`git log`
-
-```bash
-# 要对某个项目使用git进行管理，需要使用git init命令初始化git仓库
-# 会在当前目录生成一个隐藏文件夹 .git  不要去修改这个文件夹下的任意东西。
-git init
-
-# 查看git的状态 ,如果此时新建一个文件，那么这个文件是没有被追踪的，说白了git还没有管理这个新建的文件
-git status
-
-# 告诉git开始对index.html文件进行追踪， git会在暂存区中存储这个文件
-git add index.html
-
-# 让文件由暂存区提交到仓库区。此时文件才真正的被git管理了。
-#
-# 如果提交日志乱码，右键-->options-->Text-->将编码改成utf-8
-
-git commit -m '第一次提交'
-
-# 查看提交日志
-git log
-```
-
-## 命令
-
-### git add(重点)
-
-- 作用：让 git 追踪一个新的文件，并且将文件由 工作区 添加到 暂存区，暂存文件
-- 命令：`git add 文件名/目录名`
-  - 例如： `git add index.html`
-- `git add --all`  或者  `git add -A` 获取`git add .`（简写） 添加所有文件
-- `git add a.txt b.txt`  同时添加两个文件
-- `git add *.js`  添加当前目录下的所有 js 文件
-- `git add css/`添加 css 目录下所有的文件
-
-### git checkout 文件名
-
-- 作用：暂存区的内容恢复到工作区。
-- `git checkout 1.txt` 将暂存区中 1.txt 文件恢复到工作区
-
-### git commit（重点）
-
-- 作用：将文件由 暂存区 添加到 仓库区，生成版本号（历史记录，以后可以回退到某一个版本号）
-- `git commit -m "提交说明"`
-
-### git status
-
-- 作用：查看文件的状态
-
-* 命令：`git status`
-* 命令：`git stauts -s`  简化日志输出格式
-
-### git log
-
-- 作用：查看提交日志
-- `git log` 只能查看当前 head 以及以前的日志
-- `git log --oneline` 简洁的日志信息
-- `git reflog` 查看所有的提交变更日志
-
-### git reset
-
-- 作用：版本回退，将代码恢复到已经提交的某一个版本中。
-- `git reset --hard 版本号` 将代码回退到某个指定的版本(版本号只要有前几位即可)
-- `git reset --hard head~1`将版本回退到上一次提交
-  - ~1:上一次提交
-  - ~2:上上次提交
-  - ~0:当前提交
-
-## git 的三个区
-
-工作区、暂存区、本地仓库区
-
-工作区：我们书写代码的地方，工作的目录就叫工作区。
-
-暂存区：使用 add 命令，在`.git`目录中的一个索引文件，记录修改的文件
-
-本地仓库区：将保存在暂存区域的内容永久转储到 Git 仓库中，生成版本号。生成版本号之后，就可以任何的回退到某一个具体的版本。
+- `git init`：初始化 git 仓库
+- `git status`：查看当前 git 仓库的状态。`git status -s`  简化日志输出格式
+- `git add 文件名`：将文件添加到 git 的暂存区。
+  - `git add .` / `git add --all` / `git add -A`：添加所有工作区内文件
+  - `git add a.txt b.txt`  同时添加两个文件
+  - `git add *.js`  添加当前目录下的所有 js 文件
+  - `git add dir/`添加 dir 目录下所有的文件
+- `git commit -m 'commit message'`：将文件由暂存区提交到仓库区
+- `git log`: 查看提交日志
+  - `git log --oneline` 简洁的日志信息
+  - `git reflog` 查看所有的提交变更日志
+- `git checkout [filename]`：暂存区的内容恢复到工作区
+- `git reset`：版本回退，将代码恢复到已经提交的某一个版本
+  - `git reset --hard 版本号` 将代码回退到某个指定的版本(版本号只要有前几位即可)
+  - `git reset --hard head~1` 将版本回退到上一次提交
 
 ## .gitignore
 
@@ -153,7 +81,7 @@ build/ 　　 # 忽略 build/ 目录下的所有文件
 doc/*.txt 　　# 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
 ```
 
-把某些目录或文件加入忽略规则，按照上述方法定义后发现并未生效，原因是.gitignore 只能忽略那些原来没有被追踪的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore 是无效的。那么解决方法就是先把本地缓存删除（改变成未被追踪状态），然后再提交：
+把某些目录或文件加入忽略规则，按照上述方法定义后发现并未生效，原因是.gitignore 只能忽略那些原来没有被追踪的文件，如果某些文件已经被纳入了版本管理中，则修改 .gitignore 是无效的。那么解决方法就是先把本地缓存删除（改变成未被追踪状态），然后再提交：
 
 ```bash
 git rm -r --cached .
@@ -161,14 +89,7 @@ git add .
 git commit -m 'update .gitignore'
 ```
 
-## 分支操作
-
-- 如果开发一个新的功能，需要 2 周时间，第一周你只能写 50%代码，如果此时立即提交，代码没写完，不完整的代码会影响到别人无法工作。如果等代码写完再提交，代码很容易丢失，风险很大。
-- 有了分支，你就可以创建一个属于自己的分支，别人看不到，也不影响别人，你在自己的分支上工作，提交到自己的分支上，等到功能开发完毕，一次性的合并到原来的分支。这样既安全，又不影响他人工作。
-- 在工作过程中，经常会碰到**多任务并行开发** 的情况，使用分支就能很好的避免任务之间的影响。
-- 其他版本工具比如 svn，cvs 中也有分支这个概念，但是这些工具中的分支操作非常的慢，形同摆设。
-
-## 分支操作的命令
+## 分支
 
 > 在 git 中，分支实质上仅仅是一个指针，每次代码提交后，这个分支指针就会向后移动，保证一直指向最后一次提交的的版本。
 
@@ -212,7 +133,7 @@ git commit -m 'update .gitignore'
 - 对于同一个文件，如果有多个分支需要合并时，容易出现冲突。
 - 合并分支时，如果出现冲突，只能手动处理，再次提交，一般的作法，把自己的代码放到冲突代码的后面即可。
 
-# 远程仓库
+## 远程仓库
 
 所有的程序员都可以通过远程仓库来进行版本的共享，达到所有人的代码一致的效果。
 
@@ -331,3 +252,173 @@ git stash pop // 恢复的同时把 stash 内容也删除了。
 ## GUI
 
 [sourcetreeapp](https://www.sourcetreeapp.com/)
+
+## Commit Message 格式
+
+目前规范使用较多的是 [Angular 团队的规范](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines), 继而衍生了 [Conventional Commits specification](https://conventionalcommits.org/). 很多工具也是基于此规范, 它的 message 格式如下:
+
+```text
+<type>(<scope>): <subject>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
+```
+
+我们通过 git commit 命令带出的 vim 界面填写的最终结果应该类似如上这个结构, 大致分为三个部分(使用空行分割):
+
+- 标题行: 必填, 描述主要修改类型和内容
+- 主题内容: 描述为什么修改, 做了什么样的修改, 以及开发的思路等等
+- 页脚注释: 放 Breaking Changes 或 Closed Issues
+
+分别由如下部分构成:
+
+### type
+
+- feat: 新特性
+- fix: bug修改
+- refactor: 不属于bug修复或者添加新特新的代码更改
+- perf：提高性能的代码修改
+- docs: 文档修改
+- style: 代码格式修改（空格，换行，双引号...）, 注意不是 css 修改
+- test: 测试用例修改
+- chore: 其他修改, 比如构建流程, 依赖管理
+- revert: 撤回
+
+### scope
+
+commit 影响的范围, 比如: route, component, utils, build...
+
+### subject: commit 的概述, 建议符合 [50/72 formatting](https://stackoverflow.com/questions/2290016/git-commit-messages-50-72-formatting)
+
+### body
+
+commit 具体修改内容, 可以分为多行, 建议符合 [50/72 formatting](https://stackoverflow.com/questions/2290016/git-commit-messages-50-72-formatting)
+
+### footer
+
+一些备注, 通常是 BREAKING CHANGE 或修复的 bug 的链接。
+
+这样一个符合规范的 commit message, 就好像是一份邮件
+
+## 常用命令
+
+```bash
+git add .                                将所有改动放进暂存区
+git commit -m "描述"                     提交并附带概要信息
+git pull                                 从远程仓库拉去代码
+git push                                 推送代码到远程仓库（master分支）
+```
+
+## 其余常用命令
+
+```bash
+git log                                  查看日志
+git log -p                               查看详细历史
+git log --stat                           查看简要统计
+git status                               查看工作区状态
+git branch 名称                          创建分支
+git checkout 名称                        切换分支
+git checkout -b 名称                     创建并切换到新分支
+git branch -d 名称                       删除该分支（不能删除当前所在的分支，不能删除没有合并到master上的分支）
+git branch -D 名称                       删除该分支（可以删除没有合并到master上的分支）
+git commit --amend                       对最新的一条commit进行修正
+git reset --hard HEAD^                   丢弃最新提交（未提交的内容会被擦掉）
+git reset --soft HEAD^                   丢弃最新提交（未提交的内容不会被擦掉）
+git revert HEAD^                         回到某个commit
+git rebase 目标基础点                     重新设置基础点
+git merge 名称                           将分支合并到head指向的分支
+git push origin localbranch              将代码推送到远程仓库的指定分支
+git push -d origin branchName            删除远程分支
+git stash                                暂存代码
+git stash pop                            弹出暂存代码
+git branch | grep ‘dev*’ | xargs git branch -d   删除分支名包含指定字符的分支
+```
+
+## 配置别名
+
+对常用的一些命令进行别名配置，提升自己的工作效率
+
+```bash
+git config --global alias.st status                 git status ==> git st
+git config --global alias.ci commit                 git commit ==> git ci
+git config --global alias.co checkout               git checkout ==> git co
+git config --global alias.br branch                 git barnch ==> git br
+git config --global alias.sh stash                  git stash ==> git sh
+git config --global alias.pop "stash pop"           git stash pop ==> git pop
+```
+
+## Fast-Forward
+
+Fast-Forward
+
+当前分支合并到另一分支时，如果没有分歧解决，就会直接移动文件指针。这个过程叫做 fastforward。
+
+开发一直在 master 分支进行，但忽然有一个新的想法，于是新建了一个develop的分支，并在其上进行一系列提交，完成时，回到 master分支，此时，master分支在创建develop分支之后并未产生任何新的commit。此时的合并就叫 fast forward。
+
+如果执行了 Fast Forward，开发者根本不会看到这个分支，就像在 master 直接 commit 一样。
+
+示例：
+
+1. 新建一个work tree，在master中做几次commit
+2. 新建develop的branch，然后再做多次commits
+
+此时的分支流图如下(gitx)：
+
+正常合并
+
+(master)$ git merge develop 
+Updating 5999848..7355122
+Fast-forward
+c.txt |    1 +
+d.txt |    1 +
+2 files changed, 2 insertions(+), 0 deletions(-)
+create mode 100644 c.txt
+create mode 100644 d.txt
+
+可以看出这是一次fast-forward式的合并，且合并完之后的视图为扁平状，看不出develop分支开发的任何信息。
+
+使用–no-ff进行合并
+
+—no-ff (no fast foward)，使得每一次的合并都创建一个新的commit记录。即使这个commit只是fast-foward，用来避免丢失信息。
+
+(master)$ git merge –no-ff develop
+Merge made by recursive.
+c.txt | 2 +-
+d.txt | 2 +-
+2 files changed, 2 insertions(+), 2 deletions(-)
+
+可以看出，使用no-ff后，会多生成一个commit 记录，并强制保留develop分支的开发记录（而fast-forward的话则是直接合并，看不出之前Branch的任何记录）。这对于以后代码进行分析特别有用，故有以下最佳实践。
+
+–no-ff，其作用是：要求git merge即使在fast forward条件下也要产生一个新的merge commit。此处，要求采用–no-ff的方式进行分支合并，其目的在于，希望保持原有“develop branches”整个提交链的完整性。Git – Fast Forward 和 no fast foward
+
+## git autocomplete commands
+
+### Zsh
+
+```shell
+echo 'autoload -Uz compinit && compinit' >> ~/.zshrc
+source ~/.zshrc
+```
+
+### Bash
+
+Download the necessary script to your Mac by using the following curl command:
+
+`curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash`
+
+Add the following line to the ~/.bash_profile file:
+
+```bash
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+```
+
+Make the Bash script executable by running the following command:
+
+`chmod +x ~/.git-completion.bash`
+
+Restart your Terminal application or run the following command:
+
+`source ~/.bash_profile`
