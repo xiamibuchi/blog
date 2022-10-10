@@ -434,6 +434,8 @@ optimization: {
 
 ## plugin
 
+[compiler 钩子](https://www.webpackjs.com/api/compiler-hooks/)
+
 插件组成：
 
 - 一个 JavaScript 函数或者类

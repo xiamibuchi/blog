@@ -51,3 +51,12 @@ button.addEventListener("click", () => {
   input.click();
 });
 ```
+
+## iOS 12 跨域 iframe 无法使用 IndexedDB
+
+iOS 12 跨域 iframe 使用 IndexedDB 会报错。
+
+```js
+SecutityError: IDBFactory.open() called in an invalid security context.
+```
+
