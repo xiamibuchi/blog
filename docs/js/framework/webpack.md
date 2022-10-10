@@ -1,30 +1,21 @@
 # Webpack
 
-- [webpack 官网](http://webpack.github.io/)
-- bundle `[ˈbʌndl]` 捆绑，收集，归拢，把…塞入
+- [webpack 官网](https://github.com/webpack/webpack)
 
 ```html
 1 webpack 将带有依赖项的各个模块打包处理后，变成了独立的浏览器能够识别的文件 2
 webpack 合并以及解析带有依赖项的模块
 ```
 
-### 概述
+## 概述
 
-> webpack 是一个现代 JavaScript 应用程序的模块打包器(module bundler)  
-> webpack 是一个**模块化方案（预编译）**  
-> webpack 获取具有依赖关系的模块，并生成表示这些模块的静态资源
+Entry：入口，Webpack 执行构建的第一步将从 Entry 开始，可抽象成输入。
+Module：模块，在 Webpack 里一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。
+Chunk：代码块，一个 Chunk 由多个模块组合而成，用于代码合并与分割。
+Loader：模块转换器，用于把模块原内容按照需求转换成新内容。
+Plugin：扩展插件，在 Webpack 构建流程中的特定时机会广播出对应的事件，插件可以监听这些事件的发生，在特定时机做对应的事情
 
-- 四个核心概念：**入口(entry)**、**输出(output)**、**加载器 loader**、**插件(plugins)**
-
-```html
-模块化方案: webpack 和
-requirejs（通过编写代码的方式将前端的功能，划分成独立的模块） browserify 是与
-webpack 相似的模块化打包工具 webpack 预编译
-(在开发阶段通过webpack进行模块化处理, 最终项目上线, 就不在依赖于 webpack)
-requirejs 线上的编译( 代码运行是需要依赖与 requirejs 的 )
-```
-
-### webpack 起源
+## webpack 起源
 
 - webpack 解决了现存模块打包器的两个痛点：
   - 1 **Code Spliting** - 代码分离
@@ -51,149 +42,19 @@ requirejs 线上的编译( 代码运行是需要依赖与 requirejs 的 )
 - [webpack 2.x+](https://webpack.js.org/)
 - [入门 Webpack，看这篇就够了](http://www.jianshu.com/p/42e11515c10f#)
 
-## 安装 webpack
+## 常用插件
 
-- 全局安装：`npm i -g webpack`
-  - 目的：在任何目录中通过 CLI 使用 `webpack` 这个命令
-- 项目安装：`npm i -D webpack`
-  - 目的：执行当前项目的构建
+### webpack-dev-server
 
-## webpack 的基本使用
-
-- 安装：`npm i -D webpack`
-- webpack 的两种使用方式：1 命令行 2 配置文件（`webpack.config.js`）
-
-### 命令行方式演示 - 案例：隔行变色
-
-- 1 使用`npm init -y` 初始 package.json，使用 npm 来管理项目中的包
-- 2 新建`index.html`和`index.js`，实现隔行变色功能
-- 3 运行`webpack src/js/index.js dist/bundle.js`进行打包构建，语法是：`webpack 入口文件 输出文件`
-- 4 注意：需要在页面中引入 输出文件 的路径（此步骤可通过配置 webpack 去掉）
-
-```js
-/*
-  src/js/index.js
-*/
-
-// 1 导入 jQuery
-import $ from "jquery";
-// 2 获取页面中的li元素
-const $lis = $("#ulList").find("li");
-// 3 隔行变色
-// jQuery中的 filter() 方法用来过滤jquery对象
-$lis.filter(":odd").css("background-color", "#def");
-$lis.filter(":even").css("background-color", "skyblue");
-```
-
-### 配置文件方式（推荐）
-
-```js
-/*
-  webpack.config.js
-
-  运行命令：webpack
-
-  entry 入口的配置说明：
-  https://doc.webpack-china.org/concepts/entry-points
-*/
-
-var path = require("path");
-module.exports = {
-  // 入口文件
-  entry: path.join(__dirname, "src/js/index.js"),
-
-  // 输出文件
-  output: {
-    path: path.join(__dirname, "dist"), // 输出文件的路径
-    filename: "bundle.js", // 输出文件的名称
-  },
-};
-```
-
-## webpack-dev-server
-
-- 安装：`npm i -D webpack-dev-server`
 - 作用：配合 webpack，创建开发环境（启动服务器、监视文件变化、自动编译、刷新浏览器等），提高开发效率
-- 注意：无法直接在终端中执行 `webpack-dev-server`，需要通过 `package.json` 的 `scripts` 实现
-- 使用方式：`npm run dev`
-
-```json
-"scripts": {
-  "dev": "webpack-dev-server"
-}
-```
-
-### 使用说明
-
 - 注意：`webpack-dev-server`将打包好的文件存储在内存中，提高编译和加载速度，效率更高
 - 注意：输出的文件被放到项目根目录中
   - 命令行中的提示：`webpack output is served from /`
   - 在`index.html`页面中直接通过 `/bundle.js` 来引入内存中的文件
 
-### 配置说明 - CLI 配置
+### html-webpack-plugin
 
-- `--contentBase` ：主页面目录
-  - `--contentBase ./`：当前工作目录
-  - `--contentBase ./src`：webpack-dev-server 启动的服务器，我们在浏览器中打开的时候会自动展示 ./src 中的 index.html 文件
-- `--open` ：自动打开浏览器
-- `--port` ：端口号
-- `--hot` ：热更新，只加载修改的文件(按需加载修改的内容)，而非全部加载
-
-```js
-/* package.json */
-/* 运行命令：npm run dev */
-
-{
-  "scripts": {
-    "dev": "webpack-dev-server --contentBase ./src --open --port 8888 --hot"
-  }
-}
-```
-
-### 配置说明 - webpack.config.js
-
-```js
-const webpack = require('webpack')
-
-devServer: {
-  // 服务器的根目录 Tell the server where to serve content from
-  // https://webpack.js.org/configuration/dev-server/#devserver-contentbase
-  contentBase: path.join(__dirname, './'),
-  // 自动打开浏览器
-  open: true,
-  // 端口号
-  port: 8888,
-
-  // --------------- 1 热更新 -----------------
-  hot: true
-},
-
-plugins: [
-  // ---------------- 2 启用热更新插件 ----------------
-  new webpack.HotModuleReplacementPlugin()
-]
-```
-
-## html-webpack-plugin 插件
-
-- 安装：`npm i -D html-webpack-plugin`
 - 作用：根据模板，自动生成 html 页面
-- 优势：页面存储在内存中，自动引入`bundle.js`、`css`等文件
-
-```js
-/* webpack.config.js */
-const htmlWebpackPlugin = require("html-webpack-plugin");
-
-// ...
-plugins: [
-  new htmlWebpackPlugin({
-    // 模板页面路径
-    template: path.join(__dirname, "./index.html"),
-    // 在内存中生成页面路径，默认值为：index.html
-    filename: "index.html",
-  }),
-];
-```
 
 # VUE
 
@@ -569,4 +430,85 @@ optimization: {
      }
   }
 }
+```
+
+## plugin
+
+插件组成：
+
+- 一个 JavaScript 函数或者类
+- 在函数原型（prototype）中定义一个注入compiler对象的apply方法。
+- apply函数中通过compiler插入指定的事件钩子，在钩子回调中拿到compilation对象
+- 使用compilation操纵修改webapack内部实例数据。
+- 异步插件，数据处理完后使用callback回调
+
+- Compiler 对象包含了 Webpack 环境所有的的配置信息，包含 options，hook，loaders，plugins 这些信息，这个对象在 Webpack 启动时候被实例化，它是全局唯一的，可以简单地把它理解为 Webpack 实例
+- Compilation 对象包含了当前的模块资源、编译生成资源、变化的文件等。当 Webpack 以开发模式运行时，每当检测到一个文件变化，一次新的 Compilation 将被创建。Compilation 对象也提供了很多事件回调供插件做扩展。通过 Compilation 也能读取到 Compiler 对象。
+
+```js
+// 获取output路径，也就是出口路径一般为dist
+// 绑定钩子事件 compiler.plugin('done', (stats) => {})
+// 编译文件，与原来文件对比，删除未匹配文件 （同时可以 options 设置要忽略的文件）
+const recursiveReadSync = require("recursive-readdir-sync");
+const minimatch = require("minimatch");
+const path = require("path");
+const fs = require("fs");
+const union = require("lodash.union");
+
+// 匹配文件
+function getFiles(fromPath, exclude = []) {
+  const files = recursiveReadSync(fromPath).filter(file =>
+    exclude.every(
+      excluded =>
+        !minimatch(path.relative(fromPath, file), path.join(excluded), {
+          dot: true
+        })
+    )
+  );
+  // console.log(files);
+  return files;
+}
+
+class WebpackCleanupPlugin {
+  constructor(options = {}) {
+    // 配置文件
+    this.options = options;
+  }
+  apply(compiler) {
+    // 获取output路径
+    const outputPath = compiler.options.output.path;
+    // 绑定钩子事件
+    compiler.plugin("done", stats => {
+      if (
+        compiler.outputFileSystem.constructor.name !== "NodeOutputFileSystem"
+      ) {
+        return;
+      }
+      // 获取编译完成 文件名
+      const assets = stats.toJson().assets.map(asset => asset.name);
+      console.log(assets);
+      // 多数组合并并且去重
+      const exclude = union(this.options.exclude, assets);
+      console.log(exclude);
+      // console.log('outputPath', outputPath);
+      // 获取未匹配文件
+      const files = getFiles(outputPath, exclude);
+      // const files = [];
+      console.log("files", files);
+      if (this.options.preview) {
+        // console.log('%s file(s) would be deleted:', files.length);
+        // 输出文件
+        files.forEach(file => console.log("    %s", file));
+        // console.log();
+      } else {
+        // 删除未匹配文件
+        files.forEach(fs.unlinkSync);
+      }
+      if (!this.options.quiet) {
+        // console.log('\nWebpackCleanupPlugin: %s file(s) deleted.', files.length);
+      }
+    });
+  }
+}
+module.exports = WebpackCleanupPlugin;
 ```
