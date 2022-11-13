@@ -15,11 +15,20 @@ Chunk：代码块，一个 Chunk 由多个模块组合而成，用于代码合�
 Loader：模块转换器，用于把模块原内容按照需求转换成新内容。
 Plugin：扩展插件，在 Webpack 构建流程中的特定时机会广播出对应的事件，插件可以监听这些事件的发生，在特定时机做对应的事情
 
-## webpack 起源
+## Symlinks
 
-- webpack 解决了现存模块打包器的两个痛点：
-  - 1 **Code Spliting** - 代码分离
-  - 2 **静态资源的模块化处理方案**
+webpack 的 loader 没办法处理软连接，所以传参的路径都要用 fs.realpathSync 处理成绝对连接
+
+```js
+{
+  include: path.resolve(__dirname, 'src')
+}
+// 改为
+
+{
+  include: fs.realpathSync(path.resolve(__dirname, 'src'))
+}
+```
 
 ### webpack 与模块
 
