@@ -69,3 +69,34 @@ ios_webkit_debug_proxy -f chrome-devtools://devtools/bundled/inspector.html
 ## Chrome
 
 https://developer.chrome.com/docs/devtools/overview/
+
+## vue
+
+线上调起 vue 浏览器插件
+
+```js
+(function() {
+    'use strict';
+    const all = document.querySelectorAll('*');
+    let el
+    for (let i = 0; i < all.length; i++) {
+        if (all[i].__vue__) {
+            el = all[i]
+            break
+        }
+    }
+    if (el) {
+        console.log('use vue', el);
+        var Vue = Object.getPrototypeOf(el.__vue__).constructor
+        while (Vue.super) {
+            Vue = Vue.super
+        }
+        Vue.config.devtools = true;
+        window.__VUE_DEVTOOLS_GLOBAL_HOOK__.Vue = Vue;
+        console.log(Vue.version);
+    }
+    else {
+        console.log('not use vue');
+    }
+})();
+```
