@@ -21,6 +21,14 @@ jobs:
         with:
           node-version: 18
           cache: pnpm
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          # Version of pnpm to install
+          version: 7.29.0
+          # Where to store pnpm files
+          dest: ~/setup-pnpm
+          # If specified, run `pnpm install`
+          # run_install: # optional, default is null
       - run: pnpm install --frozen-lockfile
       - name: Build
         run: pnpm run docs:build
