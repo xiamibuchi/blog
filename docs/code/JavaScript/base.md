@@ -1,4 +1,9 @@
-# base
+---
+title: JavaScript 基础
+editLink: true
+---
+
+# JavaScript 基础
 
 js 由三部分组成
 

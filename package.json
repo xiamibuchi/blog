@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "dev": "npm run docs:dev",
-    "build": "npm run docs:build",
-    "deploy": "gh-pages -d dist",
-    "deploy:build": "npm run build && gh-pages -d dist"
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs"
   },
   "author": "",
   "license": "ISC",
@@ -19,15 +19,15 @@
     "element-ui": "^2.15.6"
   },
   "devDependencies": {
-    "sass": "^1.32.6",
-    "sass-loader": "^10",
-    "vuepress": "^1.9.7"
+    "sass": "^1.54.0",
+    "vitepress": "1.0.0-alpha.49",
+    "vue": "^3.2.47"
   },
   "engines": {
     "node": ">=14",
     "pnpm": ">=7"
   },
   "volta": {
-    "node": "18.14.1"
+    "node": "18.14.2"
   }
 }
