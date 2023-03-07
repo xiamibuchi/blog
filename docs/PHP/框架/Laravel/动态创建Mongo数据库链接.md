@@ -1,4 +1,6 @@
 一般Laravel切换数据库链接只能在 config/database.php 中写好再调用，但如果数据库名不确定该如何动态创建呢？
+
+```php
 <?php
 
 namespace App\Utils;
@@ -34,3 +36,4 @@ class Mongo
                 return $collection;
         }
 }
+```

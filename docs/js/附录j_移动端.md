@@ -170,4 +170,4 @@ sass 写法
 }
 ```
 
-> 在ios standalone模式下，默认情况（页面无内容）下<html>高度并不会占满屏幕，会缺少导航栏高度。此时position: fixed; bottom: 0; 的元素会距离屏幕底部有一段距离（即导航栏高度），直到页面内容高度>=屏幕高度，将<html>撑开至页面高度。处理方式：给定页面容器min-height: 100vh; 撑开<html>
+> 在ios standalone模式下，默认情况（页面无内容）下 html 高度并不会占满屏幕，会缺少导航栏高度。此时position: fixed; bottom: 0; 的元素会距离屏幕底部有一段距离（即导航栏高度），直到页面内容高度>=屏幕高度，将 html 撑开至页面高度。处理方式：给定页面容器min-height: 100vh; 撑开 html 
