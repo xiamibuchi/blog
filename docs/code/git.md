@@ -223,7 +223,7 @@ git stash pop // 恢复的同时把 stash 内容也删除了。
 
 目前规范使用较多的是 [Angular 团队的规范](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines), 继而衍生了 [Conventional Commits specification](https://conventionalcommits.org/). 很多工具也是基于此规范, 它的 message 格式如下:
 
-```text
+```txt
 <type>(<scope>): <subject>
 <BLANK LINE>
 <body>
