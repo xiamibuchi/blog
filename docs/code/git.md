@@ -1,70 +1,43 @@
-# 基础
+# git
+
+常见的版本控制系统有：git（分布式）、svn（集中式）
 
 [git 官网](https://git-scm.com/)
 
-## 版本控制系统
-
-版本控制系统（Version Control System）：是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。版本控制系统不仅可以应用于软件源代码的文本文件，而且可以对任何类型的文件进行版本控制。
-
-常见的版本控制系统有：svn、cvs、git
-
-## 版本控制系统分类
-
-### 本地版本控制系统
-
-本地版本控制系统就是在一台机器上，记录版本的不同变化，保证内容不会丢失
-
-缺点：如果多人开发，每个人都在不同的系统和电脑上开发，没办法协同工作。
-
-### 集中式版本控制系統
-
-svn/cvs 都是集中式的版本控制系统
-
-1. 需要一个中央服务器来管理代码的的版本和备份
-2. 所有的用户电脑都是从中央服务器获取代码或者是将本地的代码提交到中央服务器
-3. 依赖与网络环境，如果连不上中央服务器，就无法提交和获取代码。
-4. 如果中央服务器宕机，所有人都无法工作。
-
-### 分布式版本控制系统
-
-git 是分布式的版本控制系统。
-
-1. 需要一台服务器作为代码仓库
-2. 每个用户电脑都是一个服务器（代码仓库），并且和代码仓库是镜像的，用户修改和获取代码都是提交到自己的服务器当中。
-3. 不需要网络就可以进行工作。
-4. 当连接网络时，用户可以选择将自己的服务器与代码仓库进行同步。
-
-## 命令
-
-### 配置
+## 配置
 
 ```bash
 # git config  user.name [username]
 # git config  user.email [email]
 
 # --global，配置全局参数
-git config  --global user.name $yourname
-git config  --global user.email $youremail
+git config  --global user.name [username]
+git config  --global user.email [email]
 
 # show config
 git config --list
-```
 
-- `git init`：初始化 git 仓库
-- `git status`：查看当前 git 仓库的状态。`git status -s`  简化日志输出格式
-- `git add 文件名`：将文件添加到 git 的暂存区。
-  - `git add .` / `git add --all` / `git add -A`：添加所有工作区内文件
-  - `git add a.txt b.txt`  同时添加两个文件
-  - `git add *.js`  添加当前目录下的所有 js 文件
-  - `git add dir/`添加 dir 目录下所有的文件
-- `git commit -m 'commit message'`：将文件由暂存区提交到仓库区
-- `git log`: 查看提交日志
-  - `git log --oneline` 简洁的日志信息
-  - `git reflog` 查看所有的提交变更日志
-- `git checkout [filename]`：暂存区的内容恢复到工作区
-- `git reset`：版本回退，将代码恢复到已经提交的某一个版本
-  - `git reset --hard 版本号` 将代码回退到某个指定的版本(版本号只要有前几位即可)
-  - `git reset --hard head~1` 将版本回退到上一次提交
+# 初始化
+git init
+
+# 查看状态
+git status
+
+# 从工作区添加到暂存区
+git add .
+git add --all
+git add a.text dir/
+
+# 从暂存区提交到仓库区
+git commit -m 'commit message'
+
+# 日志
+git log
+
+# 回退
+git reset --hard 版本号
+git reset --hard head~1 # 回退到上一次提交
+```
 
 ## .gitignore
 
@@ -73,15 +46,8 @@ git config --list
 - 在仓库的根目录创建一个`.gitignore`的文件，文件名是固定的。
 - 将不需要被 git 管理的文件路径添加到`.gitignore`中
 
-```bash
-*.sample 　　 # 忽略所有 .sample 结尾的文件
-!lib.sample 　　 # 但 lib.sample 除外
-/TODO 　　 # 仅仅忽略项目根目录下的 TODO 文件，不包括 subdir/TODO
-build/ 　　 # 忽略 build/ 目录下的所有文件
-doc/*.txt 　　# 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
-```
-
-把某些目录或文件加入忽略规则，按照上述方法定义后发现并未生效，原因是.gitignore 只能忽略那些原来没有被追踪的文件，如果某些文件已经被纳入了版本管理中，则修改 .gitignore 是无效的。那么解决方法就是先把本地缓存删除（改变成未被追踪状态），然后再提交：
+> 某些文件加入忽略规则但未生效，原因`.gitignore` 只能忽略没有被追踪的文件，如果某些文件已经被纳入了版本管理中，则修改 `.gitignore` 是无效的。
+> 解决方法：就是先把本地缓存删除（改变成未被追踪状态），再提交
 
 ```bash
 git rm -r --cached .
@@ -422,3 +388,25 @@ Make the Bash script executable by running the following command:
 Restart your Terminal application or run the following command:
 
 `source ~/.bash_profile`
+
+## use git in Android
+
+### Limitations
+
+- If Termux is closed in the background by Android, the cron service will stop updating your repository and you must open Termux again. Refer to instructions for your device model to disable the killing of certain background applications.
+- This may negatively affect your devices battery life. I'm not entirely sure yet. 
+
+### Setup
+
+- Install [Termux – Apps on Google Play](https://play.google.com/store/apps/details?id=com.termux&hl=en_GB&gl=US)
+- Open Termux, run `termux-change-repo`. Press the ↓ button and press spacebar to tick all repositories, then press enter to move to the next screen
+- Press ↓, then spacebar to tick the "Mirrors hosted by Albatross", press enter
+- `pkg update && pkg upgrade`
+- `pkg install git`
+- Run `cd storage/shared` (If you get permissions issues, refer to [this page](https://wiki.termux.com/wiki/Termux-setup-storage))
+- Run `git config --global user.email "<your_email>"`
+- Run `git config --global user.name "<The name you want on your commits>"`
+- Run `git clone <your repository>` 
+- With this setup so far, you will need to manually go into the folder in Termux and type `git pull`. If you'd like to create shortcuts to do this on your homescreen, see [this guide](https://renerocks.ai/blog/obsidian-encrypted-github-android/#shortcuts-for-committing-pushing-and-pulling)
+
+[Termux-setup-storage](https://wiki.termux.com/wiki/Termux-setup-storage)

@@ -40,3 +40,14 @@
 
 
 https://developers.google.com/search/docs/beginner/get-started
+
+## Google Search
+
+### Search Console
+
+[Search Console](https://developers.google.com/search/docs/monitor-debug/search-console-start?hl=zh-cn)
+
+Google 推出的一款工具，可以帮助任何拥有网站的用户了解其网站在 Google 搜索中的表现，以及如何改进网站在 Google 搜索上的呈现效果，使网站获得更相关的流量。
+
+
+Search Console 提供了与 Google 如何抓取网站、将网站编入索引和呈现网站相关的信息。这有助于网站所有者监控和优化其网站在 Google 搜索上的表现。
