@@ -1,6 +1,6 @@
 const js = [{
   text: "基础",
-  link: "/code/JavaScript/base"
+  link: "/code/js/base"
 }];
 
 const css = [];
