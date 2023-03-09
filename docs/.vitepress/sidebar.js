@@ -3,7 +3,12 @@ const js = [{
   link: "/code/js/base"
 }];
 
-const css = [];
+const css = [
+  {
+    text: "常用样式",
+    link: "/css/examples/"
+  }
+];
 
 export default [
   {
