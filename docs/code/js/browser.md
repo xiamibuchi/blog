@@ -122,19 +122,47 @@ http://dev-test.nemikor.com/web-storage/support-test/
 
 ## 页面渲染
 
-1. unload 上个页面
-2. 重定向（如果有）
-3. DNS、TCP
-4. 准备请求 document
-5. document 响应完成，开始解析 document
-6. 请求 js、css
-7. 解析
+[When does it start? - navigation start in webperf specs](https://docs.google.com/document/d/1XjmlMpbPgQkBpj_sayrXyiyyImPiL0wyueWfiuD7bk0/)
+
+1. unload 上个页面/新建
+2. 开启网络线程到发出一个完整的http请求
+   1. 缓存
+   2. 重定向（如果有）
+   3. DNS：查询得到 IP，用 dns-prefetch优化
+   4. TCP
+      - 3次握手规则简历连接，以及断开连接时候的4次挥手
+      - 同域名的并发限制（http1.0）
+   5. 请求 document，请求到达服务器。（均衡负载，安全拦截，服务器内部处理）
+   6. document 响应
+      1. http 头、响应码、报文结构、cookie：静态资源无需 cookie
+      2. 开始解析 document：下载、解析、渲染是并行的，但是并行有一定粒度，即当解析的字节数到达一个临界值时，就开始渲染，以达到渐进式渲染效果
+3. 请求 js、css
+4. 解析
    1. 构建 DOM tree
    2. 计算样式
    3. 布局计算
    4. 图层
    5. 绘制
-8.  dom 可以交互
+5.  dom 可以交互
+
+具体时长可以用 [performance](https://developer.mozilla.org/en-US/docs/Web/API/Performance) 进行监听。推荐使用 [sentry](https://github.com/getsentry/sentry-javascript) 和 [cloudflare](https://dash.cloudflare.com/) 进行页面监听。
+
+### 网络协议
+
+五层网络协议：
+
+1. 应用层（DNS，HTTP）：DNS解析成IP并发送http请求；
+2. 传输层（TCP，UDP）：建立TCP连接（3次握手）；
+3. 网络层（IP，ARP）：IP寻址；
+4. 数据链路层（PPP）：封装成帧；
+5. 物理层（利用物理介质传输比特流）：物理传输（通过双绞线，电磁波等各种介质）。
+
+完整的OSI七层框架，与五层网络协议相比，多了会话层、表示层。
+
+OSI七层框架：物理层、数据链路层、网络层、传输层、会话层、表示层、应用层
+
+- 表示层：主要处理两个通信系统中交互信息的表示方式，包括数据格式交换，数据加密和解密，数据压缩和终端类型转换等。
+- 会话层：具体管理不同用户和进程之间的对话，如控制登录和注销过程。
 
 ### 浏览器的一帧
 
