@@ -4,6 +4,8 @@
 
 [文档](https://developer.mozilla.org/zh-CN/docs/Web/Media/Autoplay_guide)
 
+[chromium](https://sites.google.com/a/chromium.org/dev/audio-video/autoplay)
+
 - 音频被静音或其音量设置为 0
 - 用户和网页已有交互行为（包括点击、触摸、按下某个键等等）
 - 网站已被列入白名单；如果浏览器确定用户经常与媒体互动，这可能会自动发生，也可能通过首选项或其他用户界面功能手动发生
