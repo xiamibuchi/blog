@@ -901,7 +901,7 @@ bar();
 
 #### Generator
 
-S6 定义的 generator 借鉴了 Python 的 generator 的概念和语法
+借鉴了 Python 的 generator 的概念和语法
 
 函数在执行过程中，如果没有遇到 return 语句（函数末尾如果没有 return，就是隐含的 return undefined;），控制权无法交回被调用的代码。
 
@@ -913,6 +913,9 @@ function* foo(x) {
   yield x + 2;
   return x + 3;
 }
+
+const gen = foo(1);
+gen.next(); // { "value": 2, "done": false }
 ```
 
 以斐波那契数列为例，它由 0，1 开头：
@@ -942,7 +945,6 @@ fib(10); // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
 函数只能返回一次，所以必须返回一个 Array。但是，如果换成 generator，就可以一次返回一个数，不断返回多次。用 generator 改写如下：
-
 
 ```js
 function* fib(max) {
@@ -1068,7 +1070,7 @@ const { defalut: alias = 123 } = { foo: "aaa", bar: "bbb" };
 alias; // 123
 ```
 
-## Strict Mode
+## Strict Mode "use strict"
 
 可以为一个单独的函数、或是一个文件切换到 strict 模式
 
