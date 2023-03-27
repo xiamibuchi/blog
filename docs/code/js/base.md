@@ -68,16 +68,10 @@ js 由三部分组成
 
 类型检测：
 
-- typeof: typeof 操作符可以确定一个变量是字符串、数值、布尔值，还是 undefined 。如果变量的值是一个对象或 null，则 typeof 操作符会返回"object"。
-  - "undefined"
-  - "string"
-  - "number"
-  - "bigint"
-  - "boolean"
-  - "object"
-  - "undefined"
-  - "symbol"
+- typeof: typeof 操作符可以确定一个变量是字符串、数值、布尔值，还是 undefined 。如果变量的值是一个对象或 null，则 typeof 操作符会返回"object"
 - instanceof：instanceof 的原理是基于原型链的查询，只要处于原型链中，判断永远为 true。当然，如果使用 instanceof 操作符检测基本类型的值，则该操作符始终会返回 false
+
+> typeof null === 'object'，null 的存储单元最后三位和 object 一样是 000。所以 typeof null 的结果被误判为Object。
 
 ### 基本数据结构
 
@@ -118,11 +112,63 @@ JavaScript 字符串是不可更改的，但是，可以基于对原始字符串
 
 #### Unicode
 
-JavaScript 允许采用 `\uxxxx` 形式表示一个字符，其中`xxxx`表示字符的 Unicode 码点
+Unicode 的产生是为了处理不同语言之间的编码不兼容问题。
+
+- `\xXX`: 其中`XX` 是介于 00 与 FF 之间的两位十六进制数，`\xXX` 表示 Unicode 编码为 XX 的字符。
+- `\uXXXX`: 其中 `XXXX` 是 4 位十六进制数，值介于 0000 和 FFFF 之间。此时，\uXXXX 便表示 Unicode 编码为 XXXX 的字符。
+- `\u{X…XXXXXX}`: 其中`X…XXXXXX` 是介于 0 和 10FFFF（Unicode 定义的最高码位）之间的 1 到 6 个字节的十六进制值。这种表示方式让我们能够轻松地表示所有现有的 Unicode 字符。
 
 ```js
-"\u0061"
-// "a"
+"\x7A"; // z
+"\u0061"; // "a"
+'\u{1F60D}'; // '😍'
+```
+
+JavaScript 新增了 String.fromCodePoint 和 str.codePointAt 这两个方法来处理代理对。它们本质上与 String.fromCharCode 和 str.charCodeAt 相同，但它们可以正确地处理代理对。
+
+代理对方案：
+
+Unicode采用了代理对（Surrogate Pair）来解决。
+
+他选择了 D800-DBFF编码范围作为前两个字节（utf-16高半区），DC00-DFFF作为后两个字节（utf-16低半区），组成一个四个字节表示的字符。
+
+当软件解析到Unicode连续4个字节的前两个是utf-16高半区，后两个是utf-16低半区，他就会把它识别为一个字符。如果配对失败，或者顺序颠倒则不显示。
+
+D800-DBFF可表示的编码范围有10位，DC00-DFFF可表示的编码范围也有10位，加起来就是20位（00000-FFFFF），这样就可以表示${2^{20}}$个字符。在可见的未来都不会出现不够使用的情况。
+
+而且代理对区间的编码不能单独映射字符，因此不会产生识别错误。
+
+处理字符映射：
+
+我们通过代理对解决了编码问题，但是对于人类阅读来说，“\uD800DC00”的表示方法还是太复杂。
+
+而且和基本的两字节表示的Unicode编码放在一起看，并不连续。
+
+因此Unicode将这20位的编码空间映射到了 10000-10FFFF，这样就能和2个字节 0000-FFFF表示的编码空间在一起连续表示了。
+
+所以\uD800\uDC00=\u10000，这也是我们部分语言调试下对emoji字符的码值显示会出现5个HEX的原因。
+
+代码识别：
+
+最后一个问题是编程语言识别问题，由于存在代理对，许多语言的string.length方法会将代理对中的字符（如emoji）个数识别成2个。这样会造成一些诸如光标定位，字符提取等方面的问题。
+
+对于JavaScript，ES6中有String.fromCodePoint()，codePointAt()，for…of循环等方式处理。
+
+```js
+String.fromCharCode(0x20BB7)
+// "ஷ"
+
+let s = '𠮷a';
+s.codePointAt(0) // 134071
+s.codePointAt(1) // 57271
+
+s.codePointAt(2) // 97
+
+for (let x of 'a\uD83D\uDC0A') {
+  console.log(x);
+}
+// 'a'
+// '\uD83D\uDC0A'
 ```
 
 #### 八进制转义
@@ -299,7 +345,7 @@ const s = new Set([iterable]);
 
 Set 内部判断两个值是否不同，使用的算法叫做“Same-value-zero equality”，它类似于精确相等运算符（===），主要的区别是 NaN 等于自身。
 
-### weakSet
+### WeakSet
 
 WeakSet 对象允许你将弱引用对象储存在一个集合中
 
@@ -427,17 +473,51 @@ date.toUTCString(); // Tue, 07 Mar 2023 07:06:51 GMT
 ECMAScript 还为保存数学公式和信息提供了一个公共位置，即 Math 对象。与我们在 JavaScript 直接编写的计算功能相比，Math 对象提供的计算功能执行起来要快得多。Math 对象中还提供了辅助完成这些计算的属性和方法。
 
 - Math.E：自然对数的底数，即常量 e 的值
-- Math.LN10：10 的自然对数
-- Math.LN2：2 的自然对数
-- Math.LOG2E：以 2 为底 e 的对数
-- Math.LOG10E：以 10 为底 e 的对数
 - Math.PI：π 的值
-- Math.SQRT1_2：1/2 的平方根（即 2 的平方根的倒数）
 - Math.SQRT2：2 的平方根
 - ceil()：向上取整
 - floor()：向下取整
 - round()：四舍五入取整
 - random()：返回大于等于 0 小于 1 的一个随机数，不包括 1
+
+#### Error
+
+```js
+new Error(message);
+
+const e1 = new Error("hello error");
+console.log(e1.toString()); // "Error: hello error
+```
+
+自定义 Error:
+
+```js
+class CustomError extends Error {
+  constructor(foo = "bar", ...params) {
+    // Pass remaining arguments (including vendor specific ones) to parent constructor
+    super(...params);
+
+    // Maintains proper stack trace for where our error was thrown (only available on V8)
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, CustomError);
+    }
+
+    this.name = "CustomError";
+    // Custom debugging information
+    this.foo = foo;
+    this.date = new Date();
+  }
+}
+
+try {
+  throw new CustomError("baz", "bazMessage");
+} catch (e) {
+  console.error(e.name); // CustomError
+  console.error(e.foo); // baz
+  console.error(e.message); // bazMessage
+  console.error(e.stack); // stacktrace
+}
+```
 
 #### 顶层对象
 
