@@ -15,7 +15,9 @@
 [Alternate versions of Casks](https://github.com/Homebrew/homebrew-cask-versions)
 [Other download options for Red Hat build of OpenJDK](https://developers.redhat.com/products/openjdk/install)
 
-```bash
+### Mac
+
+```zsh
 # install the latest Temurin jdk
 brew install --cask temurin
 
@@ -24,16 +26,22 @@ brew tap homebrew/cask-versions
 brew install --cask temurin17
 ```
 
+### linux
+
+```bash
+sudo yum install java-17-openjdk
+java -version
+```
+
+## develop tools
+
+IDE: [IDEA](https://www.jetbrains.com/idea/)
+
 ## JVM、JRE、JDK
 
 - JVM 是运行 Java 字节码的虚拟机,JVM 可以理解的代码就叫做字节码（即扩展名为 .class 的文件。
 - JDK 是 Java Development Kit 缩写，它是功能齐全的 Java SDK。它拥有 JRE 所拥有的一切，还有编译器（javac）和工具（如 javadoc 和 jdb）。它能够创建和编译程序。
 - JRE 是 Java 运行时环境。它是运行已编译 Java 程序所需的所有内容的集合，包括 Java 虚拟机（JVM），Java 类库，java 命令和其他的一些基础构件。但是，它不能用于创建新程序。
-
-## Oracle JDK 和 OpenJDK
-
-- OpenJDK 是一个参考模型并且是完全开源的，而 Oracle JDK 是 OpenJDK 的一个实现，并不是完全开源的
-- Oracle JDK 根据二进制代码许可协议获得许可，而 OpenJDK 根据 GPL v2 许可获得许可
 
 ## 编译与解释并存
 
@@ -43,39 +51,72 @@ Java 语言既具有编译型语言的特征，也具有解释型语言的特征
 
 ## 注释
 
-1. 单行注释
-1. 多行注释
-1. 文档注释
+- 单行注释
+- 多行注释
+- 文档注释
 
-> 代码的注释不是越详细越好。实际上好的代码本身就是注释，我们要尽量规范和美化自己的代码来减少不必要的注释。
-> 若编程语言足够有表达力，就不需要注释，尽量通过代码来阐述。
-
-## 关键字
-
-| 访问控制             | private  | protected  | public   |              |            |           |        |
-| -------------------- | -------- | ---------- | -------- | ------------ | ---------- | --------- | ------ |
-| 类，方法和变量修饰符 | abstract | class      | extends  | final        | implements | interface | native |
-|                      | new      | static     | strictfp | synchronized | transient  | volatile  |        |
-| 程序控制             | break    | continue   | return   | do           | while      | if        | else   |
-|                      | for      | instanceof | switch   | case         | default    |           |        |
-| 错误处理             | try      | catch      | throw    | throws       | finally    |           |        |
-| 包相关               | import   | package    |          |              |            |           |        |
-| 基本类型             | boolean  | byte       | char     | double       | float      | int       | long   |
-|                      | short    | null       | true     | false        |            |           |        |
-| 变量引用             | super    | this       | void     |              |            |           |        |
-| 保留字               | goto     | const      |          |              |            |           |        |
-
-## 修饰符
-
-访问控制修饰符 : default, public , protected, private
-非访问控制修饰符 : final, abstract, static, synchronized
+```java
+public class HelloWorld {
+    /*
+     * 文档注释
+     */
+    public static void main(String[] args) {
+        // 单行注释
+        /* 多行注释：
+           1. 注意点a
+           2. 注意点b
+         */
+        System.out.println("Hello World");
+    }
+}
+```
 
 ## 变量
 
-Java 中主要有如下几种类型的变量
-局部变量
-类变量（静态变量）
-成员变量（非静态变量
+- 局部变量：类方法中的变量
+  - 方法执行时创建，执行结束销毁
+  - 没有默认值，所以必须经过初始化，才可以使用
+  - 基本类型存储在栈；引用类型会把其对象存储在堆，而把这个对象的引用（指针）存储在栈
+  - 访问修饰符不能用于局部变量
+- 成员变量（实例变量）：类方法外的变量，没有 static 修饰
+  - 对象创建时创建，对象销毁时销毁
+  - 有默认值。数值型变量的默认值是 0，布尔型变量的默认值是 false，引用类型变量的默认值是 null
+  - 变量的值可以在声明时指定，也可以在构造方法中指定
+  - 实例变量存储在堆
+  - 访问修饰符可以用于实例变量
+- 类变量（静态变量）：类方法外的变量，用 static 修饰
+  - 第一次被访问时创建，程序结束时销毁
+  - 有默认值。数值型变量的默认值是 0，布尔型变量的默认值是 false，引用类型变量的默认值是 null
+  - 变量的值可以在声明时指定，也可以在构造方法中指定，还可在静态语句块中初始化
+  - 存储在静态存储
+  - 访问修饰符可以用于类变量
+  - 无论一个类创建了多少个对象，类只拥有类变量的一份拷贝
+  - 除了被声明为常量外很少使用
+
+### 变量修饰符
+
+访问控制修饰符 : 如果变量是实例变量或类变量，可以添加访问级别修饰符（public/protected/private）
+静态修饰符: 类变量，需要添加 static 修饰
+final: 变量使用 final 修饰符，表示这是一个常量，不能被修改
+
+```java
+// 常量
+final double PI = 3.1415927;
+```
+
+## 数据类型
+
+| **数据类型**            | **默认值**  |
+| :--------------------- | :--------- |
+| byte                   | 0          |
+| short                  | 0          |
+| int                    | 0          |
+| long                   | 0L         |
+| float                  | 0.0f       |
+| double                 | 0.0d       |
+| char                   | 'u0000'    |
+| String (or any object) | null       |
+| boolean                | false      |
 
 ## 枚举
 
@@ -114,25 +155,8 @@ add.invoke(list, "kl");
 System.out.println(list)
 ```
 
-## 常量
-
-`final double PI = 3.1415927;`
-
 常量名也可以用小写，但为了便于识别，通常使用大写字母表示常量
 
-## 类型
-
-| **数据类型**           | **默认值** |
-| :--------------------- | :--------- |
-| byte                   | 0          |
-| short                  | 0          |
-| int                    | 0          |
-| long                   | 0L         |
-| float                  | 0.0f       |
-| double                 | 0.0d       |
-| char                   | 'u0000'    |
-| String (or any object) | null       |
-| boolean                | false      |
 
 ### byte
 
