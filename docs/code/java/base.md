@@ -12,10 +12,11 @@
 
 ## install
 
-[Alternate versions of Casks](https://github.com/Homebrew/homebrew-cask-versions)
 [Other download options for Red Hat build of OpenJDK](https://developers.redhat.com/products/openjdk/install)
 
 ### Mac
+
+[Alternate versions of Casks](https://github.com/Homebrew/homebrew-cask-versions)
 
 ```zsh
 # install the latest Temurin jdk
