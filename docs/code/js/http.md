@@ -1,8 +1,6 @@
 # HTTP
 
-## 基础
-
-HTTP 协议，HyperText Transfer Protocol（超文本传输协议）
+HTTP，HyperText Transfer Protocol（超文本传输协议）
 
 1. 支持 C/S 模式。(C/S 客户端-服务器,B/S 浏览器-服务器)
 2. 基于 TCP/IP 通信协议来传递数据
@@ -13,7 +11,7 @@ HTTP 协议，HyperText Transfer Protocol（超文本传输协议）
 7. 无连接：限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接，可以节省传输时间。
 8. 无状态：协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就较快。
 
-### 历史版本
+## 历史版本
 
 - HTTP/1.0：传输内容格式不限制，增加 PUT、PATCH、HEAD、 OPTIONS、DELETE 命令
 - HTTP/1.1：持久连接(长连接，Keep-Alive)、节约带宽、HOST 域、管道机制、分块传输编码
@@ -28,22 +26,22 @@ HTTP 协议，HyperText Transfer Protocol（超文本传输协议）
 > TCP: Transmission Control Protocol 传输控制协议，负责应用软件（比如你的浏览器）和网络软件之间的通信
 > IP: Internet Protocol 网际协议，计算机用来相互识别的通信的一种机制
 
-- TCP/IP 协议族是按层次去划分的
+TCP/IP 协议族是按层次去划分的：
 
-  - 应用层，决定了向用户提供应用服务时通信的活动。
-    - FTP 协议（文件传输协议）
-    - DNS（域名协议）
-    - HTTP（超文本传输协议）
-  - 传输层，提供处于网络连接中两台计算机之间的数据传输
-    - TCP（传输控制协议）
-    - UDP（用户数据报协议）
-  - 网络层，用来处理在网络上流动的数据包
-    - IP 协议
-  - 数据链路层，用来处理连接网络的硬件设备
+- 应用层，决定了向用户提供应用服务时通信的活动。
+  - FTP 协议（文件传输协议）
+  - DNS（域名协议）
+  - HTTP（超文本传输协议）
+- 传输层，提供处于网络连接中两台计算机之间的数据传输
+  - TCP（传输控制协议）
+  - UDP（用户数据报协议）
+- 网络层，用来处理在网络上流动的数据包
+  - IP 协议
+- 数据链路层，用来处理连接网络的硬件设备
 
 ### 连接
 
-[RFC 793 - Transmission Control Protocol](https://tools.ietf.org/html/rfc793) 文档中非常清楚地定义了 TCP 中的连接是什么，我们简单总结一下：用于保证可靠性和流控制机制的信息，包括 Socket、Sequence Number以及Window Size 叫做连接。
+[RFC 793 - Transmission Control Protocol](https://tools.ietf.org/html/rfc793) 文档中非常清楚地定义了 TCP 中的连接是什么，我们简单总结一下：用于保证可靠性和流控制机制的信息，包括 Socket、Sequence Number 以及 Window Size 叫做连接。
 
 建立 TCP 连接就是通信的双方需要对上述的三种信息达成共识，连接中的一对 Socket 是由互联网地址标志符和端口组成的，窗口大小主要用来做流控制，最后的序列号是用来追踪通信发起方发送的数据包序号，接收方可以通过序列号向发送方确认某个数据包的成功接收。
 
@@ -57,7 +55,7 @@ TCP 连接使用三次握手的首要原因 —— 为了阻止历史的重复�
 2. 服务器收到客户端的 SYN 报文之后，会以自己的 SYN 报文作为应答，并且也是指定了自己的初始化序列号 SEO。同时会把客户端的 SEQ + 1（x + 1） 作为 ACK 的值，表示自己已经收到了客户端的 SYN，此时服务器处于 SYN_RECEIVED 的状态（SEQ=y，ACK=x+1）
 3. 客户端收到服务器的同步确认后，对服务器发送确认的确认，客户端进入已连接状态（ESTABLISHED）（SEQ=x+1， ACK=y+1，CTL=ACK）
 
-> SYN：同步序列编号（Synchronize Sequence Numbers）。是TCP/IP建立连接时使用的握手信号。
+> SYN：同步序列编号（Synchronize Sequence Numbers）。是 TCP/IP 建立连接时使用的握手信号。
 
 ### 四次挥手
 
@@ -456,7 +454,7 @@ function myFunction(xml) {
 
 ```js
 const evtSource = new EventSource("ssedemo.php");
-evtSource.onmessage = function(e) {
+evtSource.onmessage = function (e) {
   var newElement = document.createElement("li");
 
   newElement.innerHTML = "message: " + e.data;
@@ -483,17 +481,17 @@ WebSocket 是一种网络通信协议。
 ```js
 var ws = new WebSocket("wss://echo.websocket.org");
 
-ws.onopen = function(evt) {
+ws.onopen = function (evt) {
   console.log("Connection open ...");
   ws.send("Hello WebSockets!");
 };
 
-ws.onmessage = function(evt) {
+ws.onmessage = function (evt) {
   console.log("Received Message: " + evt.data);
   ws.close();
 };
 
-ws.onclose = function(evt) {
+ws.onclose = function (evt) {
   console.log("Connection closed.");
 };
 ```
@@ -540,7 +538,7 @@ switch (ws.readyState) {
 websocket 实例对象的属性，用于指定连接成功后的回掉函数
 
 ```js
-ws.onopen = function() {
+ws.onopen = function () {
   ws.send("Hello Server");
 };
 ```
@@ -548,7 +546,7 @@ ws.onopen = function() {
 如果要指定多个回调函数，可以使用 addEventListener 方法。
 
 ```js
-ws.addEventListener("open", function(event) {
+ws.addEventListener("open", function (event) {
   ws.send("Hello Server!");
 });
 ```
@@ -558,14 +556,14 @@ ws.addEventListener("open", function(event) {
 实例对象的 onclose 属性，用于指定连接关闭后的回调函数。
 
 ```js
-ws.onclose = function(event) {
+ws.onclose = function (event) {
   var code = event.code;
   var reason = event.reason;
   var wasClean = event.wasClean;
   // handle close event
 };
 
-ws.addEventListener("close", function(event) {
+ws.addEventListener("close", function (event) {
   var code = event.code;
   var reason = event.reason;
   var wasClean = event.wasClean;
@@ -578,12 +576,12 @@ ws.addEventListener("close", function(event) {
 实例对象的 onmessage 属性，用于指定收到服务器数据后的回调函数。
 
 ```js
-ws.onmessage = function(event) {
+ws.onmessage = function (event) {
   var data = event.data;
   // 处理数据
 };
 
-ws.addEventListener("message", function(event) {
+ws.addEventListener("message", function (event) {
   var data = event.data;
   // 处理数据
 });
@@ -596,13 +594,13 @@ ws.addEventListener("message", function(event) {
 ```js
 // 收到的是 blob 数据
 ws.binaryType = "blob";
-ws.onmessage = function(e) {
+ws.onmessage = function (e) {
   console.log(e.data.size);
 };
 
 // 收到的是 ArrayBuffer 数据
 ws.binaryType = "arraybuffer";
-ws.onmessage = function(e) {
+ws.onmessage = function (e) {
   console.log(e.data.byteLength);
 };
 ```
@@ -654,11 +652,11 @@ if (socket.bufferedAmount === 0) {
 ### onerror
 
 ```js
-socket.onerror = function(event) {
+socket.onerror = function (event) {
   // handle error event
 };
 
-socket.addEventListener("error", function(event) {
+socket.addEventListener("error", function (event) {
   // handle error event
 });
 ```

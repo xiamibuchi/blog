@@ -1,4 +1,4 @@
-# 简介
+# AST
 
 ## AST 基本结构
 
@@ -338,18 +338,18 @@ defineType("MemberExpression", {
   aliases: ["Expression", "LVal"],
   fields: {
     object: {
-      validate: assertNodeType("Expression")
+      validate: assertNodeType("Expression"),
     },
     property: {
       validate(node, key, val) {
         let expectedType = node.computed ? "Expression" : "Identifier";
         assertNodeType(expectedType)(node, key, val);
-      }
+      },
     },
     computed: {
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 });
 ```
 
@@ -363,7 +363,6 @@ t.memberExpression(
 );
 // object.property
 ```
-
 
 ### replaceWith 替换单个节点
 
@@ -414,7 +413,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-> 除非在处理动态字符串，否则不要使用该api
+> 除非在处理动态字符串，否则不要使用该 api
 
 ### 插入数组 insertBefore`/`insertAfter
 
@@ -484,7 +483,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### 生成UID
+### 生成 UID
 
 ```
 FunctionDeclaration(path) {
@@ -558,14 +557,12 @@ BinaryExpression(path) {
 
 ```
 BinaryExpression(path) {
-  path.get('left'); 
+  path.get('left');
 }
 Program(path) {
   path.get('body.0');
 }
 ```
-
-
 
 ### babel-generator
 
@@ -587,3 +584,7 @@ generator(ast, {}, code);
 // }
 ```
 
+## babel-types
+
+- `assignmentExpression` 生成赋值表达式。"a = b.c"
+- `memberExpression` 生成表达式 "a"、"a.b"
