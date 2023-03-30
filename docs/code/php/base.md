@@ -1,4 +1,4 @@
-# php
+# PHP 基础
 
 ** PHP，即"*PHP: Hypertext   Preprocessor*"，是一种被广泛应用的开源通用脚本语言，尤其适用于 Web 开发并可嵌入 HTML    中去。**
 
@@ -572,3 +572,139 @@ header('Content-type: text/css');
  print 'Text that will be displayed if the user hits cancel or ';  
  print 'enters wrong login data';  
 
+
+## composer
+
+### Linux/Mac：
+
+```shell
+wget https://dl.laravel-china.org/composer.phar -O /usr/local/bin/composer
+chmod a+x /usr/local/bin/composer
+```
+
+如遇权限不足，可添加 `sudo`。
+
+### Windows：
+
+1. 直接下载 composer.phar，地址：<https://dl.laravel-china.org/composer.phar>
+2. 把下载的 composer.phar 放到 PHP 安装目录
+3. 新建 composer.bat, 添加如下内容，并保存：
+
+```shell
+@php "%~dp0composer.phar" %*
+```
+
+### 查看当前版本
+
+```shell
+composer -V
+```
+
+### 升级版本
+
+```shell
+composer selfupdate
+```
+
+> 注意 `selfupdate` 升级命令会连接官方服务器，速度很慢。建议直接下载我们的 `composer.phar` 镜像，每天都会更新到最新。
+
+### 遇到问题？
+
+`composer` 命令后面加上 -vvv （是3个v）可以打印出调错信息，命令如下：
+
+```shell
+composer -vvv create-project laravel/laravel blog
+composer -vvv require psr/log
+```
+
+如果自己解决不了，或发现 BUG，可以在 [@扣丁禅师](https://laravel-china.org/users/12063) 的 GitHub 上 [创建 Issue](https://github.com/zencodex/composer/issues/new)。
+
+注意提问时请带上 -vvv 的输出，并且要求叙述清晰，第一次提问的同学请阅读 [关于提问的智慧](https://laravel-china.org/topics/2396/wisdom-of-asking-questions-chinese-version)。
+
+## Laravel
+
+### 动态创建 Monogo 数据库链接
+
+一般Laravel切换数据库链接只能在 config/database.php 中写好再调用，但如果数据库名不确定该如何动态创建呢？
+
+```php
+<?php
+
+namespace App\Utils;
+
+use MongoDB\Client;
+use Symfony\Component\VarDumper\VarDumper;
+
+$url = 'mongodb://127.0.0.1/';
+
+class Mongo
+{
+        static function find(string $url = 'mongodb://127.0.0.1/', string $database, string $collection) {
+                $collection = self::connect($url, $database, $collection);
+                $res = $collection->find();
+                if (!$res || is_array($res)) {
+                        return [];
+                }
+
+        $res = $res->toArray();
+        foreach ($res as &$ele) {
+                if (!$ele) {
+                        continue;
+                }
+                $ele = (array)$ele;
+        }
+        return $res;
+        }
+
+        private static function connect(string $url, string $database, string $collection) {
+                $client=new Client($url);
+                $db=$client->selectDatabase($database);
+                $collection=$db->selectCollection($collection);
+                return $collection;
+        }
+}
+```
+
+### 日志权限
+
+有时候 laravel 会出现无权限写日志的问题，我们可以按以下步骤去检查：
+
+运行 laravel 的 php-fpm 是什么用户，一般是 www，最好不要使用 root。
+应用目录中，storage/logs 有没有写权限。
+是否有运行 laravel 的脚本或者 crontab，或者supervisor，并且运行的用户和 php-fpm 的是一样的，一般是www。如果以其他身份（例如root）运行的时候 laravel 需要写日志并且创建了日志文件，那这个日志文件是属于其他用户的，www 用户无法写入。
+解决办法
+
+修改 php-fpm 的配置文件，修改 user 和 group 为 www。
+chmod a+w storage/logs
+运行 php artisan 时 su www &，crontab 添加执行用户 * www command
+
+
+
+日志权限的问题基本是出现在有使用 artisan 执行定时任务的情况下。查看日志文件的权限时发现，处理 Web 请求时的日志的用户为 nobody。
+
+```php
+$ ls -l
+total 12508
+-rw-r--r-- 1 nobody nobody    67680 Jan 14 23:59 laravel-2018-01-14.log
+-rw-r--r-- 1 nobody nobody    74680 Jan 15 23:59 laravel-2018-01-15.log
+-rw-r--r-- 1 nobody nobody    74680 Jan 16 23:59 laravel-2018-01-16.log
+```
+
+后来查了一下，使用 crontab 执行定时任务时，默认用户是 root，root 用户生成的文件，nobody 用户自然没有权限进行处理，出问题也就不奇怪了。又查了一下，使用 crontab 编辑定时任务列表的时候，是可以指定用户的，默认是编辑 root 用户的任务列表。
+
+> 执行 `crontab -e` 的时候添加 `-u` 选项，并追加相应的用户名，就可以为指定的用户编辑定时任务列表。
+
+```php
+$ crontab -u nobody -e
+
+* * * * * edit the command you want to execute for user nobody
+```
+
+> 执行 `crontab -u nobody -l` 选项可以查看 nobody 用户的任务列表。
+
+```php
+$ crontab -u nobody -l
+
+* * * * * command one for user nobody
+* * * * * command two for user nobody
+```
