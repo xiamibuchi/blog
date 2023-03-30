@@ -32,7 +32,7 @@ yarn config set registry https://registry.npmmirror.com
 
 ```
 # registry
-registry=https://nexus.tapsvc.com/repository/npm-taptap
+registry=https://registry.npmmirror.com
 
 # common cdn config
 sentrycli_cdnurl=https://npmmirror.com/mirrors/sentry-cli
