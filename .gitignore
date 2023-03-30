@@ -2,7 +2,8 @@
 dist
 
 # Cache
-docs/.vitepress/
+docs/.vitepress/cache
+.vitepress/cache
 
 # Dependency directories
 node_modules/

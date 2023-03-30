@@ -44,6 +44,15 @@ const OBJECT_URL = window.URL.createObjectURL(file);
 window.URL.revokeObjectURL(OBJECT_URL);
 ```
 
+```js
+const myURL = new URL('https://example.org');
+myURL.pathname = '/a/b/c';
+myURL.search = 'd=e&f=g';
+myURL.hash = '#hig';
+
+const myURL = url.parse(myURL.href);
+```
+
 ## FileReader
 
 对象允许 Web 应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，使用 File 或 Blob 对象指定要读取的文件或数据。
