@@ -1,22 +1,16 @@
 <template>
-  <div class="button">
-    <div class="button__content">hover me to change</div>
+  <div class="hover-border">
+    <div class="hover-border__content">hover to change</div>
   </div>
 </template>
 
-<script>
-  export default {
-    name: "border",
-  };
-</script>
-
-<style lang="scss" scoped>
-  .button {
+<style lang="scss">
+  .hover-border {
     width: 200px;
     height: 60px;
     position: relative;
     background: #fff;
-    margin: 30px auto;
+    margin: 0 auto;
     box-sizing: border-box;
     cursor: pointer;
     text-align: center;
@@ -44,15 +38,15 @@
       width: calc(100% + 2px);
       height: calc(100% + 2px);
     }
+  }
 
-    .button__content {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: 1;
-      background: #fff;
-    }
+  .hover-border__content {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    background: #fff;
   }
 </style>

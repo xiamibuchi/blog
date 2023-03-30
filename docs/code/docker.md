@@ -6,6 +6,15 @@ Docker 项目的目标是实现轻量级的操作系统虚拟化解决方案。 
 
 在 LXC 的基础上 Docker 进行了进一步的封装，让用户不需要去关心容器的管理，使得操作更为简便。容器是在操作系统层面上实现虚拟化，直接复用本地主机的操作系统，而传统方式则是在硬件层面实现。
 
+## 安装
+
+```bash
+# zsh
+brew install podman && echo 'alias docker=podman' >> ~/.zshrc && source ~/.zshrc
+# bash
+brew install podman && echo 'alias docker=podman' >> ~/.bashrc && source ~/.bashrc
+```
+
 ## Docker 组件
 
 The Docker Engine – Docker Engine 是一个基于虚拟化技术的轻量级并且功能强大的开源容器引擎管理工具。它可以将不同的 work flow 组合起来构建成你的应用。

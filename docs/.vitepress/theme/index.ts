@@ -1,4 +1,5 @@
 import DefaultTheme from 'vitepress/theme'
+import './custom.css'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import { ElForm, ElFormItem, ElInput, ElInputNumber, ElButton, ElRadio, ElSlider, ElColorPicker } from 'element-plus'

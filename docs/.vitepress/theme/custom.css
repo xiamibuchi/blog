@@ -1,0 +1,10 @@
+:root {
+  --vp-custom-block-details-border: transparent;
+  --vp-custom-block-details-bg: transparent;
+}
+
+.custom-block {
+  border: none;
+  background: transparent;
+  padding: 0;
+}

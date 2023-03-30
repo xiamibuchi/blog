@@ -1,4 +1,140 @@
-# 数据类型
+# Java 基础
+
+1995 年，Java 发布。
+
+1. 简单易学；
+2. 面向对象（封装，继承，多态）；
+3. 平台无关性（ Java 虚拟机实现平台无关性）；
+4. 可靠性；
+5. 安全性；
+6. 支持多线程
+7. 编译与解释并存；
+
+## install
+
+[Other download options for Red Hat build of OpenJDK](https://developers.redhat.com/products/openjdk/install)
+
+### Mac
+
+[Alternate versions of Casks](https://github.com/Homebrew/homebrew-cask-versions)
+
+```zsh
+# install the latest Temurin jdk
+brew install --cask temurin
+
+# install a specific java version
+brew tap homebrew/cask-versions
+brew install --cask temurin17
+```
+
+### linux
+
+```bash
+sudo yum install java-17-openjdk
+java -version
+```
+
+## develop tools
+
+IDE: [IDEA](https://www.jetbrains.com/idea/)
+
+## JVM、JRE、JDK
+
+- JVM 是运行 Java 字节码的虚拟机,JVM 可以理解的代码就叫做字节码（即扩展名为 .class 的文件。
+- JDK 是 Java Development Kit 缩写，它是功能齐全的 Java SDK。它拥有 JRE 所拥有的一切，还有编译器（javac）和工具（如 javadoc 和 jdb）。它能够创建和编译程序。
+- JRE 是 Java 运行时环境。它是运行已编译 Java 程序所需的所有内容的集合，包括 Java 虚拟机（JVM），Java 类库，java 命令和其他的一些基础构件。但是，它不能用于创建新程序。
+
+## 编译与解释并存
+
+高级编程语言按照程序的执行方式分为编译型和解释型两种。简单来说，编译型语言是指编译器针对特定的操作系统将源代码一次性翻译成可被该平台执行的机器码；解释型语言是指解释器对源程序逐行解释成特定平台的机器码并立即执行。比如，你想阅读一本英文名著，你可以找一个英文翻译人员帮助你阅读， 有两种选择方式，你可以先等翻译人员将全本的英文名著（也就是源码）都翻译成汉语，再去阅读，也可以让翻译人员翻译一段，你在旁边阅读一段，慢慢把书读完。
+
+Java 语言既具有编译型语言的特征，也具有解释型语言的特征，因为 Java 程序要经过先编译，后解释两个步骤，由 Java 编写的程序需要先经过编译步骤，生成字节码（\*.class 文件），这种字节码必须由 Java 解释器来解释执行。因此，我们可以认为 Java 语言编译与解释并存。
+
+## 注释
+
+- 单行注释
+- 多行注释
+- 文档注释
+
+```java
+public class HelloWorld {
+    /*
+     * 文档注释
+     */
+    public static void main(String[] args) {
+        // 单行注释
+        /* 多行注释：
+           1. 注意点a
+           2. 注意点b
+         */
+        System.out.println("Hello World");
+    }
+}
+```
+
+## 变量
+
+- 局部变量：类方法中的变量
+  - 方法执行时创建，执行结束销毁
+  - 没有默认值，所以必须经过初始化，才可以使用
+  - 基本类型存储在栈；引用类型会把其对象存储在堆，而把这个对象的引用（指针）存储在栈
+  - 访问修饰符不能用于局部变量
+- 成员变量（实例变量）：类方法外的变量，没有 static 修饰
+  - 对象创建时创建，对象销毁时销毁
+  - 有默认值。数值型变量的默认值是 0，布尔型变量的默认值是 false，引用类型变量的默认值是 null
+  - 变量的值可以在声明时指定，也可以在构造方法中指定
+  - 实例变量存储在堆
+  - 访问修饰符可以用于实例变量
+- 类变量（静态变量）：类方法外的变量，用 static 修饰
+  - 第一次被访问时创建，程序结束时销毁
+  - 有默认值。数值型变量的默认值是 0，布尔型变量的默认值是 false，引用类型变量的默认值是 null
+  - 变量的值可以在声明时指定，也可以在构造方法中指定，还可在静态语句块中初始化
+  - 存储在静态存储
+  - 访问修饰符可以用于类变量
+  - 无论一个类创建了多少个对象，类只拥有类变量的一份拷贝
+  - 除了被声明为常量外很少使用
+
+### 变量修饰符
+
+访问控制修饰符 : 如果变量是实例变量或类变量，可以添加访问级别修饰符（public/protected/private）
+静态修饰符: 类变量，需要添加 static 修饰
+final: 变量使用 final 修饰符，表示这是一个常量，不能被修改
+
+```java
+// 常量
+final double PI = 3.1415927;
+```
+
+## 数据类型
+
+| **数据类型**            | **默认值**  |
+| :--------------------- | :--------- |
+| byte                   | 0          |
+| short                  | 0          |
+| int                    | 0          |
+| long                   | 0L         |
+| float                  | 0.0f       |
+| double                 | 0.0d       |
+| char                   | 'u0000'    |
+| String (or any object) | null       |
+| boolean                | false      |
+
+## 枚举
+
+```js
+class FreshJuice {
+   enum FreshJuiceSize{ SMALL, MEDIUM , LARGE }
+   FreshJuiceSize size;
+}
+
+public class FreshJuiceTest {
+   public static void main(String[] args){
+      FreshJuice juice = new FreshJuice();
+      juice.size = FreshJuice.FreshJuiceSize.MEDIUM  ;
+   }
+}
+```
+
 
 ## 泛型
 
@@ -20,25 +156,8 @@ add.invoke(list, "kl");
 System.out.println(list)
 ```
 
-## 常量
-
-`final double PI = 3.1415927;`
-
 常量名也可以用小写，但为了便于识别，通常使用大写字母表示常量
 
-## 类型
-
-| **数据类型**           | **默认值** |
-| :--------------------- | :--------- |
-| byte                   | 0          |
-| short                  | 0          |
-| int                    | 0          |
-| long                   | 0L         |
-| float                  | 0.0f       |
-| double                 | 0.0d       |
-| char                   | 'u0000'    |
-| String (or any object) | null       |
-| boolean                | false      |
 
 ### byte
 
@@ -287,4 +406,3 @@ Java定义了位运算符，应用于整数类型(int)，长整型(long)，短�
 | <<     | 按位左移运算符。左操作数按位左移右操作数指定的位数。         | A << 2得到240，即 1111 0000    |
 | >>     | 按位右移运算符。左操作数按位右移右操作数指定的位数。         | A >> 2得到15即 1111            |
 | >>>    | 按位右移补零操作符。左操作数的值按右操作数指定的位数右移，移动得到的空位以零填充。 | A>>>2得到15即0000 1111         |
-

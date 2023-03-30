@@ -152,8 +152,8 @@ git 支持多种数据传输协议：
 
 注意：这些命令需要在 bash 中敲
 
-- 1 创建 SSH Key：`ssh-keygen -t rsa`
-- 2 在文件路径  `C:\用户\当前用户名\`  找到  `.ssh`  文件夹
+- 1 创建 SSH Key：`ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`
+- 2 在文件路径  `C:\用户\当前用户名\` / `/Users/you/.ssh/` 找到  `.ssh`  文件夹
 - 3 文件夹中有两个文件：
   - 私钥：`id_rsa`
   - 公钥：`id_rsa.pub`
