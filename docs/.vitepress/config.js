@@ -11,7 +11,7 @@ export default {
       { text: "部署", link: "/linux/docs/附录4_自动化部署" },
       {
         text: "about me",
-        link: "https://xiamibuchi.github.io/blog/",
+        link: "/about_me",
       },
     ],
     sidebar: sidebar,
