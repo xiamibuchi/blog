@@ -1,9 +1,5 @@
 # 简介
 
-## husky
-
-在提交前利用 git 提供的钩子进行 eslint 校验和 commit 信息的规范校验
-
 ## inquirer
 
 [Github](https://github.com/SBoudrias/Inquirer.js)

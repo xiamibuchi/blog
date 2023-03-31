@@ -6,7 +6,7 @@ const js = [{
 const css = [
   {
     text: "常用样式",
-    link: "/css/examples/"
+    link: "/code/css/examples/"
   }
 ];
 

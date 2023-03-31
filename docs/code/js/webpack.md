@@ -1,11 +1,9 @@
-# Webpack
+# webpack
 
 - [webpack 官网](https://github.com/webpack/webpack)
 
-```html
-1 webpack 将带有依赖项的各个模块打包处理后，变成了独立的浏览器能够识别的文件 2
-webpack 合并以及解析带有依赖项的模块
-```
+1. webpack 将带有依赖项的各个模块打包处理后，变成了独立的浏览器能够识别的文件
+2. webpack 合并以及解析带有依赖项的模块
 
 ## 概述
 

@@ -40,6 +40,12 @@ chromedriver_cdnurl=https://npmmirror.com/mirrors/chromedriver
 puppeteer_download_host=https://npmmirror.com/mirrors
 ```
 
+## 加密
+
+- 数学上的加密： https://nodejs.org/api/crypto.html
+- 压缩文件： https://nodejs.org/api/zlib.html
+- 文件系统交互： https://nodejs.org/api/fs.html
+
 ## 常用
 
 ### npm
