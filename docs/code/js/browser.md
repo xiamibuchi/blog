@@ -35,7 +35,7 @@ js 引擎包括 parser、解释器、gc 再加一个 JIT 编译器这几部分�
 
 #### Cookie
 
-1. 静态资源不会携带 cookie
+1. 对于传输部分少量不敏感数据，非常简明有效
 2. cookie 分持久级别和 session 级别
    1. 不设置过期时间，默认是会话级别的 cookie，浏览器关闭就失效
 3. cookie 一般用于和 session 通信
@@ -67,13 +67,31 @@ CSRF：不同域名下使用地址
 
 #### SessionStorage, LocalStorage
 
-SessionStorage, LocalStorage, Cookie 这三者都可以被用来在浏览器端存储数据，而且都是字符串类型的键值对。
-
-### Web Storage
-
-SessionStorage 和 LocalStorage 都是本地存储，不会被发送到服务器上。同时空间比 Cookie 大很多，一般支持 5-10M
+SessionStorage 和 LocalStorage 都是本地存储，不会被发送到服务器上。同时空间比 Cookie 大很多
 
 http://dev-test.nemikor.com/web-storage/support-test/
+
+#### indexDB
+
+IndexedDb 提供了一个结构化的、事务型的、高性能的 NoSQL 类型的数据库，包含了一组同步/异步 API
+
+#### PWA(Service Worker)
+
+作为一个独立的线程，是一段在后台运行的脚本，可使 web app 也具有类似原生 App 的离线使用、消息推送、后台自动更新等能力
+
+- 不能访问 DOM
+- 不能使用同步 API
+- 需要 HTTPS 协议
+
+## BFCache
+
+[back/forward cache](https://web.dev/bfcache/)，是浏览器为了在用户页面间执行前进后退操作时拥有更加流畅体验的一种策略。
+
+1. 前往新页面时，将当前页面的快照（JavaScript heap）存在内存中
+2. 点击后退按钮时，将页面直接从bfcache 中加载，节省了时间
+3. setTimeout、Promise 等任务都会保存状态并暂停，直到页面恢复
+
+测试页面是否可用：DevTools -> Application -> Back/forward cache -> Test back/forward cache
 
 ## 进程与线程
 
@@ -312,6 +330,37 @@ OSI七层框架：物理层、数据链路层、网络层、传输层、会话�
 7. 不要把某些 DOM 节点的属性值放在一个循环里当成循环的变量
    - 当你请求向浏览器请求一些 style 信息的时候，就会让浏览器 flush 队列，比如：
 8. 动画实现过程中，启用 GPU 硬件加速(3d)，为动画元素新建图层，提高动画元素的 z-index
+
+## 缓存
+
+1. Service Worker
+2. Memory Cache
+3. Disk Cache
+4. Push Cache（HTTP/2，只在会话（Session）中存在，一旦会话结束就被释放）
+5. 网络请求
+
+### 强缓存
+
+- Expires：服务端将资源失效的日期告知客户端，Expires 和 Cache-Control 同时存在的时候，Cache-Control 优先
+- cache-control（http 1.1）：
+
+  - max-age[秒] | 响应的最大 age 值
+  - no-cache | 缓存前必须先确认其有效性
+  - no-store | 不缓存请求或响应的任何内容
+  - private | 只有浏览器能缓存了，中间的代理服务器不能缓存
+
+### 协商缓存
+
+- last-modified（响应）& if-modified-since（请求）
+
+  - last-modified：服务器在响应请求时，会告诉浏览器资源的最后修改时间
+  - if-modified-since：浏览器再次请求服务器的时候，请求头会包含此字段，后面跟着在缓存中获得的最后修改时间。服务端收到此请求头发现有 if-Modified-Since，则与被请求资源的最后修改时间进行对比，如果一致则返回 304 和响应报文头，浏览器只需要从缓存中获取信息即可。
+
+  第一次请求资源时，资源在响应头中种入 last-modified 字段，并随着响应体一起存到缓存中
+
+* etag（响应） & if-None-Match（请求）
+  - etag：服务器响应请求时，通过此字段告诉浏览器当前资源在服务器生成的唯一标识（生成规则由服务器决定）
+  - if-None-Match：再次请求服务器时，浏览器的请求报文头部会包含此字段，后面的值为在缓存中获取的标识。服务器接收到次报文后发现 If-None-Match 则与被请求资源的唯一标识进行对比。
 
 ## requestAnimationFrame
 
