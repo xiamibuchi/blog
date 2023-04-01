@@ -8,7 +8,7 @@ export default {
   ignoreDeadLinks: true,
   themeConfig: {
     nav: [
-      { text: "部署", link: "/linux/docs/附录4_自动化部署" },
+      { text: "部署", link: "/code/deploy/github" },
       {
         text: "about me",
         link: "/about_me",
