@@ -10,6 +10,17 @@ Redis 不使用表，他的数据库不会预定义或者强制去要求用户�
 （2）内存数据库的工作模式：
 看完上述的描述，对于一些常见的 Redis 相关的面试题，是否有所认识了，例如：什么是 Redis、Redis 常见的数据结构类型有哪些、Redis 是如何进行持久化的等。
 
+## installation
+
+[installation](https://redis.io/docs/getting-started/installation/)
+
+```bash
+brew install redis
+
+# run
+redis-server
+```
+
 ## 快速
 
 Redis 采用的是基于内存的采用的是单进程单线程模型的 KV 数据库，由 C 语言编写，官方提供的数据是可以达到 100000+的 QPS（每秒内查询次数）。

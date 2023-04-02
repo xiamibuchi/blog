@@ -113,9 +113,9 @@ final double PI = 3.1415927;
 | short                  | 0          |
 | int                    | 0          |
 | long                   | 0L         |
-| float                  | 0.0f       |
-| double                 | 0.0d       |
-| char                   | 'u0000'    |
+| float                  | +0.0F      |
+| double                 | +0.0D      |
+| char                   | '\u0000'    |
 | String (or any object) | null       |
 | boolean                | false      |
 
@@ -357,9 +357,7 @@ public class Test {
 为了实现一些其他的功能，Java 也提供了许多非访问修饰符。
 
 - static 修饰符，用来声明独立于对象的静态变量，无论一个类实例化多少对象，它的静态变量只有一份拷贝
-
 - final 修饰符，用来修饰类、方法和变量，final 修饰的类不能够被继承，修饰的方法不能被继承类重新定义，修饰的变量为常量，是不可修改的
-
 - abstract 修饰符，用来创建抽象类和抽象方法，抽象类不能用来实例化对象，声明抽象类的唯一目的是为了将来对该类进行扩充
 
   - **抽象方法**
