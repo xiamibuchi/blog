@@ -1,8 +1,49 @@
 # mobile
 
-## js open App
+## deep linking
 
-url schema
+### URI Schemes
+
+`scheme://path?query`
+
+iOS 9 前常用的方式
+
+问题：
+  - 当要被唤起的app没有安装时，这个链接无用
+  - 多个相同 scheme 无法区分
+
+### 其他 deep linking
+
+Android：
+
+- [Deep links](https://developer.android.com/training/app-links/deep-linking)
+- [App Link](https://developer.android.google.cn/training/app-links)
+
+相较于 Deep Link，App Link：
+
+1. 不支持 custom scheme，仅可为 HTTP/HTTPS
+2. 网页需要通过指定[digital-asset-links](https://developers.google.com/digital-asset-links/v1/getting-started)指向该网站网址的链接在指定应用打开，即 assetlinks.json（需通过 robots.txt 或其他手段允许抓取改文件）
+3. 可直接唤起 app，Deep Links 会显示 dialog 让用户选择打开 web 还是 app
+
+iOS：
+
+- ：[Universal Link](https://developer.apple.com/ios/universal-links/)(>=iOS 9)
+  - 本身是 HTTP/HTTPS 链接，兼容 web 和 app 状态
+  - app 已安装，app就会立即启动；未安装时，默认地重定向到 App Store 的 app 页
+
+### Deferred deep linking
+
+浏览器打开 deep linking 时未安装对应 app，用户完成安装后跳转到 deep linking 对应的 app 页面
+
+方式：
+
+1. 剪切板
+2. 通过埋点信息上报，匹配用户打开地址
+3. Google Play 上的应用可直接配置
+
+### 一些系统的特殊实现
+
+[vivo 直达应用服务（deep link）](https://dev.vivo.com.cn/documentCenter/doc/216#w2-77940301)
 
 ### 常用软件 uri
 
@@ -19,10 +60,6 @@ url schema
   - 扫一扫：mqqapi://qrcode/scan_qrcode?version=1&src_type=app
 
 [捷径社区](https://sharecuts.cn/app/414478124)
-
-### url schema
-
-[vivo 直达应用服务（deep link）](https://dev.vivo.com.cn/documentCenter/doc/216#w2-77940301)
 
 ## 常用
 
