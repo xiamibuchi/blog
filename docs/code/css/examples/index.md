@@ -1,3 +1,4 @@
 # 常用样式
 
-[hover](./hover)
+- [hover](./hover)
+- [loading](./loading)

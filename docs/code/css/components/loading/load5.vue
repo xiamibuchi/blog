@@ -40,12 +40,3 @@
 <template>
   <div class="load-container"></div>
 </template>
-
-<script>
-export default {
-  name: "load5",
-  data() {
-    return {};
-  }
-};
-</script>

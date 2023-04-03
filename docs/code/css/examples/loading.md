@@ -1,10 +1,16 @@
 <script setup>
 import LoadingBox from '../components/loading/LoadingBox.vue'
+import LoadingCircle from '../components/loading/LoadingCircle.vue'
+import LoadingCircleFull from '../components/loading/LoadingCircleFull.vue'
+import load4 from '../components/loading/load4.vue'
+import load5 from '../components/loading/load5.vue'
+import load6 from '../components/loading/load6.vue'
+import load7 from '../components/loading/load7.vue'
 </script>
 
 # loading
 
-## 旋转方块
+## LoadingBox
 
 <LoadingBox />
 
@@ -89,29 +95,34 @@ import LoadingBox from '../components/loading/LoadingBox.vue'
 ```
 :::
 
-## loading_2
+## LoadingCircle
 
-<loading-load2 />
+<LoadingCircle />
 
-```html
-<svg id="load" x="0px" y="0px" viewBox="0 0 150 150">
-  <circle id="loading-inner" cx="75" cy="75" r="60" />
-</svg>
-```
+::: details code
+```vue
+<template>
+  <div class="loading-circle-container">
+    <svg id="loading-circle" x="0px" y="0px" viewBox="0 0 150 150">
+      <circle id="loading-circle-inner" cx="75" cy="75" r="60" />
+    </svg>
+  </div>
+</template>
 
-```scss
-.load-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  height: 150px;
-}
+<style scoped lang="scss">
+  .loading-circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    height: 150px;
+  }
 
-#load {
-  width: 75px;
-  animation: loading 3s linear infinite;
-  #loading-inner {
+  #loading-circle {
+    width: 75px;
+    animation: loading-circle 3s linear infinite;
+  }
+  #loading-circle-inner {
     stroke: {
       dashoffset: 0;
       dasharray: 300;
@@ -119,106 +130,113 @@ import LoadingBox from '../components/loading/LoadingBox.vue'
       miterlimit: 10;
       linecap: round;
     }
-    animation: loading-circle 2s linear infinite;
+    animation: loading-circle-inner 2s linear infinite;
     stroke: #00adb5;
     fill: transparent;
   }
-}
 
-@keyframes loading {
-  0% {
-    transform: rotate(0);
+  @keyframes loading-circle {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
-  100% {
-    transform: rotate(360deg);
+  @keyframes loading-circle-inner {
+    0% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: -600;
+    }
   }
-}
-@keyframes loading-circle {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -600;
-  }
-}
+</style>
 ```
+:::
 
-> <a href="https://codepen.io/pedox/pen/PwQezw" target="_blank">https://codepen.io/pedox/pen/PwQezw</a>
+## LoadingCircleFull
 
-## loading_3
+<LoadingCircleFull />
 
-<loading-load3 />
+::: details code
+```vue
+<template>
+  <div class="loading-circle-full-container">
+    <div class="loading-circle-full"></div>
+  </div>
+</template>
 
-```html
-<div class="load"></div>
-```
-
-```scss
-.load {
-  width: 50px;
-  height: 50px;
-  margin: 0 auto;
-  position: relative;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: rgba(0, 169, 178, 0.2);
-  &::before {
-    content: "";
-    width: 70px; // 50 * √2
-    height: 70px; // 50 * √2
-    background-color: #00adb5;
-    position: absolute;
-    left: 50%;
-    bottom: 50%;
-    z-index: 1;
-    transform-origin: left bottom;
-    animation: rotate 1.5s infinite linear;
-  }
-  &::after {
-    content: "";
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    background-color: #fff;
-    z-index: 2;
+<style lang="scss">
+  .loading-circle-full {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    position: relative;
     border-radius: 50%;
+    overflow: hidden;
+    background-color: rgba(0, 169, 178, 0.2);
+    &::before {
+      content: "";
+      width: 150px;
+      height: 150px;
+      background-color: rgb(0, 169, 178);
+      position: absolute;
+      left: 50%;
+      bottom: 50%;
+      z-index: 1;
+      transform-origin: left bottom;
+      animation: rotate 1.5s infinite linear;
+    }
+    &::after {
+      content: "";
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      background-color: #fff;
+      z-index: 2;
+      border-radius: 50%;
+    }
   }
-}
-@keyframes rotate {
-  0% {
-    transform: rotate(0);
+  @keyframes rotate {
+    0% {
+      transform: rotate(0);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
-  50% {
-    transform: rotate(180deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+</style>
 ```
+:::
 
 ## loading_4
 
-<loading-load4/>
+<load4 />
 
-```html
-<div class="load-container">
-  <div class="container">
-    <div class="boxLoading boxLoading1"></div>
-    <div class="boxLoading boxLoading2"></div>
-    <div class="boxLoading boxLoading3"></div>
-    <div class="boxLoading boxLoading4"></div>
-    <div class="boxLoading boxLoading5"></div>
+::: details code
+```vue
+<template>
+  <div class="load-container">
+    <div class="container">
+      <div class="boxLoading boxLoading1"></div>
+      <div class="boxLoading boxLoading2"></div>
+      <div class="boxLoading boxLoading3"></div>
+      <div class="boxLoading boxLoading4"></div>
+      <div class="boxLoading boxLoading5"></div>
+    </div>
   </div>
-</div>
-```
+</template>
 
-```scss
+<style scoped lang="scss">
 .load-container {
   height: 150px;
   display: flex;
@@ -279,17 +297,17 @@ import LoadingBox from '../components/loading/LoadingBox.vue'
     -webkit-transform: scaleY(1);
   }
 }
+</style>
 ```
+:::
 
 ## loading_5
 
-<loading-load5/>
+<load5 />
 
-```html
-<div class="load-container"></div>
-```
-
-```scss
+::: details code
+```vue
+<style scoped lang="scss">
 .load-container {
   width: 60px;
   height: 60px;
@@ -326,21 +344,21 @@ import LoadingBox from '../components/loading/LoadingBox.vue'
     -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
   }
 }
+</style>
+
+<template>
+  <div class="load-container"></div>
+</template>
 ```
+:::
 
 ## loading_6
 
-<loading-load6/>
+<load6 />
 
-```html
-<div class="load-container">
-  <div class="load load1"></div>
-  <div class="load load2"></div>
-  <div class="load"></div>
-</div>
-```
-
-```scss
+::: details code
+```vue
+<style scoped lang="scss">
 .load-container {
   margin: 50px auto;
   width: 150px;
@@ -349,6 +367,7 @@ import LoadingBox from '../components/loading/LoadingBox.vue'
     width: 20px;
     height: 20px;
     background-color: #00adb5;
+
     border-radius: 100%;
     display: inline-block;
     -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
@@ -390,36 +409,25 @@ import LoadingBox from '../components/loading/LoadingBox.vue'
     -webkit-transform: scale(1);
   }
 }
+</style>
+
+<template>
+  <div class="load-container">
+    <div class="load load1"></div>
+    <div class="load load2"></div>
+    <div class="load"></div>
+  </div>
+</template>
 ```
+:::
 
 ## loading_7
 
-<loading-load7/>
+<load7 />
 
-```html
-<div class="load-container">
-  <div class="container container1">
-    <div class="circle circle1"></div>
-    <div class="circle circle2"></div>
-    <div class="circle circle3"></div>
-    <div class="circle circle4"></div>
-  </div>
-  <div class="container container2">
-    <div class="circle circle1"></div>
-    <div class="circle circle2"></div>
-    <div class="circle circle3"></div>
-    <div class="circle circle4"></div>
-  </div>
-  <div class="container container3">
-    <div class="circle circle1"></div>
-    <div class="circle circle2"></div>
-    <div class="circle circle3"></div>
-    <div class="circle circle4"></div>
-  </div>
-</div>
-```
-
-```scss
+::: details code
+```vue
+<style scoped lang="scss">
 .load-container {
   margin: 50px auto;
   width: 48px;
@@ -537,8 +545,35 @@ import LoadingBox from '../components/loading/LoadingBox.vue'
     -webkit-transform: scale(1);
   }
 }
+</style>
+
+<template>
+  <div class="load-container">
+    <div class="container container1">
+      <div class="circle circle1"></div>
+      <div class="circle circle2"></div>
+      <div class="circle circle3"></div>
+      <div class="circle circle4"></div>
+    </div>
+    <div class="container container2">
+      <div class="circle circle1"></div>
+      <div class="circle circle2"></div>
+      <div class="circle circle3"></div>
+      <div class="circle circle4"></div>
+    </div>
+    <div class="container container3">
+      <div class="circle circle1"></div>
+      <div class="circle circle2"></div>
+      <div class="circle circle3"></div>
+      <div class="circle circle4"></div>
+    </div>
+  </div>
+</template>
 ```
+:::
 
 ## 相关项目
 
-- <a href="https://epic-spinners.epicmax.co/#/" target="_blank">Epic Spinners</a>
+- [Epic Spinners](https://epic-spinners.epicmax.co)
+- [CSS Loaders](https://loading.io/css/)
+- [CSS loaders and Spinners](https://cssloaders.github.io/)

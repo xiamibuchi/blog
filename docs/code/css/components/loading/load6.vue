@@ -58,12 +58,3 @@
     <div class="load"></div>
   </div>
 </template>
-
-<script>
-export default {
-  name: "load6",
-  data() {
-    return {};
-  }
-};
-</script>

@@ -1,3 +1,15 @@
+<template>
+  <div class="load-container">
+    <div class="container">
+      <div class="boxLoading boxLoading1"></div>
+      <div class="boxLoading boxLoading2"></div>
+      <div class="boxLoading boxLoading3"></div>
+      <div class="boxLoading boxLoading4"></div>
+      <div class="boxLoading boxLoading5"></div>
+    </div>
+  </div>
+</template>
+
 <style scoped lang="scss">
 .load-container {
   height: 150px;
@@ -60,24 +72,3 @@
   }
 }
 </style>
-
-<template>
-  <div class="load-container">
-    <div class="container">
-      <div class="boxLoading boxLoading1"></div>
-      <div class="boxLoading boxLoading2"></div>
-      <div class="boxLoading boxLoading3"></div>
-      <div class="boxLoading boxLoading4"></div>
-      <div class="boxLoading boxLoading5"></div>
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  name: "load4",
-  data() {
-    return {};
-  }
-};
-</script>

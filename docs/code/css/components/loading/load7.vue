@@ -140,12 +140,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: "load7",
-  data() {
-    return {};
-  }
-};
-</script>
