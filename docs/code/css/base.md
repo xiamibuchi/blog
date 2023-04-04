@@ -127,13 +127,50 @@ a:not([href]):not([target]):not([rel]) {
 
 ## color
 
+```css
+/* 色彩关键字 */
+p {
+  color: red;
+}
+
+/* 透明 */
+p {
+  background-color: transparent;
+}
+
+/* currentColor */
+p {
+  background-color: currentColor;
+}
+
+/* hsl and hsla */
+#p1 {
+  /* green */
+  background-color: hsl(120, 100%, 50%);
+}
+#p2 {
+   /* light green with opacity */
+  background-color: hsla(120, 100%, 75%, 0.3);
+}
+```
+
+- 色彩关键字
+- transparent
+- currentColor
+- rgb 和 rgba
+- hsl: hsl(120, 100%, 50%) green
+- hsla: hsla(120, 100%, 50%, 0.3)
+- hex
+  - hexadecimal colror: #ff0000
+  - hexadecimal colror with transparency: #ff000080
+
+详细可以查看 [./color]
+
+### color
+
 ### filter
 
 增加滤镜，可用于实现网页置灰等操作
-
-### currentColor
-
-当前的 color 属性值
 
 ## 布局
 
