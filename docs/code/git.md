@@ -119,6 +119,9 @@ git commit -m 'update .gitignore'
 - 作用：将本地仓库中代码提交到远程仓库
 - `git push 仓库地址 master` 在代码提交到远程仓库，注意 master 分支必须写，不能省略
 - 例子：`git push git@github.com:hucongcong/test.git master` 如果第一次使用，需要填写 github 的用户名和密码
+- `git push origin <本地分支名>:<远程分支名>` 将本地当前分支 推送到 远程指定分支上
+- `git push origin <本地分支名>` 将本地当前分支 推送到 与本地当前分支同名的远程分支上
+- `git push -u origin <本地分支名>` 将本地分支与远程同名分支相关联并推送
 
 ### git pull
 

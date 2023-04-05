@@ -1,6 +1,5 @@
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
-import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import { ElForm, ElFormItem, ElInput, ElInputNumber, ElButton, ElRadio, ElSlider, ElColorPicker } from 'element-plus'
 
@@ -8,7 +7,6 @@ export default {
   ...DefaultTheme,
   enhanceApp(ctx) {
     DefaultTheme.enhanceApp(ctx)
-    ctx.app.use(ElementPlus)
     ctx.app.component(ElForm.name, ElForm)
     ctx.app.component(ElFormItem.name, ElFormItem)
     ctx.app.component(ElInput.name, ElInput)

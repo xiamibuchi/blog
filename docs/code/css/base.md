@@ -143,26 +143,39 @@ p {
   background-color: currentColor;
 }
 
+/* HSL */
 /* hsl and hsla */
-#p1 {
+p {
   /* green */
   background-color: hsl(120, 100%, 50%);
 }
-#p2 {
-   /* light green with opacity */
+p {
+  /* light green with opacity */
   background-color: hsla(120, 100%, 75%, 0.3);
 }
+
+/* RGB */
+
+p {
+  /* green */
+  background-color: rgb(0, 250, 0);
+}
+p {
+  /* light green with opacity */
+  background-color: rgb(0, 250, 0, 0.3);
+}
+
+/* hexadecimal colror */
+p {
+  color: #ffffff;
+}
+/* hexadecimal colror with transparency */
+p {
+  background-color: #0000ff80;
+} /* 带透明度的蓝色 */
 ```
 
-- 色彩关键字
-- transparent
-- currentColor
 - rgb 和 rgba
-- hsl: hsl(120, 100%, 50%) green
-- hsla: hsla(120, 100%, 50%, 0.3)
-- hex
-  - hexadecimal colror: #ff0000
-  - hexadecimal colror with transparency: #ff000080
 
 详细可以查看 [./color]
 
