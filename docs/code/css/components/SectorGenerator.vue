@@ -41,7 +41,7 @@
         :min="20"
         :max="150"
         show-input
-        input-size="mini"
+        input-size="small"
       ></el-slider>
     </div>
     <div class="w-50">
@@ -52,7 +52,7 @@
         :min="1"
         :max="359"
         show-input
-        input-size="mini"
+        input-size="small"
       ></el-slider>
     </div>
     <div class="w-50">
@@ -63,7 +63,7 @@
         :min="0"
         :max="360"
         show-input
-        input-size="mini"
+        input-size="small"
       ></el-slider>
     </div>
     <div class="w-50">
