@@ -1,5 +1,24 @@
 # mobile
 
+## 键盘
+
+### [enterkeyhint](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/enterkeyhint)
+
+用于定义虚拟键盘右下角按钮展示的内容
+
+- enter
+- done
+- go
+- next
+- previous
+- search
+- send
+
+```html
+<!-- 虚拟键盘右下角按钮展示“搜索” -->
+<textarea enterkeyhint="search" />
+```
+
 ## deep linking
 
 ### URI Schemes
