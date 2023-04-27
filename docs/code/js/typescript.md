@@ -1,6 +1,6 @@
 # TypeScript
 
-TypeScript 是 JavaScript 的一个超集，主要提供了类型系统和对 ES6 的支持。
+TypeScript 是 JavaScript 的一个超集
 
 ## 优势
 
@@ -15,21 +15,14 @@ TypeScript 是 JavaScript 的一个超集，主要提供了类型系统和对 ES
 
 ## 类型
 
-### 原始数据
-
 - boolean
 - number
 - string
 - Void
 - Null 和 Undefined
+- any
 
 > 与 void 的区别是，undefined 和 null 是所有类型的子类型。也就是说 undefined 类型的变量，可以赋值给 number 类型的变量
-
-### any
-
-任意值（Any）用来表示允许赋值为任意类型，声明一个变量为任意值之后，对它的任何操作，返回的内容的类型都是任意值
-
-变量如果在声明的时候，未指定其类型，那么它会被识别为任意值类型
 
 ### 类型推论
 

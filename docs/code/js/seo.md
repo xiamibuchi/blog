@@ -1,3 +1,49 @@
+# SEO
+
+https://moz.com/learn/seo/on-site-seo
+
+```html
+<title></title>
+<meta name="keywords" content="science,education,culture,politics,ecnomics，relationships,entertaiment,human">
+<meta name="description" content=",education,culture.">
+<meta name="robots" content="none">
+```
+
+## robots
+
+The Robots Exclusion Protocol (REP)
+
+[Google 的 robots.txt 解析器现在开放源代码了
+
+bookmark_border](https://developers.google.com/search/blog/2019/07/repp-oss?hl=zh-cn)
+
+告诉爬虫什么内容可以抓取，什么内容不可以抓取。它是机器人排除协议（REP）的一部分。
+
+### meta robot
+
+```html
+<!-- Google 的爬虫 Googlebot 不要在搜索引擎中为该页面编制索引，也不要跟踪任何反向链接 -->
+<meta name ="googlebot" content ="noindex，nofollow">
+
+<meta name="robots" content="[PARAMETER]">
+```
+
+- noindex: Tells a search engine not to index a page.
+- index: Tells a search engine to index a page. Note that you don’t need to add this meta tag; it’s the default.
+- follow: Even if the page isn’t indexed, the crawler should follow all the links on a page and pass equity to the linked pages.
+- nofollow: Tells a crawler not to follow any links on a page or pass along any link equity.
+- noimageindex: Tells a crawler not to index any images on a page.
+- none: Equivalent to using both the noindex and nofollow tags simultaneously.
+- noarchive: Search engines should not show a cached link to this page on a SERP.
+- nocache: Same as noarchive, but only used by Internet Explorer and Firefox.
+- nosnippet: Tells a search engine not to show a snippet of this page (i.e. meta description) of this page on a SERP.
+- noodyp/noydir [OBSOLETE]: Prevents search engines from using a page’s DMOZ description as the SERP snippet for this page. However, DMOZ was retired in early 2017, making this tag obsolete.
+- unavailable_after: Search engines should no longer index this page after a particular date.
+
+### X-robots-tag
+
+通过 HTTP header 告知 robot
+
 ## 使用 schema.org + microdata 在 Google+ 上提供丰富的摘要
 
 ```html
