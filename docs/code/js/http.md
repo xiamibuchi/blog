@@ -23,12 +23,12 @@ HTTP，HyperText Transfer Protocol（超文本传输协议）
 
 ### 长连接
 
-HTTP1.1默认是长连接，也就是默认 Connection 的值就是 keep-alive，本次请求响应结束后，TCP连接将仍然保持打开状态，所以浏览器可以继续通过相同的连接发送请求，节省了很多TCP连接建立和断开的消耗，还节约了带宽。
+HTTP1.1 默认是长连接，也就是默认 Connection 的值就是 keep-alive，本次请求响应结束后，TCP 连接将仍然保持打开状态，所以浏览器可以继续通过相同的连接发送请求，节省了很多 TCP 连接建立和断开的消耗，还节约了带宽。
 
 和 WebSocket 的区别：
 
-1. Keep-alive的确可以实现长连接，但是这个长连接是有问题的，本质上依然是客户端主动发起-服务端应答的模式，是没法做到服务端主动发送通知给客户端的。也就是说，在一个HTTP连接中，可以发送多个Request，接收多个Response。但是一个request只能有一个response。而且这个response也是被动的，不能主动发起。开启了Keep-alive，可以看出依然是一问一答的模式，只是省略了每次的关闭和打开操作。
-2. WebSocket是可以互相主动发起的。WebSocket 是类似 TCP 长连接的通讯模式，一旦 WebSocket 连接建立后，后续数据都以帧序列的形式传输。在客户端断开 WebSocket 连接或 Server 端断掉连接前，不需要客户端和服务端重新发起连接请求。在海量并发及客户端与服务器交互负载流量大的情况下，极大的节省了网络带宽资源的消耗，有明显的性能优势，且客户端发送和接受消息是在同一个持久连接上发起，实时性优势明显。
+1. Keep-alive 的确可以实现长连接，但是这个长连接是有问题的，本质上依然是客户端主动发起-服务端应答的模式，是没法做到服务端主动发送通知给客户端的。也就是说，在一个 HTTP 连接中，可以发送多个 Request，接收多个 Response。但是一个 request 只能有一个 response。而且这个 response 也是被动的，不能主动发起。开启了 Keep-alive，可以看出依然是一问一答的模式，只是省略了每次的关闭和打开操作。
+2. WebSocket 是可以互相主动发起的。WebSocket 是类似 TCP 长连接的通讯模式，一旦 WebSocket 连接建立后，后续数据都以帧序列的形式传输。在客户端断开 WebSocket 连接或 Server 端断掉连接前，不需要客户端和服务端重新发起连接请求。在海量并发及客户端与服务器交互负载流量大的情况下，极大的节省了网络带宽资源的消耗，有明显的性能优势，且客户端发送和接受消息是在同一个持久连接上发起，实时性优势明显。
 
 ## TCP/IP
 
@@ -844,11 +844,19 @@ http://sanyuan.com?q=<script>alert("你完蛋了")</script>
 2. 利用 CSP。CSP，即浏览器中的内容安全策略，它的核心思想就是服务器决定浏览器加载哪些资源。限制其他域下的资源加载。禁止向其它域提交数据。提供上报机制，能帮助我们及时发现 XSS 攻击。
 3. 利用 HttpOnly。很多 XSS 攻击脚本都是用来窃取 Cookie, 而设置 Cookie 的 HttpOnly 属性后，JavaScript 便无法读取 Cookie 的值。这样也能很好的防范 XSS 攻击。
 
-## CSP
+## [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy)
 
 在 HTTP 协议中，Content-Security-Policy (CSP) 首部字段中的 default-src 指令可以为其他 CSP 拉取指令（fetch directives）提供备选项。对于以下列出的指令，假如不存在的话，那么用户代理会查找并应用 default-src 指令的值。
 
 default-src 策略允许指定一个或多个源：
+
+```
+HTTP header:
+Content-Security-Policy: default-src https: 'unsafe-eval' 'unsafe-inline'; object-src 'none'
+
+HTML meta element
+<meta http-equiv="Content-Security-Policy" content="default-src https:" />
+```
 
 `Content-Security-Policy: default-src <source>;`
 `Content-Security-Policy: default-src <source> <source>;`

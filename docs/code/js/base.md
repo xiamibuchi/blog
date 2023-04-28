@@ -23,7 +23,7 @@ JavaScript 是在创建变量（对象，字符串等）时自动进行了分配
 2. 无法处理循环引用的事例。在下面的例子中，两个对象被创建，并互相引用，形成了一个循环。它们被调用之后会离开函数作用域，所以它们已经没有用了，可以被回收了。然而，引用计数算法考虑到它们互相都有至少一次引用，所以它们不会被回收。
 
 ```js
-function f(){
+function f() {
   var o = {};
   var o2 = {};
   o.a = o2; // o 引用 o2
@@ -39,91 +39,94 @@ mark-and-sweep（标记清除）：
 
 当变量进入环境（例如，在函数中声明一个变量）时，就将这个变量标记为“进入环境”。从逻辑上讲，永远不能释放进入环境的变量所占的内存，因为只要执行流进入相应的环境，就可能用到它们。而当变量离开环境时，这将其 标记为“离开环境”。
 
-### V8的垃圾回收机制
+### V8 的垃圾回收机制
 
-V8将堆中的对象分为两类：
+V8 将堆中的对象分为两类：
 
 新生代：年轻的新对象，未经历垃圾回收或仅经历过一次
 老年代：存活时间长的老对象，经历过一次或更多次垃圾回收的对象
 
-默认情况下，V8为老年代分配的空间，大概是新生代的40多倍。
+默认情况下，V8 为老年代分配的空间，大概是新生代的 40 多倍。
 新对象都会被分配到新生代中，当新生代空间不足以分配新对象时，将触发新生代的垃圾回收。
 
 新生代的垃圾回收
-新生代中的对象主要通过Scavenge算法进行垃圾回收，这是一种采用复制的方式实现内存回收的算法。
-Scavenge算法将新生代的总空间一分为二，只使用其中一个，另一个处于闲置，等待垃圾回收时使用。使用中的那块空间称为From，闲置的空间称为To。From与To各占一半，当新生代触发垃圾回收时，V8将From空间中所有应该存活下来的对象依次复制到To空间。
+新生代中的对象主要通过 Scavenge 算法进行垃圾回收，这是一种采用复制的方式实现内存回收的算法。
+Scavenge 算法将新生代的总空间一分为二，只使用其中一个，另一个处于闲置，等待垃圾回收时使用。使用中的那块空间称为 From，闲置的空间称为 To。From 与 To 各占一半，当新生代触发垃圾回收时，V8 将 From 空间中所有应该存活下来的对象依次复制到 To 空间。
 
-有两种情况不会将对象复制到To空间，而是晋升至老年代：
+有两种情况不会将对象复制到 To 空间，而是晋升至老年代：
 
 对象此前已经经历过一次新生代垃圾回收，这次依旧应该存活，则晋升至老年代。
-To空间已经使用了25%，则将此对象直接晋升至老年代。
+To 空间已经使用了 25%，则将此对象直接晋升至老年代。
 
-From空间所有应该存活的对象都复制完成后，原本的From空间将被释放，成为闲置空间，原本To空间则成为使用中空间，两个空间进行角色翻转。
-为何To空间使用超过25%时，就需要直接将对象复制到老年代呢？因为To空间完成垃圾回收后将会翻转为From空间，新的对象分配都在此处进行，如果没有足够的空闲空间，将会影响程序的新对象分配。
-因为Scavenge只复制活着的对象，而根据统计学指导，新生代中大多数对象寿命都不长，长期存活对象少，则需要复制的对象相对来说很少，因此总体来说，新生代使用Scavenge算法的效率非常高。且由于Scavenge是依次连续复制，所以To空间永远不会存在内存碎片。
-不过由于Scavenge会将空间对半划分，所以此算法的空间利用率较低。
+From 空间所有应该存活的对象都复制完成后，原本的 From 空间将被释放，成为闲置空间，原本 To 空间则成为使用中空间，两个空间进行角色翻转。
+为何 To 空间使用超过 25%时，就需要直接将对象复制到老年代呢？因为 To 空间完成垃圾回收后将会翻转为 From 空间，新的对象分配都在此处进行，如果没有足够的空闲空间，将会影响程序的新对象分配。
+因为 Scavenge 只复制活着的对象，而根据统计学指导，新生代中大多数对象寿命都不长，长期存活对象少，则需要复制的对象相对来说很少，因此总体来说，新生代使用 Scavenge 算法的效率非常高。且由于 Scavenge 是依次连续复制，所以 To 空间永远不会存在内存碎片。
+不过由于 Scavenge 会将空间对半划分，所以此算法的空间利用率较低。
 
 老年代的垃圾回收
-在老年代中的对象，至少都已经历过一次甚至更多次垃圾回收，相对于新生代中的对象，它们有更大的概率继续存活，只有相对少数的对象面临死亡，且由于老年代的堆内存是新生代的几十倍，其中生活着大量对象，因此如果使用Scavenge算法回收老年代，将会面临大量的存活对象需要复制的情况，将老年代空间对半划分，也会浪费相当大的空间，效率低下。因此老年代垃圾回收主要采用标记清除(Mark-Sweep)和标记整理(Mark-Compact)。
+在老年代中的对象，至少都已经历过一次甚至更多次垃圾回收，相对于新生代中的对象，它们有更大的概率继续存活，只有相对少数的对象面临死亡，且由于老年代的堆内存是新生代的几十倍，其中生活着大量对象，因此如果使用 Scavenge 算法回收老年代，将会面临大量的存活对象需要复制的情况，将老年代空间对半划分，也会浪费相当大的空间，效率低下。因此老年代垃圾回收主要采用标记清除(Mark-Sweep)和标记整理(Mark-Compact)。
 这两种方式并非互相替代关系，而是配合关系，在不同情况下，选择不同方式，交替配合以提高回收效率。
-新生代中死亡对象占多数，因此采用Scavenge算法只处理存活对象，提高效率。老年代中存活对象占多数，于是采用标记清除算法只处理死亡对象，提高效率。
-当老年代的垃圾回收被触发时，V8会将需要存活对象打上标记，然后将没有标记的对象，也就是需要死亡的对象，全部擦除，一次标记清除式回收就完成了：
+新生代中死亡对象占多数，因此采用 Scavenge 算法只处理存活对象，提高效率。老年代中存活对象占多数，于是采用标记清除算法只处理死亡对象，提高效率。
+当老年代的垃圾回收被触发时，V8 会将需要存活对象打上标记，然后将没有标记的对象，也就是需要死亡的对象，全部擦除，一次标记清除式回收就完成了：
 
 灰色为存活对象，白色为清除后的闲置空间
 
 一切看起来都完美了，可是随着程序的继续运行，却会出现一个问题：被清除的对象遍布各个内存地址，空间有大有小，其闲置空间不连续，产生了很多内存碎片。当需要将一个足够大的对象晋升至老年代时，无法找到一个足够大的连续空间安置这个对象。
 为了解决这种空间碎片的问题，就出现了标记整理算法。它是在标记清除的基础上演变而来，当清理了死亡对象后，它会将所有存活对象往一端移动，使其内存空间紧挨，另一端就成为了连续内存：
 
-虽然标记整理算法可以避免空间碎片，但是却需要依次移动对象，效率比标记清除算法更低，因此大多数情况下V8会使用标记清理算法，当空间碎片不足以安放新晋升对象时，才会触发标记整理算法。
+虽然标记整理算法可以避免空间碎片，但是却需要依次移动对象，效率比标记清除算法更低，因此大多数情况下 V8 会使用标记清理算法，当空间碎片不足以安放新晋升对象时，才会触发标记整理算法。
 
 增量标记（Incremental Marking）
 
-早期V8在垃圾回收阶段，采用全停顿（stop the world），也就是垃圾回收时程序运行会被暂停。这在JavaScript还仅被用于浏览器端开发时，并没有什么明显的缺点，前端开发使用的内存少，大多数时候仅触发新生代垃圾回收，速度快，卡顿几乎感觉不到。但是对于Node程序，使用内存更多，在老年代垃圾回收时，全停顿很容易带来明显的程序迟滞，标记阶段很容易就会超过100ms，因此V8引入了增量标记，将标记阶段分为若干小步骤，每个步骤控制在5ms内，每运行一段时间标记动作，就让JavaScript程序执行一会儿，如此交替，明显地提高了程序流畅性，一定程度上避免了长时间卡顿。
+早期 V8 在垃圾回收阶段，采用全停顿（stop the world），也就是垃圾回收时程序运行会被暂停。这在 JavaScript 还仅被用于浏览器端开发时，并没有什么明显的缺点，前端开发使用的内存少，大多数时候仅触发新生代垃圾回收，速度快，卡顿几乎感觉不到。但是对于 Node 程序，使用内存更多，在老年代垃圾回收时，全停顿很容易带来明显的程序迟滞，标记阶段很容易就会超过 100ms，因此 V8 引入了增量标记，将标记阶段分为若干小步骤，每个步骤控制在 5ms 内，每运行一段时间标记动作，就让 JavaScript 程序执行一会儿，如此交替，明显地提高了程序流畅性，一定程度上避免了长时间卡顿。
 
-Node开发中的内存管理与优化
+Node 开发中的内存管理与优化
 
 2.1 手动变量销毁
-当任一作用域存活于作用域栈（作用域链）时，其中的变量都不会被销毁，其引用的数据也会一直被变量关联，得不到GC。有的作用域存活时间非常长（越是栈底，存活时间越长，最长的是全局作用域），但是其中的某些变量也许在某一时刻后就没有用处了，因此建议手动设置为null，断开引用链接，使得V8可以及时GC释放内存。
-注意，不使用var声明的变量，都会成为全局对象的属性。前端开发中全局对象为window，Node中全局对象为global，如果global中有属性已经没有用处了，一定要设置为null，因为全局作用域只有等到程序停止运行，才会销毁。
-Node中，当一个模块被引入，这个模块就会被缓存在内存中，提高下次被引用的速度。也就是说，一般情况下，整个Node程序中对同一个模块的引用，都是同一个实例（instance），这个实例一直存活在内存中。所以，如果任意模块中有变量已经不再需要，最好手动设置为null，不然会白白占用内存，成为“活着的死对象”。
+当任一作用域存活于作用域栈（作用域链）时，其中的变量都不会被销毁，其引用的数据也会一直被变量关联，得不到 GC。有的作用域存活时间非常长（越是栈底，存活时间越长，最长的是全局作用域），但是其中的某些变量也许在某一时刻后就没有用处了，因此建议手动设置为 null，断开引用链接，使得 V8 可以及时 GC 释放内存。
+注意，不使用 var 声明的变量，都会成为全局对象的属性。前端开发中全局对象为 window，Node 中全局对象为 global，如果 global 中有属性已经没有用处了，一定要设置为 null，因为全局作用域只有等到程序停止运行，才会销毁。
+Node 中，当一个模块被引入，这个模块就会被缓存在内存中，提高下次被引用的速度。也就是说，一般情况下，整个 Node 程序中对同一个模块的引用，都是同一个实例（instance），这个实例一直存活在内存中。所以，如果任意模块中有变量已经不再需要，最好手动设置为 null，不然会白白占用内存，成为“活着的死对象”。
 
 ### 全局变量引起的内存泄漏
 
 ```js
-function leaks(){
-    leak = 'xxxxxx';//leak 成为一个全局变量，不会被回收
+function leaks() {
+  leak = "xxxxxx"; //leak 成为一个全局变量，不会被回收
 }
 ```
 
 ### 闭包引起的内存泄漏
 
 ```js
-var leaks = (function(){
-    var leak = 'xxxxxx';// 被闭包所引用，不会被回收
-    return function(){
-        console.log(leak);
-    }
-})()
+var leaks = (function () {
+  var leak = "xxxxxx"; // 被闭包所引用，不会被回收
+  return function () {
+    console.log(leak);
+  };
+})();
 ```
 
-### dom清空或删除时，事件未清除导致的内存泄漏
+### dom 清空或删除时，事件未清除导致的内存泄漏
 
 ```js
-<div id="container">
-</div>
+<div id="container"></div>;
 
-$('#container').bind('click', function(){
-    console.log('click');
-}).remove();
+$("#container")
+  .bind("click", function () {
+    console.log("click");
+  })
+  .remove();
 
 // zepto 和原生 js下，#container dom 元素，还在内存里jquery 的 empty和 remove会帮助开发者避免这个问题
 
-<div id="container">
-</div>
+<div id="container"></div>;
 
-$('#container').bind('click', function(){
-    console.log('click');
-}).off('click').remove();
+$("#container")
+  .bind("click", function () {
+    console.log("click");
+  })
+  .off("click")
+  .remove();
 //把事件清除了，即可从内存中移除
 ```
 
@@ -187,7 +190,7 @@ $('#container').bind('click', function(){
 - typeof: typeof 操作符可以确定一个变量是字符串、数值、布尔值，还是 undefined 。如果变量的值是一个对象或 null，则 typeof 操作符会返回"object"
 - instanceof：instanceof 的原理是基于原型链的查询，只要处于原型链中，判断永远为 true。当然，如果使用 instanceof 操作符检测基本类型的值，则该操作符始终会返回 false
 
-> typeof null === 'object'，null 的存储单元最后三位和 object 一样是 000。所以 typeof null 的结果被误判为Object。
+> typeof null === 'object'，null 的存储单元最后三位和 object 一样是 000。所以 typeof null 的结果被误判为 Object。
 
 ### 基本数据结构
 
@@ -237,20 +240,20 @@ Unicode 的产生是为了处理不同语言之间的编码不兼容问题。
 ```js
 "\x7A"; // z
 "\u0061"; // "a"
-'\u{1F60D}'; // '😍'
+"\u{1F60D}"; // '😍'
 ```
 
 JavaScript 新增了 String.fromCodePoint 和 str.codePointAt 这两个方法来处理代理对。它们本质上与 String.fromCharCode 和 str.charCodeAt 相同，但它们可以正确地处理代理对。
 
 代理对方案：
 
-Unicode采用了代理对（Surrogate Pair）来解决。
+Unicode 采用了代理对（Surrogate Pair）来解决。
 
-他选择了 D800-DBFF编码范围作为前两个字节（utf-16高半区），DC00-DFFF作为后两个字节（utf-16低半区），组成一个四个字节表示的字符。
+他选择了 D800-DBFF 编码范围作为前两个字节（utf-16 高半区），DC00-DFFF 作为后两个字节（utf-16 低半区），组成一个四个字节表示的字符。
 
-当软件解析到Unicode连续4个字节的前两个是utf-16高半区，后两个是utf-16低半区，他就会把它识别为一个字符。如果配对失败，或者顺序颠倒则不显示。
+当软件解析到 Unicode 连续 4 个字节的前两个是 utf-16 高半区，后两个是 utf-16 低半区，他就会把它识别为一个字符。如果配对失败，或者顺序颠倒则不显示。
 
-D800-DBFF可表示的编码范围有10位，DC00-DFFF可表示的编码范围也有10位，加起来就是20位（00000-FFFFF），这样就可以表示${2^{20}}$个字符。在可见的未来都不会出现不够使用的情况。
+D800-DBFF 可表示的编码范围有 10 位，DC00-DFFF 可表示的编码范围也有 10 位，加起来就是 20 位（00000-FFFFF），这样就可以表示${2^{20}}$个字符。在可见的未来都不会出现不够使用的情况。
 
 而且代理对区间的编码不能单独映射字符，因此不会产生识别错误。
 
@@ -258,29 +261,29 @@ D800-DBFF可表示的编码范围有10位，DC00-DFFF可表示的编码范围也
 
 我们通过代理对解决了编码问题，但是对于人类阅读来说，“\uD800DC00”的表示方法还是太复杂。
 
-而且和基本的两字节表示的Unicode编码放在一起看，并不连续。
+而且和基本的两字节表示的 Unicode 编码放在一起看，并不连续。
 
-因此Unicode将这20位的编码空间映射到了 10000-10FFFF，这样就能和2个字节 0000-FFFF表示的编码空间在一起连续表示了。
+因此 Unicode 将这 20 位的编码空间映射到了 10000-10FFFF，这样就能和 2 个字节 0000-FFFF 表示的编码空间在一起连续表示了。
 
-所以\uD800\uDC00=\u10000，这也是我们部分语言调试下对emoji字符的码值显示会出现5个HEX的原因。
+所以\uD800\uDC00=\u10000，这也是我们部分语言调试下对 emoji 字符的码值显示会出现 5 个 HEX 的原因。
 
 代码识别：
 
-最后一个问题是编程语言识别问题，由于存在代理对，许多语言的string.length方法会将代理对中的字符（如emoji）个数识别成2个。这样会造成一些诸如光标定位，字符提取等方面的问题。
+最后一个问题是编程语言识别问题，由于存在代理对，许多语言的 string.length 方法会将代理对中的字符（如 emoji）个数识别成 2 个。这样会造成一些诸如光标定位，字符提取等方面的问题。
 
-对于JavaScript，ES6中有String.fromCodePoint()，codePointAt()，for…of循环等方式处理。
+对于 JavaScript，ES6 中有 String.fromCodePoint()，codePointAt()，for…of 循环等方式处理。
 
 ```js
-String.fromCharCode(0x20BB7)
+String.fromCharCode(0x20bb7);
 // "ஷ"
 
-let s = '𠮷a';
-s.codePointAt(0) // 134071
-s.codePointAt(1) // 57271
+let s = "𠮷a";
+s.codePointAt(0); // 134071
+s.codePointAt(1); // 57271
 
-s.codePointAt(2) // 97
+s.codePointAt(2); // 97
 
-for (let x of 'a\uD83D\uDC0A') {
+for (let x of "a\uD83D\uDC0A") {
   console.log(x);
 }
 // 'a'
@@ -300,11 +303,11 @@ for (let x of 'a\uD83D\uDC0A') {
 `\x` 开头
 
 ```js
-'\x123'.length // 2
+"\x123".length; // 2
 ```
 
 ```js
-encodeURI("shttp://www.baidu.com")
+encodeURI("shttp://www.baidu.com");
 // https://www.baidu.com
 ```
 
@@ -336,15 +339,14 @@ Symbol 值通过`Symbol`函数生成。这就是说，对象的属性名现在�
 const mySymbol = Symbol();
 const a = {};
 
-a.mySymbol = 'Hello!';
-a[mySymbol] // undefined
-a['mySymbol'] // "Hello!"
-
+a.mySymbol = "Hello!";
+a[mySymbol]; // undefined
+a["mySymbol"]; // "Hello!"
 ```
 
 上面代码中，因为点运算符后面总是字符串，所以不会读取`mySymbol`作为标识名所指代的那个值，导致`a`的属性名实际上是一个字符串，而不是一个 Symbol 值。
 
-#### Symbol.iterator 
+#### Symbol.iterator
 
 Symbol.iterator 属性指向默认遍历器方法，for…of 循环会调用这个方法
 
@@ -369,7 +371,7 @@ Object.defineProperty(myObject, Symbol.iterator, {
   enumerable: false,
   writable: false,
   configurable: true,
-  value: function() {
+  value: function () {
     const that = this;
     let index = -1;
     let keys = Object.keys(that);
@@ -404,7 +406,7 @@ for (const ele of myObject) {
 对象的 Symbol.toStringTag 属性，指向一个方法。在该对象上面调用 Object.prototype.toString 方法时，如果这个属性存在，它的返回值会出现在 toString 方法返回的字符串之中，表示对象的类型
 
 ```js
-({ [Symbol.toStringTag]: "Foo" }.toString());
+({ [Symbol.toStringTag]: "Foo" }).toString();
 class Collection {
   get [Symbol.toStringTag]() {
     return "shenyang";
@@ -434,10 +436,10 @@ new Array(3); // 创建 length === 3 的数组
 
 let obj = [1, 2, 3];
 
-Array.isArray(obj) // true
-obj.constructor === Array
-Object.prototype.toString.call(obj) ==='[object Array]'
-obj instanceof Array
+Array.isArray(obj); // true
+obj.constructor === Array;
+Object.prototype.toString.call(obj) === "[object Array]";
+obj instanceof Array;
 ```
 
 #### 伪数组
@@ -477,7 +479,7 @@ Map 对象保存键值对，任何值(对象或者原始值) 都可以作为一�
 ```js
 const map = new Map([
   ["name", "shen"],
-  ["age", 18]
+  ["age", 18],
 ]);
 map.get("name"); // "shen"
 ```
@@ -504,7 +506,7 @@ function createPerson(name, age) {
   let o = new Object();
   o.name = name;
   o.age = age;
-  o.getName = function() {
+  o.getName = function () {
     return this.name;
   };
   return o;
@@ -639,14 +641,15 @@ try {
 
 在浏览器指的是`window`对象，在 Node 指的是`global`对象。ES5 之中，顶层对象的属性与全局变量是等价的。
 
-- 浏览器中是 window ，但 Node 和 Web Worker 没有 window。
-- 浏览器和 Web Worker 里面，self 也指向顶层对象，但是 Node 没有 self
-- Node 里面，顶层对象是 global，但其他环境都不支持
+- 浏览器中是 window，但 Node 和 Web Worker 没有 window。
+- 浏览器和 Web Worker 中，self 也指向顶层对象，但 Node 没有 self
+- Node: global，但其他环境都不支持
+
+> 可以使用 [globalThis](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis#html_and_the_windowproxy) 指向顶层对象。
 
 #### prototype
 
 prototype 属性指向一个对象，你在这个对象中定义需要被继承的成员。
-
 
 可以用 prototype 给对象添加属性和方法，这些属性和方法都是可以被继承的。
 
@@ -658,7 +661,7 @@ function Person(name, age) {
 }
 
 // 通过prototye属性，将方法挂载到原型对象上
-Person.prototype.getName = function() {
+Person.prototype.getName = function () {
   return this.name;
 };
 
@@ -689,13 +692,12 @@ Object.setPrototypeOf(obj2, null);
 const obj3 = {};
 obj3.__proto__ = null;
 
-[obj1, obj2, obj3].forEach(function(item) {
+[obj1, obj2, obj3].forEach(function (item) {
   console.log(item instanceof Object); // false
 });
 ```
 
 #### class
-
 
 ECMAScript 2015 中引入的 JavaScript 类(`classes`) 实质上是 JavaScript 现有的基于原型的继承的语法糖。 类语法不是向 JavaScript 引入一个新的面向对象的继承模型。JavaScript 类提供了一个更简单和更清晰的语法来创建对象并处理继承。
 
@@ -708,7 +710,7 @@ function Person(name, age) {
 }
 
 // 原型方法
-Person.prototype.getName = function() {
+Person.prototype.getName = function () {
   return this.name;
 };
 
@@ -733,7 +735,6 @@ class Person {
   getAge = () => this.age;
 }
 ```
-
 
 ```js
 class Person {
@@ -763,7 +764,6 @@ class Student extends Person {
 
 继承
 
-
 ```js
 class Person {
   constructor(name, age) {
@@ -791,7 +791,6 @@ class Student extends Person {
 ```
 
 静态方法
-
 
 `static` 关键字用来定义一个类的一个静态方法。调用静态方法不用[实例化](<https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript#The_object_(class_instance)>)其类，但不能通过一个类实例调用静态方法。静态方法通常用于为一个应用程序创建工具函数。
 
@@ -841,11 +840,11 @@ eat(); // undefined
 ```js
 function Animal() {}
 
-Animal.prototype.speak = function() {
+Animal.prototype.speak = function () {
   return this;
 };
 
-Animal.eat = function() {
+Animal.eat = function () {
   return this;
 };
 
@@ -860,7 +859,6 @@ eat(); // global object
 #### proxy
 
 Proxy 对象用于定义基本操作的自定义行为（如属性查找，赋值，枚举，函数调用等）,在对目标对象的操作之前提供了拦截，可以对外界的操作进行过滤和改写
-
 
 ```js
 let p = new Proxy(target, handler);
@@ -884,7 +882,6 @@ let proxyArr = new Proxy([], {
 修改某些 Object 方法的返回结果，让其变得更合理。比如，Object.defineProperty(obj, name, desc)在无法定义属性时，会抛出一个错误，而 Reflect.defineProperty(obj, name, desc)则会返回 false。
 
 #### URLSearchParams
-
 
 定义了一些实用的方法来处理 URL 的查询字符串
 
@@ -917,7 +914,7 @@ searchParams.toString(); // "q=URLUtils.searchParams"
 > 可以通过 arguments 对象来访问参数
 
 - length：返回没有指定默认值的参数个数。也就是说，指定了默认值后，length 属性将失真。
-- apply、call、bind：执行 this指向。
+- apply、call、bind：执行 this 指向。
 
 要指定函数的 `this` 指向哪个对象，可以用函数本身的 `apply` 方法，它接收两个参数，第一个参数就是需要绑定的 `this` 变量，第二个参数是 `Array`，表示函数本身的参数。
 
@@ -927,7 +924,7 @@ searchParams.toString(); // "q=URLUtils.searchParams"
 - `call` 把参数按顺序传入
 
 ```js
-Function.prototype._call = function(context = window) {
+Function.prototype._call = function (context = window) {
   context.fn = this;
 
   var args = [...arguments].slice(1);
@@ -938,7 +935,7 @@ Function.prototype._call = function(context = window) {
   return result;
 };
 
-Function.prototype._apply = function(context = window) {
+Function.prototype._apply = function (context = window) {
   context.fn = this;
 
   var result;
@@ -953,7 +950,7 @@ Function.prototype._apply = function(context = window) {
   return result;
 };
 
-Function.prototype.myBind = function(context) {
+Function.prototype.myBind = function (context) {
   if (typeof this !== "function") {
     throw new TypeError("Error");
   }
@@ -972,7 +969,7 @@ Function.prototype.myBind = function(context) {
 
 ```js
 // 默认值
-function log(x = 'shen') {
+function log(x = "shen") {
   x; // shen
 }
 
@@ -993,7 +990,6 @@ function foo(a, b, ...rest) {
 foo(1, 2, 3, 4, 5);
 // 结果:
 // Array [ 3, 4, 5 ]
-
 ```
 
 #### 作用域
@@ -1058,7 +1054,6 @@ function add(x, y, f) {
 
 #### 闭包
 
-
 1. 红宝书(p178)上对于闭包的定义：闭包是指有权访问另外一个函数作用域中的变量的函数，
 2. MDN 对闭包的定义为：闭包是指那些能够访问自由变量的函数。（其中自由变量，指在函数中使用的，但既不是函数参数 arguments 也不是函数的局部变量的变量，其实就是另外一个函数作用域中的变量。）
 3. chrome 中，则以执行上下文 A 的函数名代指闭包。
@@ -1090,7 +1085,7 @@ bar();
 #### 匿名函数立即执行（IIFE）
 
 ```js
-(function() {
+(function () {
   //这里是块级作用域
 })();
 ```
@@ -1175,11 +1170,11 @@ function currying(fn) {
     return next;
   }
   // 字符类型
-  next.toString = function() {
+  next.toString = function () {
     return Number.apply(null, allArgs);
   };
   // 数值类型
-  next.valueOf = function() {
+  next.valueOf = function () {
     return Number(null, allArgs);
   };
 
@@ -1198,7 +1193,6 @@ betterShowMsg("dreamapple", 22)("apple"); // My name is dreamapple, I'm 22 years
 ```
 
 #### 函数的四种调用模式
-
 
 > 根据函数内部 this 的指向不同，可以将函数的调用模式分成 4 种
 
@@ -1234,7 +1228,6 @@ eval("alert(msg)"); //"hello world"
 - eval 形式的代码难以阅读
 - eval 形式的代码无法打断点，因为本质还是还是一个字符串
 - 在浏览器端执行任意的 JavaScript 会带来潜在的安全风险，恶意的 JavaScript 代码可能会破坏应用
-
 
 ## Destructuring assignment
 
