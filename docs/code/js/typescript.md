@@ -20,9 +20,10 @@ TypeScript 是 JavaScript 的一个超集
 - string
 - bigint
 - symbol
-- Void
-- Null 和 Undefined
+- void
+- null 和 undefined
 - any
+- unknown: not legal to do anything with an unknown value
 
 ```typescript
 let num: number = 7;
@@ -46,6 +47,13 @@ function fn(name: string): string {
 // 可选
 function fn(name?: string): string {
   return `我的名字是：${name || "未知"}`;
+}
+
+type SomeConstructor = {
+  new (s: string): SomeObject;
+};
+function fn(ctor: SomeConstructor) {
+  return new ctor("hello");
 }
 
 // 类型别名
@@ -110,7 +118,7 @@ interface Bear extends Animal {
 }
 ```
 
-#### 重载
+### 重载
 
 重载允许一个函数接受不同数量或类型的参数时，作出不同的处理。
 
@@ -324,7 +332,7 @@ enum BooleanLikeHeterogeneousEnum {
 }
 ```
 
-## 泛型
+### 泛型
 
 泛型（Generics）是指在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定类型的一种特性。
 
@@ -338,6 +346,10 @@ function createArray<T>(length: number, value: T): Array<T> {
 }
 
 createArray<string>(3, "x"); // ['x', 'x', 'x']
+
+function firstElement<Type>(arr: Type[]): Type | undefined {
+  return arr[0];
+}
 ```
 
 ## HTML TYPES
@@ -345,6 +357,47 @@ createArray<string>(3, "x"); // ['x', 'x', 'x']
 - HTMLElement
   - HTMLCanvasElement
 
+## 项目中使用 ts
+
 ## config
 
-- strictNullChecks：null 和 undefined 不再是任意类型的子类型，设置 null 和 undefined 设置类型
+tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "outDir": "./dist", // ts 编译后的 js 文件
+    "rootDir": "..", // 根目录，默认 tsconfig 所在文件夹
+    "baseUrl": "./",
+    "module": "commonjs",
+    "declaration": true, // 自动生成声明文件
+    "declarationDir": "dist/types", // 声明文件所在文件夹，默认 js 文件同级目录
+    "removeComments": true, // 删除注释
+    "lib": [ "ES5", "ES2015.Promise", "DOM" ], // 导入哪些标准库
+    "typeRoots": ["node_modules/@types", "./types"], // 导入目录下所有的声明至全局空间
+    "types": [ "node", "moment" ] // 导入node_modules文件夹下的@types/node和@types/moment，其他包将会被忽略
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false, // null 和 undefined 不再是任意类型的子类型，设置 null 和 undefined 设置类型
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "noFallthroughCasesInSwitch": false
+  },
+  "files": ["src"], // 哪些文件需要编译
+  "include": ["../../global.d.ts", "**/*.ts", "**/*.tsx", "*.tsx", "*.ts"], // 哪些文件需要编译，支持模式匹配
+  "exclude": [] // 排除
+}
+```
+
+### 类型文件
+
+- .d.ts
+- global declaration：可以通过 typeRoots 和 types 编译选项设置
