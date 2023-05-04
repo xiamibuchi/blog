@@ -8,21 +8,18 @@ This script is the defacto way to enable use of HTML5 sectioning elements in leg
 
 ### 原理
 
-对于未知的标签元素 mytag，只要在 head 中执行一次document.createElement(mytag)，那么body里所有mytag标签在渲染时就会自动正确应用css样式了。”让CSS 样式应用在未知元素上只需执行 document.createElement(elementName) 即可实现。
+对于未知的标签元素 mytag，只要在 head 中执行一次 document.createElement(mytag)，那么 body 里所有 mytag 标签在渲染时就会自动正确应用 css 样式了。”让 CSS 样式应用在未知元素上只需执行 document.createElement(elementName) 即可实现。
 
-html5shiv.js的原理是在执行时先往head中插入应用到html5标签的css样式，然后对于所有html5标签都执行一次document.createElement(nodeName)，这样，浏览器在渲染body部分时，对于html5标签就能够正确的应用css样式，这也就是html5shiv.js必须放置在head中的原因。
+html5shiv.js 的原理是在执行时先往 head 中插入应用到 html5 标签的 css 样式，然后对于所有 html5 标签都执行一次 document.createElement(nodeName)，这样，浏览器在渲染 body 部分时，对于 html5 标签就能够正确的应用 css 样式，这也就是 html5shiv.js 必须放置在 head 中的原因。
 
 ### 用法
 
-html5shiv的使用非常的简单，考虑到IE9是支持html5的，所以只需要在页面head（必须要在head中）中添加如下代码即可：
+html5shiv 的使用非常的简单，考虑到 IE9 是支持 html5 的，所以只需要在页面 head（必须要在 head 中）中添加如下代码即可：
 
 ```html
 <!--[if lt IE9]>
-
-<script type="text/javascript" src="scripts/html5shiv.js"></script>
-
+  <script type="text/javascript" src="scripts/html5shiv.js"></script>
 <![endif]-->
-
 ```
 
 ## CSS 条件注释
@@ -44,10 +41,10 @@ gt ：就是Greater than的简写，也就是大于的意思。
 
 ```html
 <!--[if lte IE 8]>
-    <script>
-      alert("呵呵, 小于等于IE8都会执行这段话");
-    </script>
-    <script src="html5shiv.js"></script>
+  <script>
+    alert("呵呵, 小于等于IE8都会执行这段话");
+  </script>
+  <script src="html5shiv.js"></script>
 <![endif]-->
 ```
 
@@ -55,9 +52,9 @@ gt ：就是Greater than的简写，也就是大于的意思。
 
 ```html
 <!--[if gt IE 8]>
-   <script>
-      alert("只有IE9才执行这句话");
-   </script>
+  <script>
+    alert("只有IE9才执行这句话");
+  </script>
 <![endif]-->
 ```
 
@@ -67,4 +64,3 @@ https://docs.microsoft.com/zh-cn/microsoft-edge/web-platform/ie-to-microsoft-edg
 
 已有的名单：
 https://edge.microsoft.com/neededge/v1
-好像没多少国内的网站 (edited) 

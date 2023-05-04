@@ -311,26 +311,40 @@ Access-Control-Max-Age: 86400。 //标识本次预请求的有效时间（秒）
 window.postMessage(message,targetOrigin) 方法是 html5 新引进的特性，可以使用它来向其它的 window 对象发送消息
 
 ```js
-var channel = new MessageChannel();
-var output = document.querySelector(".output");
-var iframe = document.querySelector("iframe");
+postMessage(message, targetOrigin);
 
-// Wait for the iframe to load
-iframe.addEventListener("load", onLoad);
+// iframe
+window.parent.postMessage("Hello from the main page!", "*");
 
-function onLoad() {
-  // Listen for messages on port1
-  channel.port1.onmessage = onMessage;
+// handle messages
+window.addEventListener(
+  "message",
+  (event) => {
+    // Do we trust the sender of this message?  (might be
+    // different from what we originally opened, for example).
+    if (event.origin !== "http://example.com") return;
 
-  // Transfer port2 to the iframe
-  iframe.contentWindow.postMessage("Hello from the main page!", "*", [
-    channel.port2,
-  ]);
+    // event.source is popup
+    // event.data is "hi there yourself!  the secret response is: rheeeeet!"
+  },
+  false
+);
+
+// 如果需要指定 targetOrigin
+let target = "";
+try {
+  target = parent.location.origin; // 跨域时无法获取 parent.location.origin
+} catch (e) {
+  // 仅在 referrer 不是同域名时才使用 referrer
+  if (
+    typeof document.referrer === "string" &&
+    document.referrer.indexOf(location.origin) === -1
+  ) {
+    target = document.referrer;
+  }
 }
-
-// Handle messages received on port1
-function onMessage(e) {
-  output.innerHTML = e.data;
+if (!target) {
+  target = "xxxx"; // 需要给保底值
 }
 ```
 

@@ -13,6 +13,48 @@
 - pre-commit：git commit 前运行，用于检查即将提交的快照。如代码风格检查、单元测试
 - commit-msg：校验 commit message
 
+## Fast-Forward
+
+当前分支合并到另一分支时，如果没有分歧解决，就会直接移动文件指针。这个过程叫做 fastforward。
+
+开发一直在 master 分支进行，但忽然有一个新的想法，于是新建了一个 develop 的分支，并在其上进行一系列提交，完成时，回到 master 分支，此时，master 分支在创建 develop 分支之后并未产生任何新的 commit。此时的合并就叫 fast forward。
+
+如果执行了 Fast Forward，开发者根本不会看到这个分支，就像在 master 直接 commit 一样。
+
+示例：
+
+1. 新建一个 work tree，在 master 中做几次 commit
+2. 新建 develop 的 branch，然后再做多次 commits
+
+此时的分支流图如下(gitx)：
+
+正常合并
+
+(master)$ git merge develop
+Updating 5999848..7355122
+Fast-forward
+c.txt | 1 +
+d.txt | 1 +
+2 files changed, 2 insertions(+), 0 deletions(-)
+create mode 100644 c.txt
+create mode 100644 d.txt
+
+可以看出这是一次 fast-forward 式的合并，且合并完之后的视图为扁平状，看不出 develop 分支开发的任何信息。
+
+使用–no-ff 进行合并
+
+—no-ff (no fast foward)，使得每一次的合并都创建一个新的 commit 记录。即使这个 commit 只是 fast-foward，用来避免丢失信息。
+
+(master)$ git merge –no-ff develop
+Merge made by recursive.
+c.txt | 2 +-
+d.txt | 2 +-
+2 files changed, 2 insertions(+), 2 deletions(-)
+
+可以看出，使用 no-ff 后，会多生成一个 commit 记录，并强制保留 develop 分支的开发记录（而 fast-forward 的话则是直接合并，看不出之前 Branch 的任何记录）。这对于以后代码进行分析特别有用，故有以下最佳实践。
+
+–no-ff，其作用是：要求 git merge 即使在 fast forward 条件下也要产生一个新的 merge commit。此处，要求采用–no-ff 的方式进行分支合并，其目的在于，希望保持原有“develop branches”整个提交链的完整性。
+
 ## .gitignore
 
 > 在仓库中，有些文件是不想被 git 管理的，比如数据的配置密码、写代码的一些思路等、ide 配置文件。git 可以通过配置从而达到忽视掉一些文件，这样这些文件就可以不用提交了。
@@ -29,7 +71,7 @@ git add .
 git commit -m 'update .gitignore'
 ```
 
-## config
+## 常用命令
 
 ```bash
 # git config user.name [username]
@@ -58,6 +100,8 @@ git commit -m 'commit message'
 
 # 日志
 git log
+# 工作区状态
+git status
 
 # 回退
 git reset --hard 版本号
@@ -80,63 +124,66 @@ git branch -d [分支名]
 git branch -D [分支名]
 # 合并分支
 git merge [分支名]
+# 删除指定分支
+git branch | grep ‘dev*’ | xargs git branch -d
+
+# 暂存
+# 暂时隐藏工作区内代码
+git stash
+# 恢复代码
+git stash apply
+# 恢复代码并删除 stash
+git stash pop
+
+# tag
+git tag <tagname>
+git tag -d <tagname
 ```
 
-## 远程仓库
+### 远程仓库
 
-所有的程序员都可以通过远程仓库来进行版本的共享，达到所有人的代码一致的效果。
+```bash
+git clone [远程仓库地址]
+git clone [远程仓库地址] [本地项目名]
+git clone http://userName:password@远程仓库地址
 
-## 远程仓库相关的命令
+# 添加仓库别名
+git remote add 仓库别名 仓库地址
+git remote add xiamibuchi git@github.com:xiamibuchi/yang-packages.git
+# 删除别名
+git remote remove xiamibuchi
+# 查看所有别名
+git remote
 
-### git push
+git push [仓库地址] master
+# 将本地当前分支 推送到 远程指定分支上
+git push origin <本地分支名>:<远程分支名>
+# 将本地当前分支 推送到 与本地当前分支同名的远程分支上
+git push origin <本地分支名>
+# 将本地分支与远程同名分支相关联并推送
+git push -u origin <本地分支名>
+git push origin master
+# 删除远程分支
+git push -d origin <远程分支名>
 
-- 作用：将本地仓库中代码提交到远程仓库
-- `git push 仓库地址 master` 在代码提交到远程仓库，注意 master 分支必须写，不能省略
-- 例子：`git push git@github.com:hucongcong/test.git master` 如果第一次使用，需要填写 github 的用户名和密码
-- `git push origin <本地分支名>:<远程分支名>` 将本地当前分支 推送到 远程指定分支上
-- `git push origin <本地分支名>` 将本地当前分支 推送到 与本地当前分支同名的远程分支上
-- `git push -u origin <本地分支名>` 将本地分支与远程同名分支相关联并推送
+# 拉取远程代码
+git pull
+```
 
-### git pull
+> 如果使用了`git clone`命令从远程仓库获取下来的，那么这个本地仓库会自动添加一个 origin 的远程地址
 
-- 作用：将远程的代码下载到本地
-- `git pull 代码地址` 将远程的代码中 master 分支下载到本地
-- 通常在 push 前，需要先 pull 一次。
+## github pages 介绍
 
-### git clone
+[GitHub Pages](https://pages.github.com/)用于介绍托管在 GitHub 的项目
 
-- 作用：克隆远程仓库的代码到本地
-- `git clone [远程仓库地址]
-- `git clone git://github.com/schacon/test.git`会在本地新建一个`test`文件夹，在 test 中包含了一个`.git`目录，用于保存所有的版本记录，同时 test 文件中还有最新的代码，你可以直接进行后续的开发和使用。
-- git 克隆默认会使用远程仓库的项目名字，也可以自己指定。需要是使用以下命令：`git clone [远程仓库地址] [本地项目名]`
-
-直接使用用户名密码：
-
-`git clone http://userName:password@链接`
-
-### git remote
-
-每次 push 和 pull 操作都需要带上远程仓库的地址，非常的麻烦，我们可以给仓库地址设置一个别名
-
-- `git remote add 仓库别名 仓库地址` 使用仓库别名替代仓库地址。仓库别名相当于一个 js 变量，仓库地址就是对应的值。
-  - `git remote add hucc git@github.com:hucongcong/test.git` 设置了一个 hucc 的仓库别名，以后 push 和 pull 都可以不用仓库地址，而用 hucc
-- `git remote remove hucc` 删除 hucc 这个仓库别名。
-- `git remote` 查看所有的仓库别名
-- 如果使用了`git clone`命令从远程仓库获取下来的，那么这个本地仓库会自动添加一个 origin 的远程地址，指向的就是克隆的远程地址。
-
-git push origin master // 把本地 master 分支的最新修改推送至 GitHub
-
-## SSH 免密码登陆
+## 免密码登陆
 
 git 支持多种数据传输协议：
 
-- https 协议：`https://github.com/hucongcong/jquery.git`
-- ssh 协议：`git@github.com:hucongcong/jquery.git`
+- HTTPS 协议：`https://github.com/xiamibuchi/yang-packages.git`
+- SSH 协议：`git@github.com:xiamibuchi/yang-packages.git`
 
 每次 push 或者 pull 代码，如果使用 https 协议，那么都需要输入用户名和密码进行身份的确认，非常麻烦。
-
-- github 为了账户的安全，需要对每一次 push 请求都要验证用户的身份，只有合法的用户才可以 push
-- 使用 ssh 协议，配置 ssh 免密码，可以做到免密码往 github 推送代码
 
 ### SSH 免密码登录配置
 
@@ -151,50 +198,6 @@ git 支持多种数据传输协议：
 - 5 粘贴 公钥  `id_rsa.pub`  内容到对应文本框中
 - 5 在 github 中新建仓库或者使用现在仓库，拿到`git@github.com:用户名/仓库名.git`
 - 6 此后，再次 SSH 方式与 github“通信”，不用输入密码确认身份了
-
-## github pages 介绍
-
-[GitHub Pages ](https://pages.github.com/)本用于介绍托管在 GitHub 的项目， 不过，由于他的空间免费稳定，用来做搭建一个博客再好不过了。
-
-缺点：只能放静态页面，也就说 github pages 只能解析 html、css、js，无法解析后端语言。
-
-[用户名.github.io] 将来访问路径
-
-博客搭建步骤：
-
-1. 在本地工作目录使用 git 初始化 `git init`
-2. 创建自己的博客项目
-3. 将创建好的博客添加到暂存区 `git add [文件路径]`
-4. 本地提交： `git commit -m "第一个博客"`
-5. 在 github 上创建一个项目，项目名`用户名.github.io` 固定的
-6. 提交到 github：`git push github仓库地址 master`
-7. 查看 github 中对应的仓库中，是不是提交到了
-8. 访问：用户名.github.io
-
-## stash 暂存
-
-git stash // 可以暂时隐藏工作区未上传的文件
-
-git stash list //查看所有的暂时隐藏
-
-git stash apply // 恢复，恢复后，stash 内容并不删除，你需要使用命令 git stash drop 来删除
-git stash pop // 恢复的同时把 stash 内容也删除了。
-
-## tag 标签
-
-`git tag <tagname>`
-
-`git tag -d <tagname>`
-
-### 轻标签
-
-- 添加名称
-
-### 注解标签
-
-- 添加名称
-- 添加注解
-- 添加签名
 
 ## Commit Message
 
@@ -251,20 +254,11 @@ npx husky add .husky/commit-msg  'npx --no -- commitlint --edit ${1}'
 ## 其余常用命令
 
 ```bash
-git log                                  查看日志
-git log -p                               查看详细历史
-git log --stat                           查看简要统计
-git status                               查看工作区状态
 git commit --amend                       对最新的一条commit进行修正
 git reset --hard HEAD^                   丢弃最新提交（未提交的内容会被擦掉）
 git reset --soft HEAD^                   丢弃最新提交（未提交的内容不会被擦掉）
 git revert HEAD^                         回到某个commit
 git rebase 目标基础点                     重新设置基础点
-git push origin localbranch              将代码推送到远程仓库的指定分支
-git push -d origin branchName            删除远程分支
-git stash                                暂存代码
-git stash pop                            弹出暂存代码
-git branch | grep ‘dev*’ | xargs git branch -d   删除分支名包含指定字符的分支
 ```
 
 ## 配置别名
@@ -279,50 +273,6 @@ git config --global alias.br branch                 git barnch ==> git br
 git config --global alias.sh stash                  git stash ==> git sh
 git config --global alias.pop "stash pop"           git stash pop ==> git pop
 ```
-
-## Fast-Forward
-
-Fast-Forward
-
-当前分支合并到另一分支时，如果没有分歧解决，就会直接移动文件指针。这个过程叫做 fastforward。
-
-开发一直在 master 分支进行，但忽然有一个新的想法，于是新建了一个 develop 的分支，并在其上进行一系列提交，完成时，回到 master 分支，此时，master 分支在创建 develop 分支之后并未产生任何新的 commit。此时的合并就叫 fast forward。
-
-如果执行了 Fast Forward，开发者根本不会看到这个分支，就像在 master 直接 commit 一样。
-
-示例：
-
-1. 新建一个 work tree，在 master 中做几次 commit
-2. 新建 develop 的 branch，然后再做多次 commits
-
-此时的分支流图如下(gitx)：
-
-正常合并
-
-(master)$ git merge develop
-Updating 5999848..7355122
-Fast-forward
-c.txt | 1 +
-d.txt | 1 +
-2 files changed, 2 insertions(+), 0 deletions(-)
-create mode 100644 c.txt
-create mode 100644 d.txt
-
-可以看出这是一次 fast-forward 式的合并，且合并完之后的视图为扁平状，看不出 develop 分支开发的任何信息。
-
-使用–no-ff 进行合并
-
-—no-ff (no fast foward)，使得每一次的合并都创建一个新的 commit 记录。即使这个 commit 只是 fast-foward，用来避免丢失信息。
-
-(master)$ git merge –no-ff develop
-Merge made by recursive.
-c.txt | 2 +-
-d.txt | 2 +-
-2 files changed, 2 insertions(+), 2 deletions(-)
-
-可以看出，使用 no-ff 后，会多生成一个 commit 记录，并强制保留 develop 分支的开发记录（而 fast-forward 的话则是直接合并，看不出之前 Branch 的任何记录）。这对于以后代码进行分析特别有用，故有以下最佳实践。
-
-–no-ff，其作用是：要求 git merge 即使在 fast forward 条件下也要产生一个新的 merge commit。此处，要求采用–no-ff 的方式进行分支合并，其目的在于，希望保持原有“develop branches”整个提交链的完整性。Git – Fast Forward 和 no fast foward
 
 ## git autocomplete commands
 

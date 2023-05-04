@@ -33,7 +33,7 @@
 
 [文档](https://webkit.org/blog/7734/auto-play-policy-changes-for-macos/)
 
-safari 会通过自动推理引擎来阻止自动播放，文档提到的因素有**电量**和**带宽**，猜测会有类似chrome白名单的策略。
+safari 会通过自动推理引擎来阻止自动播放，文档提到的因素有**电量**和**带宽**，猜测会有类似 chrome 白名单的策略。
 
 ### 最佳实践
 
@@ -52,18 +52,18 @@ if (promise !== undefined) {
 
 ## 媒体参与度指数（MEI）
 
-MEI衡量个人在站点上消费媒体的倾向。Chrome当前的做法是每个来源的访问次数与重大媒体播放事件的比率：
+MEI 衡量个人在站点上消费媒体的倾向。Chrome 当前的做法是每个来源的访问次数与重大媒体播放事件的比率：
 
-- 媒体（音频/视频）的消耗必须大于7秒。
+- 媒体（音频/视频）的消耗必须大于 7 秒。
 - 音频必须存在且不能静音。
 - 带有视频的标签处于活动状态。
-- 视频大小（以px为单位）必须大于200x140。
+- 视频大小（以 px 为单位）必须大于 200x140。
 
-*chrome可以访问[chrome://media-engagement](chrome://media-engagement/)查看*
+_chrome 可以访问[chrome://media-engagement](chrome://media-engagement/)查看_
 
-*Chrome提供了全球1000多个站点允许自动播放的白名单，白名单未公开，加入方式未公开。这也解释了为什么youtube在pc上是允许自动播放的。*
+_Chrome 提供了全球 1000 多个站点允许自动播放的白名单，白名单未公开，加入方式未公开。这也解释了为什么 youtube 在 pc 上是允许自动播放的。_
 
-### YouTube、Twitter的做法
+### YouTube、Twitter 的做法
 
 默认静音播放，提示用户点击取消静音
 
@@ -78,13 +78,13 @@ MEI衡量个人在站点上消费媒体的倾向。Chrome当前的做法是每�
 </script>
 ```
 
-### macOS的自动播放政策
+### macOS 的自动播放政策
 
 - 允许由用户手势导致的播放（**不代表有过用户手势就可以播**），touchend，click，doubleclick，keydown
 - 允许带有 autoplay 属性，并且不包含音轨（有音轨单无声音的不在范围内）
-- 允许带有muted属性的
+- 允许带有 muted 属性的
 - 无音轨视频正在播放的时候获得音轨，未经用户手势导致的取消静音，将会暂停播放
-- 视频元素必须在可视区域并且css可见，透明度0视为不可见。
+- 视频元素必须在可视区域并且 css 可见，透明度 0 视为不可见。
 
 ### 在流中的视频
 
@@ -95,8 +95,8 @@ MEI衡量个人在站点上消费媒体的倾向。Chrome当前的做法是每�
 ```js
 // 自动播放策略
 const PlayMode = {
-  STOP_PLAY: 'STOP_PLAY',
-  MUTED_PLAY: 'MUTED_PLAY',
+  STOP_PLAY: "STOP_PLAY",
+  MUTED_PLAY: "MUTED_PLAY",
 };
 
 export default class AutoplayStrategy {
@@ -117,7 +117,7 @@ export default class AutoplayStrategy {
       player.on(player.Events.PLAYING, this.emitCallPlaySuccess);
 
       if (this.config.mode === PlayMode.MUTED_PLAY) {
-        if (!err || err.name === 'NotAllowedError') {
+        if (!err || err.name === "NotAllowedError") {
           player.setMuted(true);
           player.play();
         }
@@ -153,34 +153,33 @@ export default class AutoplayStrategy {
   raw-controls
   controls
   x-webkit-airplay
-  webkit-playsinline  
+  webkit-playsinline
   x5-playsinline
   x5-video-player-type="h5-page"
->
-</video>
+></video>
 ```
 
 ## Picture-in-Picture
 
 ```js
 // 进入画中画
-HTMLVideoElement.requestPictureInPicture()
+HTMLVideoElement.requestPictureInPicture();
 // 退出画中画
-document.exitPictureInPicture()
+document.exitPictureInPicture();
 
 // events
-HTMLVideoElement.addEventListener('enterpictureinpicture', function() {
+HTMLVideoElement.addEventListener("enterpictureinpicture", function () {
   // 已进入画中画模式
 });
 // 退出画中画模式时候执行
-HTMLVideoElement.addEventListener('leavepictureinpicture', function() {
+HTMLVideoElement.addEventListener("leavepictureinpicture", function () {
   // 已退出画中画模式
 });
 
 // 监听小窗口尺寸的改变。PictureInPictureWindow 对象的获取在画中画响应事件的event对象中
-HTMLVideoElement.addEventListener('enterpictureinpicture', function(event) {
+HTMLVideoElement.addEventListener("enterpictureinpicture", function (event) {
   const videoPicWindow = event.pictureInPictureWindow;
-  pipWindow.addEventListener('resize', function () {
+  pipWindow.addEventListener("resize", function () {
     // videoPicWindow.width
     // videoPicWindow.height
   });
@@ -204,11 +203,11 @@ class Index {
   install(player) {
     this.player = player;
     if (!this.config.loudnessTargets) {
-      console.warn('目标响度未配置');
+      console.warn("目标响度未配置");
       return;
     }
     if (!this.config.loudnessField) {
-      console.warn('响度字段未配置');
+      console.warn("响度字段未配置");
       return;
     }
     this._initEvent();
@@ -223,7 +222,8 @@ class Index {
       if (!levels[leave].attributes) {
         return;
       }
-      this.loudnessOfVideo = levels[leave].attributes[this.config.loudnessField];
+      this.loudnessOfVideo =
+        levels[leave].attributes[this.config.loudnessField];
       this._setGain();
     });
     player.on(player.Events.BEFORE_DESTROY, this.destroy);
@@ -249,7 +249,10 @@ class Index {
       return;
     }
 
-    this.gainNode.gain.value = Math.pow(10, (loudnessTargets - loudnessOfVideo) / 20);
+    this.gainNode.gain.value = Math.pow(
+      10,
+      (loudnessTargets - loudnessOfVideo) / 20
+    );
   }
   destroy() {
     if (this.audioCtx) {

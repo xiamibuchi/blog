@@ -59,4 +59,3 @@ iOS 12 跨域 iframe 使用 IndexedDB 会报错。
 ```js
 SecutityError: IDBFactory.open() called in an invalid security context.
 ```
-
