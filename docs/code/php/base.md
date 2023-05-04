@@ -1,12 +1,12 @@
 # PHP 基础
 
-** PHP，即"*PHP: Hypertext   Preprocessor*"，是一种被广泛应用的开源通用脚本语言，尤其适用于 Web 开发并可嵌入 HTML    中去。**
+** PHP，即"PHP: Hypertext Preprocessor"，是一种被广泛应用的开源通用脚本语言，尤其适用于 Web 开发并可嵌入 HTML 中去。**
 
-+ 服务端脚本。这是 PHP 最传统，也是最主要的目标领域。开展这项工作需要具备以下三点：PHP 解析器（CGI 或者服务器模块）、web 服务器和 web 浏览器。需要在运行 web 服务器时，安装并配置 PHP，然后，可以用 web 浏览器来访问 PHP 程序的输出，即浏览服务端的 PHP 页面。如果只是实验 PHP 编程，所有的这些都可以运行在自己家里的电脑中。请查阅[安装](mk:@MSITStore:E:\study\php\php_enhanced_zh.chm::/res/install.html)一章以获取更多信息。
-+ 命令行脚本。可以编写一段 PHP  脚本，并且不需要任何服务器或者浏览器来运行它。通过这种方式，仅仅只需要        PHP 解析器来执行。这种用法对于依赖  cron（Unix 或者 Linux 环境）或者 Task Scheduler（Windows 环境）的日常运行的脚本来说是理想的选择。这些脚本也可以用来处理简单的文本。请参阅 [PHP 的命令行模式](mk:@MSITStore:E:\study\php\php_enhanced_zh.chm::/res/features.commandline.html)以获取更多信息。
-+ 编写桌面应用程序。对于有着图形界面的桌面应用程序来说，PHP  或许不是一种最好的语言，但是如果用户非常精通  PHP，并且希望在客户端应用程序中使用 PHP 的一些高级特性，可以利用 PHP-GTK 来编写这些程序。用这种方法，还可以编写跨平台的应用程序。PHP-GTK 是 PHP 的一个扩展，在通常发布的 PHP 包中并不包含它。如果对 PHP-GTK 感兴趣，请访问其[» 网站](http://gtk.php.net/)以获取更多信息。
+- 服务端脚本。这是 PHP 最传统，也是最主要的目标领域。开展这项工作需要具备以下三点：PHP 解析器（CGI 或者服务器模块）、web 服务器和 web 浏览器。需要在运行 web 服务器时，安装并配置 PHP，然后，可以用 web 浏览器来访问 PHP 程序的输出，即浏览服务端的 PHP 页面。如果只是实验 PHP 编程，所有的这些都可以运行在自己家里的电脑中。请查阅[安装](mk:@MSITStore:E:\study\php\php_enhanced_zh.chm::/res/install.html)一章以获取更多信息。
+- 命令行脚本。可以编写一段 PHP 脚本，并且不需要任何服务器或者浏览器来运行它。通过这种方式，仅仅只需要 PHP 解析器来执行。这种用法对于依赖 cron（Unix 或者 Linux 环境）或者 Task Scheduler（Windows 环境）的日常运行的脚本来说是理想的选择。这些脚本也可以用来处理简单的文本。请参阅 [PHP 的命令行模式](mk:@MSITStore:E:\study\php\php_enhanced_zh.chm::/res/features.commandline.html)以获取更多信息。
+- 编写桌面应用程序。对于有着图形界面的桌面应用程序来说，PHP 或许不是一种最好的语言，但是如果用户非常精通 PHP，并且希望在客户端应用程序中使用 PHP 的一些高级特性，可以利用 PHP-GTK 来编写这些程序。用这种方法，还可以编写跨平台的应用程序。PHP-GTK 是 PHP 的一个扩展，在通常发布的 PHP 包中并不包含它。如果对 PHP-GTK 感兴趣，请访问其[» 网站](http://gtk.php.net/)以获取更多信息。
 
-关于换行:*尽管换行在 HTML 中的实际意义不是很大，但适当地使用换行可以使 HTML 代码易读且美观。PHP 会在输出时自动删除其结束符 ?> 后的一个换行。该功能主要是针对在一个页面中嵌入多段 PHP 代码或者包含了无实质性输出的 PHP 文件而设计，与此同时也造成了一些疑惑。如果需要在 PHP 结束符 ?> 之后输出换行的话，可以在其后加一个空格，或者在最后的一个 echo/print 语句中加入一个换行。*
+关于换行: 尽管换行在 HTML 中的实际意义不是很大，但适当地使用换行可以使 HTML 代码易读且美观。PHP 会在输出时自动删除其结束符 ?> 后的一个换行。该功能主要是针对在一个页面中嵌入多段 PHP 代码或者包含了无实质性输出的 PHP 文件而设计，与此同时也造成了一些疑惑。如果需要在 PHP 结束符 ?> 之后输出换行的话，可以在其后加一个空格，或者在最后的一个 echo/print 语句中加入一个换行。
 
 ## 基本语法
 
@@ -32,7 +32,7 @@
 
 可以在 PHP 中使用四对不同的开始和结束标记。其中两种，`<?php ?>` 和 `<script language="php"> </script>` 总是可用的。另两种是短标记和 ASP 风格标记，可以在 php.ini 配置文件中打开或关闭。尽管有些人觉得短标记和 ASP 风格标记很方便，但移植性较差，通常不推荐使用。
 
-Note: *此外注意如果将 PHP 嵌入到 XML 或 XHTML 中则需要使用 `<?php ?>` 标记以保持符合标准。*
+Note: _此外注意如果将 PHP 嵌入到 XML 或 XHTML 中则需要使用 `<?php ?>` 标记以保持符合标准。_
 
 #### Example #2 PHP 开始和结束标记
 
@@ -60,7 +60,7 @@ Note: *此外注意如果将 PHP 嵌入到 XML 或 XHTML 中则需要使用 `<?p
 
 ASP 风格标记（上例 4）仅在通过 php.ini 配置文件中的指令 asp_tags 打开后才可用。
 
-Note:*在以下情况应避免使用短标记：开发需要再次发布的程序或者库，或者在用户不能控制的服务器上开发。因为目标服务器可能不支持短标记。为了代码的移植及发行，确保不要使用短标记。*
+Note:_在以下情况应避免使用短标记：开发需要再次发布的程序或者库，或者在用户不能控制的服务器上开发。因为目标服务器可能不支持短标记。为了代码的移植及发行，确保不要使用短标记。_
 
 Note: 在 PHP 5.2 和之前的版本中，解释器不允许一个文件的全部内容就是一个开始标记 <?php。自 PHP 5.3 起则允许此种文件，但要开始标记后有一个或更多白空格符。
 
@@ -86,12 +86,12 @@ include "";
 
 require '"";
 
-require一个文件存在错误的话，那么程序就会中断执行了，并显示致命错误 
-include一个文件存在错误的话，那么程序不会中端，而是继续执行，并显示一个警告错误。
+require 一个文件存在错误的话，那么程序就会中断执行了，并显示致命错误
+include 一个文件存在错误的话，那么程序不会中端，而是继续执行，并显示一个警告错误。
 
-include有返回值，而require没有。 
+include 有返回值，而 require 没有。
 
-有的文件不允许被包含多次?可以用_once来控制,
+有的文件不允许被包含多次?可以用\_once 来控制,
 
 ## 变量
 
@@ -108,7 +108,7 @@ echo $$a;//"world
 ### 超全局变量
 
 1. `$_GET` //获取地址栏传值
-2. `$_POST`//获取表单method=post传值
+2. `$_POST`//获取表单 method=post 传值
 3. `$_COOKIE` //会话的一种，将信息保存在客户端
 4. `$_SESSION` //会话的一种，将信息保存在服务器端
 5. `$_FILE` // 获取上传文件的相关信息
@@ -132,7 +132,7 @@ PHP 支持 9 种原始数据类型。
 • resource（资源）
 • NULL（无类型）
 
-Note: *如果想查看某个表达式的值和类型，用 var_dump() 函数。如果只是想得到一个易读懂的类型的表达方式用于调试，用 gettype() 函数。要检验某个类型，不要用 gettype()，而用 is_type 函数。如果要将一个变量强制转换为某类型，可以对其使用强制转换或者 settype() 函数。*
+Note: _如果想查看某个表达式的值和类型，用 var_dump() 函数。如果只是想得到一个易读懂的类型的表达方式用于调试，用 gettype() 函数。要检验某个类型，不要用 gettype()，而用 is_type 函数。如果要将一个变量强制转换为某类型，可以对其使用强制转换或者 settype() 函数。_
 
 常量：常量不允许重复定义
 Define(key,value);
@@ -153,10 +153,10 @@ true 或 false(大小写不敏感)
 • 布尔值 FALSE 本身
 • 整型值 0（零）
 • 浮点型值 0.0（零）
-•  空字符串，以及字符串 "0"
+• 空字符串，以及字符串 "0"
 • 不包括任何元素的数组
-•  特殊类型 NULL（包括尚未赋值的变量）
-•  从空标记生成的 SimpleXML 对象
+• 特殊类型 NULL（包括尚未赋值的变量）
+• 从空标记生成的 SimpleXML 对象
 
 所有其它值都被认为是 TRUE（包括任何资源 和 NAN）。
 
@@ -218,23 +218,23 @@ if(abs($a-$b) < $epsilon) {
 
 要表达一个单引号自身，需在它的前面加个反斜线（\）来转义。要表达一个反斜线自身，则用两个反斜线（\\）。其它任何方式的反斜线都会被当成反斜线本身：也就是说如果想使用其它转义序列例如 \r 或者 \n，并不代表任何特殊含义，就单纯是这两个字符本身。
 
-Note: *不像双引号和 heredoc 语法结构，在单引号字符串中的变量和特殊字符的转义序列将不会被替换。*
+Note: _不像双引号和 heredoc 语法结构，在单引号字符串中的变量和特殊字符的转义序列将不会被替换。_
 
 #### 双引号
 
 如果字符串是包围在双引号（"）中， PHP 将对一些特殊的字符进行解析：
 
-序列                     含义
-\n            换行（ASCII 字符集中的 LF 或 0x0A (10)）
-\r            回车（ASCII 字符集中的 CR 或 0x0D (13)）
-\t            水平制表符（ASCII 字符集中的 HT 或 0x09 (9)）
-\v            垂直制表符（ASCII 字符集中的 VT 或 0x0B (11)）（自 PHP 5.2.5 起）
-\e            Escape（ASCII 字符集中的 ESC 或 0x1B (27)）（自 PHP 5.4.0 起）
-\f            换页（ASCII 字符集中的 FF 或 0x0C (12)）（自 PHP 5.2.5 起）
-\\            反斜线
-\$            美元标记
-\"            双引号
-\[0-7]{1,3}   符合该正则表达式序列的是一个以八进制方式来表达的字符
+序列 含义
+\n 换行（ASCII 字符集中的 LF 或 0x0A (10)）
+\r 回车（ASCII 字符集中的 CR 或 0x0D (13)）
+\t 水平制表符（ASCII 字符集中的 HT 或 0x09 (9)）
+\v 垂直制表符（ASCII 字符集中的 VT 或 0x0B (11)）（自 PHP 5.2.5 起）
+\e Escape（ASCII 字符集中的 ESC 或 0x1B (27)）（自 PHP 5.4.0 起）
+\f 换页（ASCII 字符集中的 FF 或 0x0C (12)）（自 PHP 5.2.5 起）
+\\ 反斜线
+\$ 美元标记
+\" 双引号
+\[0-7]{1,3} 符合该正则表达式序列的是一个以八进制方式来表达的字符
 \x[0-9A-Fa-f] {1,2} 符合该正则表达式序列的是一个以十六进制方式来表达的字符
 
 #### Heredoc 结构(<<<)
@@ -257,7 +257,7 @@ Heredoc 结构就象是没有使用双引号的双引号字符串，这就是说
 
 #### Nowdoc 结构
 
-可理解为Heredoc 结构(<<<)的不解析转义和变量版
+可理解为 Heredoc 结构(<<<)的不解析转义和变量版
 
 ```php
 $str = <<<'EOD'
@@ -272,43 +272,44 @@ EOD;
 1. '.':连接字符串（'+'（加号）运算符没有这个功能）
 2. str(index):下标访问字符串中的某个字符（要注意各字符编码占用的长度，用 [] 或 {} 访问任何其它类型（不包括数组或具有相应接口的对象实现）的变量只会无声地返回 NULL。 ）
 3. (string) 或用 strval():转换为字符串
-    1. boolean 的 TRUE 被转换成 string 的 "1"。Boolean 的 FALSE 被转换成 ""（空字符串）。
-    2. 一个整数 integer 或浮点数 float 被转换为数字的字面样式的 string（包括 float 中的指数部分）。使用指数计数法的浮点数（4.1E+6）也可转换。
-    3. 数组 array 总是转换成字符串 "Array"，因此，echo 和 print 无法显示出该数组的内容。要显示某个单元，可以用 echo $arr['foo'] 这种结构
-    4. NULL 总是被转变成空字符串
-    5. 资源 resource 总会被转变成 "Resource id #1"  这种结构的字符串
+   1. boolean 的 TRUE 被转换成 string 的 "1"。Boolean 的 FALSE 被转换成 ""（空字符串）。
+   2. 一个整数 integer 或浮点数 float 被转换为数字的字面样式的 string（包括 float 中的指数部分）。使用指数计数法的浮点数（4.1E+6）也可转换。
+   3. 数组 array 总是转换成字符串 "Array"，因此，echo 和 print 无法显示出该数组的内容。要显示某个单元，可以用 echo $arr['foo'] 这种结构
+   4. NULL 总是被转变成空字符串
+   5. 资源 resource 总会被转变成 "Resource id #1" 这种结构的字符串
 
 某些函数假定字符串是以单字节编码的:
 
 1. substr(string $string , int $start [, int $length ]): start 是负数，返回的字符串将从 string 结尾处向前数第 start 个字符开始。如果 string 的长度小于 start，将返回 FALSE。
 2. mb_substr(string $str , int $start [, int $length = NULL [, string $encoding = mb_internal_encoding()]]);
-    + $string  从哪个字符串中截取
-    + $start   从字符串哪个地方开始截
-    + $length  截取多长，---如果没有这个参数，会从开始截取的地方一直截取到最后
-    + $encoding  当前的编码（文件编码）
+
+   - $string 从哪个字符串中截取
+   - $start 从字符串哪个地方开始截
+   - $length 截取多长，---如果没有这个参数，会从开始截取的地方一直截取到最后
+   - $encoding 当前的编码（文件编码）
 
 3. strpos(string $haystack , mixed $needle [, int $offset = 0 ]):字符串中查找某一段字符串
-4. strrpos()：和strpos使用的方式一样，只不过返回的是最后一次出现的位置
+4. strrpos()：和 strpos 使用的方式一样，只不过返回的是最后一次出现的位置
 5. strlen():获取字符串长度,如果 string 为空，则返回 0。
 6. strcmp(string $str1 , string $str2):如果 str1 小于 str2 返回 < 0； 如果 str1 大于 str2 返回 > 0；如果两者相等，返回 0。
 
-7. implode(string $glue , array $pieces)  数组转换成字符串
+7. implode(string $glue , array $pieces) 数组转换成字符串
 8. explode ( string $delimiter , string $string [, int $limit ] )
-    + $delimiter 用什么字符来分割需要转换成数组的字符串
-    + $string 需要转化成数组的字符串
+   - $delimiter 用什么字符来分割需要转换成数组的字符串
+   - $string 需要转化成数组的字符串
 9. str_split(string $string [, int $split_length = 1 ]):字符串按照字符个数来转换成数组，如果最后一个元素不够指定的数目，也会当成一个数组元素
 10. strtolower();strtoupper();ucfirst():把字符串中第一个字符转换成大写
 11. str_replace ( mixed $search , mixed $replace , mixed $subject)
-     + $search:被替换的字符串
-     + $replace:用什么字符串替换
-     + $subject:在哪个字符串中进行替换
-12. trim()---去掉左边和右边的空格及/n、/t等转义字符
-13. ltrim()---去掉左边的空格及/n、/t等转义字符
-14. rtrim()----去掉右边的空格及/n、/t等转义字符
+    - $search:被替换的字符串
+    - $replace:用什么字符串替换
+    - $subject:在哪个字符串中进行替换
+12. trim()---去掉左边和右边的空格及/n、/t 等转义字符
+13. ltrim()---去掉左边的空格及/n、/t 等转义字符
+14. rtrim()----去掉右边的空格及/n、/t 等转义字符
 15. str_repeat(string $input,int $multiplier);字符串重复
-     + $string  被重复的字符串
-     + $multiplier 重复的次数
-16. string str_shuffle ( string $str);$string  需要被打乱的字符串
+    - $string 被重复的字符串
+    - $multiplier 重复的次数
+16. string str_shuffle ( string $str);$string 需要被打乱的字符串
 
 #### 字符串转换为数值
 
@@ -343,8 +344,8 @@ PHP 数组可以同时含有 integer 和 string 类型的键名，因为 PHP 实
 #### 定义
 
 1. array()：它接受任意数量用逗号分隔的 键（key） => 值（value）对。
-    + // 键（key）可是是一个整数 integer 或字符串 string
-    + // 值（value）可以是任意类型的值
+   - // 键（key）可是是一个整数 integer 或字符串 string
+   - // 值（value）可以是任意类型的值
 2. []
 
 ```php
@@ -364,15 +365,15 @@ $array = [
 
 key 会有如下的强制转换：
 
-•  包含有合法整型值的字符串会被转换为整型。例如键名 "8" 实际会被储存为 8。但是 "08" 则不会强制转换，因为其不是一个合法的十进制数值。
-•  浮点数也会被转换为整型，意味着其小数部分会被舍去。例如键名 8.7 实际会被储存为 8。
-•  布尔值也会被转换成整型。即键名 true 实际会被储存为 1 而键名 false 会被储存为 0。
+• 包含有合法整型值的字符串会被转换为整型。例如键名 "8" 实际会被储存为 8。但是 "08" 则不会强制转换，因为其不是一个合法的十进制数值。
+• 浮点数也会被转换为整型，意味着其小数部分会被舍去。例如键名 8.7 实际会被储存为 8。
+• 布尔值也会被转换成整型。即键名 true 实际会被储存为 1 而键名 false 会被储存为 0。
 • Null 会被转换为空字符串，即键名 null 实际会被储存为 ""。
-•  数组和对象不能被用为键名。坚持这么做会导致警告：Illegal offset type。
+• 数组和对象不能被用为键名。坚持这么做会导致警告：Illegal offset type。
 
 如果在数组定义中多个单元都使用了同一个键名，则只使用了最后一个，之前的都被覆盖了。
 
-如果不给键名，则默认1，2，3，4，5，...
+如果不给键名，则默认 1，2，3，4，5，...
 
 数组单元可以通过 array[key] 语法来访问
 
@@ -393,8 +394,8 @@ foreach ($arr as $value)
 
 
 //遍历数组的第三种方法
-while(list($key,$val)=each($arr)){  
-    echo $key.':'.$val."<br>";  
+while(list($key,$val)=each($arr)){
+    echo $key.':'.$val."<br>";
 }
 ```
 
@@ -408,7 +409,7 @@ end(), -------移动指针到最后一个元素
 key()-----------指针指向的当前元素的下标
 current(), ----指针指向的当前元素的值
 
-sort(),  ----从低到高来排序
+sort(), ----从低到高来排序
 rsort(), ----从高到底排序
 
 asort(), 保持索引关系正向排序
@@ -417,9 +418,9 @@ arsort(), 保持索引关系逆向排序
 ksort(), 按照下标来正向排序
 krsort(), 按照下标逆向排序
 
-shuffle()  打乱数组的元素顺序，这里是随机打乱的
+shuffle() 打乱数组的元素顺序，这里是随机打乱的
 
-count()  ---返回数组中元素的个数
+count() ---返回数组中元素的个数
 array_push() ----想数组中追加元素，可以同时追加多个元素
 array_pop(),-----删除数组中最后一个加入的元素
 
@@ -434,8 +435,8 @@ array_values()-----返回数组中所有的值
 
 1. 创建连接接口：$conn = mysqli_connect('请求地址','用户名','用户密码','数据库名');
 2. 执行语句：`mysqli_query($conn,$sql语句);`
-   1. 查询语句（SELECT）会返回一个阅读器或者false
-   2. 其他语句如 delete，insert into，update等会根据执行结果返回true或false
+   1. 查询语句（SELECT）会返回一个阅读器或者 false
+   2. 其他语句如 delete，insert into，update 等会根据执行结果返回 true 或 false
 3. 如果获得的是阅读器`$reader`，则根据需求的数据，使用
    1. mysqli_fetch_row：返回索引数组
    2. mysqli_fetch_assoc：返回关联数组
@@ -446,11 +447,9 @@ array_values()-----返回数组中所有的值
 
 // 基本的 sql 语句
 
-
 // 增加
 // INSERT INTO 表名 ( 列名, 列名, ... ) VALUES ( 值, 值, ... );
 // 不好的习惯: INSERT 表名 VALUES ( 值, 值, ... );
-
 
 // 删除
 // DELETE FROM 表名 WHERE 条件
@@ -459,14 +458,13 @@ array_values()-----返回数组中所有的值
 // UPDATE 表名 SET 列 = 值, 列 = 值, ... WHERE 条件
 
 // 看文档的时候, 文档描述语法
-// UPDATE 表名 SET 列=值[, 列=值] ... 
+// UPDATE 表名 SET 列=值[, 列=值] ...
 // UPDATE 表名 SET {列=值} , ...
-
 
 // 查询
 // SELECT 列[, 列] ... FROM 表名 WHERE 条件
 
-// SELECT { 列[, 列] ... | * } FROM 表名 WHERE 条件
+// SELECT { 列[, 列] ... | \* } FROM 表名 WHERE 条件
 
 // ORDER BY 列名 DESC
 
@@ -476,102 +474,101 @@ array_values()-----返回数组中所有的值
 
 ### content-type
 
-根据content-type : jquery 的 ajax 可以根据返回的数据正确的识别数据类型
+根据 content-type : jquery 的 ajax 可以根据返回的数据正确的识别数据类型
 
 //定义编码  
-header( 'Content-Type:text/html;charset=utf-8 ');  
+header( 'Content-Type:text/html;charset=utf-8 ');
 
 //Atom  
-header('Content-type: application/atom+xml');  
+header('Content-type: application/atom+xml');
 
 //CSS  
-header('Content-type: text/css');  
-  
- //Javascript  
- header('Content-type: text/javascript');  
-   
- //JPEG Image  
- header('Content-type: image/jpeg');  
-   
- //JSON  
- header('Content-type: application/json');  
-   
- //PDF  
- header('Content-type: application/pdf');  
-   
- //RSS  
- header('Content-Type: application/rss+xml; charset=ISO-8859-1');  
-   
- //Text (Plain)  
- header('Content-type: text/plain');  
-   
- //XML  
- header('Content-type: text/xml');  
-   
- // ok  
- header('HTTP/1.1 200 OK');  
-   
- //设置一个404头:  
- header('HTTP/1.1 404 Not Found');  
-   
- //设置地址被永久的重定向  
- header('HTTP/1.1 301 Moved Permanently');  
-   
- //转到一个新地址  
- header('Location: http://www.example.org/');  
-   
- //文件延迟转向:  
+header('Content-type: text/css');
+
+//Javascript  
+ header('Content-type: text/javascript');
+
+//JPEG Image  
+ header('Content-type: image/jpeg');
+
+//JSON  
+ header('Content-type: application/json');
+
+//PDF  
+ header('Content-type: application/pdf');
+
+//RSS  
+ header('Content-Type: application/rss+xml; charset=ISO-8859-1');
+
+//Text (Plain)  
+ header('Content-type: text/plain');
+
+//XML  
+ header('Content-type: text/xml');
+
+// ok  
+ header('HTTP/1.1 200 OK');
+
+//设置一个 404 头:  
+ header('HTTP/1.1 404 Not Found');
+
+//设置地址被永久的重定向  
+ header('HTTP/1.1 301 Moved Permanently');
+
+//转到一个新地址  
+ header('Location: http://www.example.org/');
+
+//文件延迟转向:  
  header('Refresh: 10; url=http://www.example.org/');  
- print 'You will be redirected in 10 seconds';  
-   
- //当然，也可以使用html语法实现  
- // <meta http-equiv="refresh" content="10;http://www.example.org/ />  
-   
- // override X-Powered-By: PHP:  
+ print 'You will be redirected in 10 seconds';
+
+//当然，也可以使用 html 语法实现  
+ // <meta http-equiv="refresh" content="10;http://www.example.org/ />
+
+// override X-Powered-By: PHP:  
  header('X-Powered-By: PHP/4.4.0');  
- header('X-Powered-By: Brain/0.6b');  
-   
- //文档语言  
- header('Content-language: en');  
-   
- //告诉浏览器最后一次修改时间  
+ header('X-Powered-By: Brain/0.6b');
+
+//文档语言  
+ header('Content-language: en');
+
+//告诉浏览器最后一次修改时间  
  $time = time() - 60; // or filemtime($fn), etc  
- header('Last-Modified: '.gmdate('D, d M Y H:i:s', $time).' GMT');  
-   
- //告诉浏览器文档内容没有发生改变  
- header('HTTP/1.1 304 Not Modified');  
-   
- //设置内容长度  
- header('Content-Length: 1234');  
-   
- //设置为一个下载类型  
+ header('Last-Modified: '.gmdate('D, d M Y H:i:s', $time).' GMT');
+
+//告诉浏览器文档内容没有发生改变  
+ header('HTTP/1.1 304 Not Modified');
+
+//设置内容长度  
+ header('Content-Length: 1234');
+
+//设置为一个下载类型  
  header('Content-Type: application/octet-stream');  
  header('Content-Disposition: attachment; filename="example.zip"');  
  header('Content-Transfer-Encoding: binary');  
  // load the file to send:  
- readfile('example.zip');  
-   
- // 对当前文档禁用缓存  
+ readfile('example.zip');
+
+// 对当前文档禁用缓存  
  header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');  
  header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past  
- header('Pragma: no-cache');  
-   
- //设置内容类型:  
+ header('Pragma: no-cache');
+
+//设置内容类型:  
  header('Content-Type: text/html; charset=iso-8859-1');  
  header('Content-Type: text/html; charset=utf-8');  
  header('Content-Type: text/plain'); //纯文本格式  
- header('Content-Type: image/jpeg'); //JPG***  
- header('Content-Type: application/zip'); // ZIP文件  
- header('Content-Type: application/pdf'); // PDF文件  
+ header('Content-Type: image/jpeg'); //JPG**\*  
+ header('Content-Type: application/zip'); // ZIP 文件  
+ header('Content-Type: application/pdf'); // PDF 文件  
  header('Content-Type: audio/mpeg'); // 音频文件  
- header('Content-Type: application/x-shockw**e-flash'); //Flash动画  
-   
- //显示登陆对话框  
+ header('Content-Type: application/x-shockw**e-flash'); //Flash 动画
+
+//显示登陆对话框  
  header('HTTP/1.1 401 Unauthorized');  
  header('WWW-Authenticate: Basic realm="Top Secret"');  
  print 'Text that will be displayed if the user hits cancel or ';  
- print 'enters wrong login data';  
-
+ print 'enters wrong login data';
 
 ## composer
 
@@ -610,7 +607,7 @@ composer selfupdate
 
 ### 遇到问题？
 
-`composer` 命令后面加上 -vvv （是3个v）可以打印出调错信息，命令如下：
+`composer` 命令后面加上 -vvv （是 3 个 v）可以打印出调错信息，命令如下：
 
 ```shell
 composer -vvv create-project laravel/laravel blog
@@ -625,7 +622,7 @@ composer -vvv require psr/log
 
 ### 动态创建 Monogo 数据库链接
 
-一般Laravel切换数据库链接只能在 config/database.php 中写好再调用，但如果数据库名不确定该如何动态创建呢？
+一般 Laravel 切换数据库链接只能在 config/database.php 中写好再调用，但如果数据库名不确定该如何动态创建呢？
 
 ```php
 <?php
@@ -671,14 +668,12 @@ class Mongo
 
 运行 laravel 的 php-fpm 是什么用户，一般是 www，最好不要使用 root。
 应用目录中，storage/logs 有没有写权限。
-是否有运行 laravel 的脚本或者 crontab，或者supervisor，并且运行的用户和 php-fpm 的是一样的，一般是www。如果以其他身份（例如root）运行的时候 laravel 需要写日志并且创建了日志文件，那这个日志文件是属于其他用户的，www 用户无法写入。
+是否有运行 laravel 的脚本或者 crontab，或者 supervisor，并且运行的用户和 php-fpm 的是一样的，一般是 www。如果以其他身份（例如 root）运行的时候 laravel 需要写日志并且创建了日志文件，那这个日志文件是属于其他用户的，www 用户无法写入。
 解决办法
 
 修改 php-fpm 的配置文件，修改 user 和 group 为 www。
 chmod a+w storage/logs
-运行 php artisan 时 su www &，crontab 添加执行用户 * www command
-
-
+运行 php artisan 时 su www &，crontab 添加执行用户 \* www command
 
 日志权限的问题基本是出现在有使用 artisan 执行定时任务的情况下。查看日志文件的权限时发现，处理 Web 请求时的日志的用户为 nobody。
 
