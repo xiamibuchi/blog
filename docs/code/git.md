@@ -2,42 +2,7 @@
 
 常见的版本控制系统有：git（分布式）、svn（集中式）
 
-[git 官网](https://git-scm.com/)
-
-## config
-
-```bash
-# git config  user.name [username]
-# git config  user.email [email]
-
-# --global，配置全局参数
-git config  --global user.name [username]
-git config  --global user.email [email]
-
-# show config
-git config --list
-
-# 初始化
-git init
-
-# 查看状态
-git status
-
-# 从工作区添加到暂存区
-git add .
-git add --all
-git add a.text dir/
-
-# 从暂存区提交到仓库区
-git commit -m 'commit message'
-
-# 日志
-git log
-
-# 回退
-git reset --hard 版本号
-git reset --hard head~1 # 回退到上一次提交
-```
+[官网](https://git-scm.com/)
 
 ## githooks
 
@@ -64,49 +29,58 @@ git add .
 git commit -m 'update .gitignore'
 ```
 
-## 分支
+## config
 
-> 在 git 中，分支实质上仅仅是一个指针，每次代码提交后，这个分支指针就会向后移动，保证一直指向最后一次提交的的版本。
+```bash
+# git config user.name [username]
+# git config user.email [email]
 
-### 创建分支
+# --global，配置全局参数
+git config --global user.name [username]
+git config --global user.email [email]
 
-- `git branch 分支名称`创建分支，分支中的代码，在创建时与当前分支的内容完全相同。
-- git 在第一次提交时，就有了一个叫`master`的主分支。
+# show config
+git config --list
 
-### 查看分支
+# 初始化
+git init
 
-- `git branch`可以查看所有的分支，
-- 在当前分支的前面会有一个`*`
+# 查看状态
+git status
 
-### 切换分支
+# 从工作区添加到暂存区
+git add .
+git add --all
+git add a.text dir/
 
-- `git checkout 分支名称`切换分支
-- 在当前分支的任何操作，都不会影响到其他的分支，除非进行了分支合并。
-- 切换分支之前，**必须保证代码已经提交了**
+# 从暂存区提交到仓库区
+git commit -m 'commit message'
 
-### 创建并切换分支
+# 日志
+git log
 
-- `git checkout -b 分支名称` 创建并切换分支
-- 切换分支会做两件事情
-  - 把 head 指针指向当前的分支
-  - 将工作区的文件变成当前分支最新的内容。
+# 回退
+git reset --hard 版本号
+git reset --hard head~1 # 回退到上一次提交
 
-### 删除分支
-
-- `git branch -d 分支名称` 可以删除分支
-- 注意：不能在当前分支删除当前分支，需要切换到其他分支才能删除。
-- 注意：`master`分支是可以删除的，但是不推荐那么做。
-
-### 合并分支
-
-- `git merge 分支名称` 将其他分支的内容合并到当前分支。
-- 在`master`分支中执行`git merge dev` 将`dev`分支中的代码合并到`master`分支
-- [分支合并]
-
-## git 合并冲突
-
-- 对于同一个文件，如果有多个分支需要合并时，容易出现冲突。
-- 合并分支时，如果出现冲突，只能手动处理，再次提交，一般的作法，把自己的代码放到冲突代码的后面即可。
+# branch 分支实质上仅仅是一个指针，每次代码提交后，这个分支指针就会向后移动，保证一直指向最后一次提交的的版本
+# 创建分支
+git branch [分支名]
+# 查看分支
+git branch
+# 切换分支
+git checkout [分支名]
+# 创建并切换分支
+git checkout -b [分支名]
+# 创建并切换分支，分支已存在会直接切换
+git checkout -b [分支名]
+# 删除分支
+git branch -d [分支名]
+# 强制删除分支
+git branch -D [分支名]
+# 合并分支
+git merge [分支名]
+```
 
 ## 远程仓库
 
@@ -135,6 +109,10 @@ git commit -m 'update .gitignore'
 - `git clone [远程仓库地址]
 - `git clone git://github.com/schacon/test.git`会在本地新建一个`test`文件夹，在 test 中包含了一个`.git`目录，用于保存所有的版本记录，同时 test 文件中还有最新的代码，你可以直接进行后续的开发和使用。
 - git 克隆默认会使用远程仓库的项目名字，也可以自己指定。需要是使用以下命令：`git clone [远程仓库地址] [本地项目名]`
+
+直接使用用户名密码：
+
+`git clone http://userName:password@链接`
 
 ### git remote
 
@@ -193,17 +171,6 @@ git 支持多种数据传输协议：
 7. 查看 github 中对应的仓库中，是不是提交到了
 8. 访问：用户名.github.io
 
-## Git Clone 命令直接使用用户名密码
-
-Git Clone 命令,大家都知道这个是克隆项目的.
-当我们在服务器部署测试的时候,每次更新都需要输入账户和密码来确认,这样很麻烦,有没有一次性解决的办法呢?有!
-在使用 git clone 命令的时候我们可以将用户名和密码嵌入到链接,
-代码格式如下:
-git clone http://userName:password@链接
-
-示例:
-git clone https://username:password@git.oschina.net/wdm/familycloud.git
-
 ## stash 暂存
 
 git stash // 可以暂时隐藏工作区未上传的文件
@@ -222,6 +189,7 @@ git stash pop // 恢复的同时把 stash 内容也删除了。
 ### 轻标签
 
 - 添加名称
+
 ### 注解标签
 
 - 添加名称
@@ -280,15 +248,6 @@ npx husky install
 npx husky add .husky/commit-msg  'npx --no -- commitlint --edit ${1}'
 ```
 
-## 常用命令
-
-```bash
-git add .                                将所有改动放进暂存区
-git commit -m "描述"                     提交并附带概要信息
-git pull                                 从远程仓库拉去代码
-git push                                 推送代码到远程仓库（master分支）
-```
-
 ## 其余常用命令
 
 ```bash
@@ -296,17 +255,11 @@ git log                                  查看日志
 git log -p                               查看详细历史
 git log --stat                           查看简要统计
 git status                               查看工作区状态
-git branch 名称                          创建分支
-git checkout 名称                        切换分支
-git checkout -b 名称                     创建并切换到新分支
-git branch -d 名称                       删除该分支（不能删除当前所在的分支，不能删除没有合并到master上的分支）
-git branch -D 名称                       删除该分支（可以删除没有合并到master上的分支）
 git commit --amend                       对最新的一条commit进行修正
 git reset --hard HEAD^                   丢弃最新提交（未提交的内容会被擦掉）
 git reset --soft HEAD^                   丢弃最新提交（未提交的内容不会被擦掉）
 git revert HEAD^                         回到某个commit
 git rebase 目标基础点                     重新设置基础点
-git merge 名称                           将分支合并到head指向的分支
 git push origin localbranch              将代码推送到远程仓库的指定分支
 git push -d origin branchName            删除远程分支
 git stash                                暂存代码
@@ -333,33 +286,33 @@ Fast-Forward
 
 当前分支合并到另一分支时，如果没有分歧解决，就会直接移动文件指针。这个过程叫做 fastforward。
 
-开发一直在 master 分支进行，但忽然有一个新的想法，于是新建了一个develop的分支，并在其上进行一系列提交，完成时，回到 master分支，此时，master分支在创建develop分支之后并未产生任何新的commit。此时的合并就叫 fast forward。
+开发一直在 master 分支进行，但忽然有一个新的想法，于是新建了一个 develop 的分支，并在其上进行一系列提交，完成时，回到 master 分支，此时，master 分支在创建 develop 分支之后并未产生任何新的 commit。此时的合并就叫 fast forward。
 
 如果执行了 Fast Forward，开发者根本不会看到这个分支，就像在 master 直接 commit 一样。
 
 示例：
 
-1. 新建一个work tree，在master中做几次commit
-2. 新建develop的branch，然后再做多次commits
+1. 新建一个 work tree，在 master 中做几次 commit
+2. 新建 develop 的 branch，然后再做多次 commits
 
 此时的分支流图如下(gitx)：
 
 正常合并
 
-(master)$ git merge develop 
+(master)$ git merge develop
 Updating 5999848..7355122
 Fast-forward
-c.txt |    1 +
-d.txt |    1 +
+c.txt | 1 +
+d.txt | 1 +
 2 files changed, 2 insertions(+), 0 deletions(-)
 create mode 100644 c.txt
 create mode 100644 d.txt
 
-可以看出这是一次fast-forward式的合并，且合并完之后的视图为扁平状，看不出develop分支开发的任何信息。
+可以看出这是一次 fast-forward 式的合并，且合并完之后的视图为扁平状，看不出 develop 分支开发的任何信息。
 
-使用–no-ff进行合并
+使用–no-ff 进行合并
 
-—no-ff (no fast foward)，使得每一次的合并都创建一个新的commit记录。即使这个commit只是fast-foward，用来避免丢失信息。
+—no-ff (no fast foward)，使得每一次的合并都创建一个新的 commit 记录。即使这个 commit 只是 fast-foward，用来避免丢失信息。
 
 (master)$ git merge –no-ff develop
 Merge made by recursive.
@@ -367,9 +320,9 @@ c.txt | 2 +-
 d.txt | 2 +-
 2 files changed, 2 insertions(+), 2 deletions(-)
 
-可以看出，使用no-ff后，会多生成一个commit 记录，并强制保留develop分支的开发记录（而fast-forward的话则是直接合并，看不出之前Branch的任何记录）。这对于以后代码进行分析特别有用，故有以下最佳实践。
+可以看出，使用 no-ff 后，会多生成一个 commit 记录，并强制保留 develop 分支的开发记录（而 fast-forward 的话则是直接合并，看不出之前 Branch 的任何记录）。这对于以后代码进行分析特别有用，故有以下最佳实践。
 
-–no-ff，其作用是：要求git merge即使在fast forward条件下也要产生一个新的merge commit。此处，要求采用–no-ff的方式进行分支合并，其目的在于，希望保持原有“develop branches”整个提交链的完整性。Git – Fast Forward 和 no fast foward
+–no-ff，其作用是：要求 git merge 即使在 fast forward 条件下也要产生一个新的 merge commit。此处，要求采用–no-ff 的方式进行分支合并，其目的在于，希望保持原有“develop branches”整个提交链的完整性。Git – Fast Forward 和 no fast foward
 
 ## git autocomplete commands
 
@@ -407,7 +360,7 @@ Restart your Terminal application or run the following command:
 ### Limitations
 
 - If Termux is closed in the background by Android, the cron service will stop updating your repository and you must open Termux again. Refer to instructions for your device model to disable the killing of certain background applications.
-- This may negatively affect your devices battery life. I'm not entirely sure yet. 
+- This may negatively affect your devices battery life. I'm not entirely sure yet.
 
 ### Setup
 
@@ -419,7 +372,7 @@ Restart your Terminal application or run the following command:
 - Run `cd storage/shared` (If you get permissions issues, refer to [this page](https://wiki.termux.com/wiki/Termux-setup-storage))
 - Run `git config --global user.email "<your_email>"`
 - Run `git config --global user.name "<The name you want on your commits>"`
-- Run `git clone <your repository>` 
+- Run `git clone <your repository>`
 - With this setup so far, you will need to manually go into the folder in Termux and type `git pull`. If you'd like to create shortcuts to do this on your homescreen, see [this guide](https://renerocks.ai/blog/obsidian-encrypted-github-android/#shortcuts-for-committing-pushing-and-pulling)
 
 [Termux-setup-storage](https://wiki.termux.com/wiki/Termux-setup-storage)
