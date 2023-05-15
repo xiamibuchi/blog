@@ -91,3 +91,29 @@ content 的参数有 all,none,index,noindex,follow,nofollow。默认是 all。
 ### http-equiv 属性
 
 [http-equiv](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#http-equiv) 相当于 similarly-named HTTP header
+
+## 常用
+
+```html
+<!DOCTYPE html>
+<!-- https://www.zhihu.com/question/20797118?utm_source=weibo&utm_medium=weibo_share&utm_content=share_question&utm_campaign=share_sidebar -->
+<html lang="zh-CN">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <!-- iOS -->
+  <meta name="apple-mobile-web-app-title" content="标题">
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <!-- 工具栏颜色 -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <!-- 极速模式(webkit) -->
+  <meta name="renderer" content="webkit">
+  <!-- 避免IE使用兼容模式 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- uc强制竖屏 -->
+  <meta name="screen-orientation" content="portrait">
+  <!-- QQ强制竖屏 -->
+  <meta name="x5-orientation" content="portrait">
+</head>
+```

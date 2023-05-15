@@ -121,7 +121,7 @@ IndexedDb 提供了一个结构化的、事务型的、高性能的 NoSQL 类型
 - Pepper 插件进程
 - GPU 进程
 - 移动设备的浏览器可能不太一样:
-  - Android 不支持插件,所以就没有插件进程
+  - Android 不支持插件，所以就没有插件进程
   - GPU 演化成了 Browser 进程的一个线程
   - Renderer 进程演化成了操作系统的一个服务进程,它仍然是独立的
 
@@ -319,6 +319,15 @@ IndexedDb 提供了一个结构化的、事务型的、高性能的 NoSQL 类型
 7. 不要把某些 DOM 节点的属性值放在一个循环里当成循环的变量
    - 当你请求向浏览器请求一些 style 信息的时候，就会让浏览器 flush 队列，比如：
 8. 动画实现过程中，启用 GPU 硬件加速(3d)，为动画元素新建图层，提高动画元素的 z-index
+
+#### 字体加载优化
+
+```css
+div {
+  /* 立即使用默认字体，字体文件加载完成后立即更换 */
+  font-display: swap;
+}
+```
 
 ## 缓存
 
@@ -688,106 +697,13 @@ Hash 方法是在路由中带有一个 `#`，主要原理是通过监听 `#` 后
 3. `location.pathname`：返回 URL 路径名
 4. `hashchange` 事件：当 `location.hash` 发生改变时，将触发这个事件
 
-比如访问一个路径 `http://sherlocked93.club/base/#/page1`，那么上面几个值分别为：
-
-```
-# http://sherlocked93.club/base/#/page1
-{
-  "href": "http://sherlocked93.club/base/#/page1",
-  "pathname": "/base/",
-  "hash": "#/page1"
-}
-复制代码
-```
-
 **注意：** Hash 方法是利用了相当于页面锚点的功能，所以与原来的通过锚点定位来进行页面滚动定位的方式冲突，导致定位到错误的路由路径，因此需要采用别的办法，之前在写 [progress-catalog](https://link.juejin.im?target=https%3A%2F%2Fgithub.com%2FSHERlocked93%2Fprogress-catalog) 这个插件碰到了这个情况。
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
-  </head>
-  <body>
-    <ul>
-      <li><a href="#/">/</a></li>
-      <li><a href="#/page1">page1</a></li>
-      <li><a href="#/page2">page2</a></li>
-    </ul>
-    <div class="content-div"></div>
+[HTML5 提供了一些路由操作的 Api](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
 
-    <button>back</button>
-  </body>
-  <script>
-    class RouteClass {
-      constructor() {
-        this.routes = {}; // 记录路径标识符对应的 cb
-        this.currentUrl = ""; // 记录 hash，方便执行 cb
-        this.historyStack = []; // hash栈
-        window.addEventListener("load", () => this.render());
-        window.addEventListener("hashchange", () => this.render());
-      }
+## console
 
-      // 初始化
-      static init() {
-        window.Router = new RouteClass();
-      }
-
-      // 记录path对应 cb
-      route(path, cb) {
-        this.routes[path] = cb || function () {};
-      }
-
-      // 记录当前 hash，执行 cb
-      render() {
-        // 如果是由backoff进入，则置false之后return
-        if (this.isBack) {
-          this.isBack = false; // 其他操作在backoff方法中已经做了
-          return;
-        }
-        this.currentUrl = location.hash.slice(1) || "/";
-        this.historyStack.push(this.currentUrl);
-        this.routes[this.currentUrl]();
-      }
-
-      // 路由后退
-      back() {
-        this.isBack = true;
-        this.historyStack.pop(); // 移除当前hash，回退到上一个
-        const { length } = this.historyStack;
-        if (!length) return;
-        let prev = this.historyStack[length - 1]; // 拿到要回退到的目标hash
-        location.hash = `#${prev}`;
-        this.currentUrl = prev;
-        this.routes[prev](); // 执行对应cb
-      }
-    }
-
-    RouteClass.init();
-    const BtnDom = document.querySelector("button");
-    const ContentDom = document.querySelector(".content-div");
-    const changeContent = (content) => (ContentDom.innerHTML = content);
-
-    Router.route("/", () => changeContent("默认页面"));
-    Router.route("/page1", () => changeContent("page1页面"));
-    Router.route("/page2", () => changeContent("page2页面"));
-
-    BtnDom.addEventListener("click", Router.back.bind(Router), false);
-  </script>
-</html>
-```
-
-HTML5 提供了一些路由操作的 Api，关于使用可以参看 这篇 MDN 上的文章，这里就列举一下常用 Api 和他们的作用
-
-1. `history.go(n)`：路由跳转，比如 n 为 `2` 是往前移动 2 个页面，n 为 `-2` 是向后移动 2 个页面，n 为 0 是刷新页面
-2. `history.back()`：路由后退，相当于 `history.go(-1)`
-3. `history.forward()`：路由前进，相当于 `history.go(1)`
-4. `history.pushState()`：添加一条路由历史记录，如果设置跨域网址则报错
-5. `history.replaceState()`：替换当前页在路由历史记录的信息
-6. `popstate` 事件：当活动的历史记录发生变化，就会触发 `popstate` 事件，在点击浏览器的前进后退按钮或者调用上面前三个方法的时候也会触发，参见 [MDN](https://link.juejin.im?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FAPI%2FWindow%2Fonpopstate)
+- [不打开 DevTools 时，console.log 是否内存泄漏](https://blog.rexskz.info/getting-to-bottom-will-console-log-cause-memory-leak-when-devtools-is-off.html)：Chromium 对 console.log 总大小限制失效的原因，是因为其在判断时没有使用合适的方式，导致预估大小与实际大小严重不符。
 
 ## DOM
 

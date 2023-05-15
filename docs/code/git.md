@@ -326,3 +326,8 @@ Restart your Terminal application or run the following command:
 - With this setup so far, you will need to manually go into the folder in Termux and type `git pull`. If you'd like to create shortcuts to do this on your homescreen, see [this guide](https://renerocks.ai/blog/obsidian-encrypted-github-android/#shortcuts-for-committing-pushing-and-pulling)
 
 [Termux-setup-storage](https://wiki.termux.com/wiki/Termux-setup-storage)
+
+## 开发模式
+
+- git flow: master/hotfix/release/develop/feature 分支用于管理不同阶段的代码
+- 主干开发: 开发人员之间通过约定向被指定为“主干”的分支提交代码，以此抵抗因为长期存在的多分支导致的开发压力。

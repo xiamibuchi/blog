@@ -1,6 +1,6 @@
 # webpack
 
-- [webpack 官网](https://github.com/webpack/webpack)
+- [github](https://github.com/webpack/webpack)
 
 1. webpack 将带有依赖项的各个模块打包处理后，变成了独立的浏览器能够识别的文件
 2. webpack 合并以及解析带有依赖项的模块
@@ -43,11 +43,6 @@ webpack 的 loader 没办法处理软连接，所以传参的路径都要用 fs.
   - 字体 等
 
 ### webpack 文档和资源
-
-- [webpack 中文网](https://doc.webpack-china.org/)
-- [webpack 1.0](http://webpack.github.io/docs/what-is-webpack.html)
-- [webpack 2.x+](https://webpack.js.org/)
-- [入门 Webpack，看这篇就够了](http://www.jianshu.com/p/42e11515c10f#)
 
 ## 常用插件
 
